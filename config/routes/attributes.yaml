@@ -1,0 +1,3 @@
+manager_controllers:
+  resource: ../../src/Manager/Infrastructure/Symfony/Controller/
+  type: annotation
