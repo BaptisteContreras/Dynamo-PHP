@@ -4,30 +4,56 @@ namespace App\Manager\Infrastructure\Persistence\Repository;
 
 use App\Manager\Domain\Contract\Repository\WorkerInformationsRepositoryInterface;
 use App\Manager\Domain\Model\Dto\WorkerInformations;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineWorkerInformationsRepository implements WorkerInformationsRepositoryInterface
+class DoctrineWorkerInformationsRepository extends ServiceEntityRepository implements WorkerInformationsRepositoryInterface
 {
-    /**         Properties         **/
     /**         Constructor         **/
-    /**         Methods         **/
-    /**         Accessors         **/
-    public function add(WorkerInformations $workerInformations): void
+    public function __construct(ManagerRegistry $registry)
     {
-        // TODO: Implement add() method.
+        parent::__construct($registry, WorkerInformations::class);
     }
 
-    public function remove(WorkerInformations $workerInformations): void
+    /**         Methods         **/
+    public function add(WorkerInformations $workerInformations, bool $flush): void
     {
-        // TODO: Implement remove() method.
+        $this->_em->persist($workerInformations);
+
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function update(WorkerInformations $workerInformations, bool $flush): void
+    {
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function remove(WorkerInformations $workerInformations, bool $flush): void
+    {
+        $this->_em->remove($workerInformations);
+
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
     public function findOneById(int $id): ?WorkerInformations
     {
-        // TODO: Implement findOneById() method.
+        return $this->createQueryBuilder('w')
+            ->andWhere('w.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findAll(): array
     {
-        // TODO: Implement findAll() method.
+        return $this->createQueryBuilder('w')
+            ->getQuery()
+            ->getResult();
     }
 }

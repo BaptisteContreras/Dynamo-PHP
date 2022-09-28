@@ -5,6 +5,7 @@ namespace App\Manager\Application\Query\WorkerInformations\Search\Presenter;
 use App\Manager\Application\Query\WorkerInformations\Search\Response\SearchAllWorkerInformationsResponse;
 use App\Manager\Application\Query\WorkerInformations\Search\ViewModel\JsonSearchAllWorkerInformationsViewModel;
 use App\Shared\Application\ViewModelInterface;
+use App\Shared\Infrastructure\Http\HttpCode;
 
 class JsonSearchAllWorkerInformationsPresenter extends AbstractSearchAllWorkerInformationsPresenter
 {
@@ -22,7 +23,7 @@ class JsonSearchAllWorkerInformationsPresenter extends AbstractSearchAllWorkerIn
         return $this->jsonSearchAllWorkerInformationsViewModel;
     }
 
-    public function getReturnCode(): int
+    public function getReturnCode(): HttpCode
     {
         return $this->jsonSearchAllWorkerInformationsViewModel->getCode();
     }

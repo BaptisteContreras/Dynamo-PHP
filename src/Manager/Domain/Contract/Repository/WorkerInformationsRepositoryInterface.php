@@ -6,9 +6,11 @@ use App\Manager\Domain\Model\Dto\WorkerInformations;
 
 interface WorkerInformationsRepositoryInterface
 {
-    public function add(WorkerInformations $workerInformations): void;
+    public function add(WorkerInformations $workerInformations, bool $flush): void;
 
-    public function remove(WorkerInformations $workerInformations): void;
+    public function remove(WorkerInformations $workerInformations, bool $flush): void;
+
+    public function update(WorkerInformations $workerInformations, bool $flush): void;
 
     public function findOneById(int $id): ?WorkerInformations;
 
