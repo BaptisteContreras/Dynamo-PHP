@@ -5,7 +5,9 @@ services:
     build: './php'
     volumes:
       - ../.:/app
-      - ./php/custom.ini.:/opt/bitnami/php/etc/conf.d/custom.ini
+#      - ../../../../symfony-request-param-bundle/.:/app/vendor/baptiste-contreras/symfony-request-param-bundle
+#      - ../../../../symfony-request-param-bundle/.:/my-bundle
+      - ./php/custom.ini:/opt/bitnami/php/etc/conf.d/custom.ini
   nginx:
     image: 'bitnami/nginx:latest'
     depends_on:

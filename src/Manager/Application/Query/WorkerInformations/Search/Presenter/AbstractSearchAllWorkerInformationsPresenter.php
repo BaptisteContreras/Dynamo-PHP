@@ -6,8 +6,4 @@ use App\Shared\Application\ResponsePresenterInterface;
 
 abstract class AbstractSearchAllWorkerInformationsPresenter implements ResponsePresenterInterface
 {
-    /*         Properties         * */
-    /*         Constructor         * */
-    /*         Methods         * */
-    /*         Accessors         * */
 }

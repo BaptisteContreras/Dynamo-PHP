@@ -14,6 +14,8 @@ services:
 
     App\Manager\Application\:
         resource: '../src/Manager/Application/'
+        exclude:
+            - '../src/Manager/Application/Command/Register/RegisterRequest.php'
 
     App\Manager\Infrastructure\:
         resource: '../src/Manager/Infrastructure/'
