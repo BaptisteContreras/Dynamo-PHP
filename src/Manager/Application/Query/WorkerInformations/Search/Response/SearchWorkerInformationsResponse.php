@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Query\WorkerInformations\Search\Response;
 
-use App\Manager\Domain\Model\Dto\WorkerInformations;
+use App\Manager\Domain\Model\Dto\WorkerNode;
 use App\Shared\Application\ApplicationResponseInterface;
 
 final class SearchWorkerInformationsResponse implements ApplicationResponseInterface
@@ -19,7 +19,7 @@ final class SearchWorkerInformationsResponse implements ApplicationResponseInter
     }
 
     /**         Methods         **/
-    public static function buildFromWorkerInformations(WorkerInformations $workerInformations): self
+    public static function buildFromWorkerInformations(WorkerNode $workerInformations): self
     {
         return new self(
             $workerInformations->getId(),

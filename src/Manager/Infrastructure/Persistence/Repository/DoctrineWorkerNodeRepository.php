@@ -2,21 +2,21 @@
 
 namespace App\Manager\Infrastructure\Persistence\Repository;
 
-use App\Manager\Domain\Contract\Repository\WorkerInformationsRepositoryInterface;
-use App\Manager\Domain\Model\Dto\WorkerInformations;
+use App\Manager\Domain\Contract\Out\Repository\WorkerInformationsRepositoryInterface;
+use App\Manager\Domain\Model\Dto\WorkerNode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineWorkerInformationsRepository extends ServiceEntityRepository implements WorkerInformationsRepositoryInterface
+class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements WorkerInformationsRepositoryInterface
 {
     /**         Constructor         **/
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, WorkerInformations::class);
+        parent::__construct($registry, WorkerNode::class);
     }
 
     /**         Methods         **/
-    public function add(WorkerInformations $workerInformations, bool $flush): void
+    public function add(WorkerNode $workerInformations, bool $flush): void
     {
         $this->_em->persist($workerInformations);
 
@@ -25,14 +25,14 @@ class DoctrineWorkerInformationsRepository extends ServiceEntityRepository imple
         }
     }
 
-    public function update(WorkerInformations $workerInformations, bool $flush): void
+    public function update(WorkerNode $workerInformations, bool $flush): void
     {
         if ($flush) {
             $this->_em->flush();
         }
     }
 
-    public function remove(WorkerInformations $workerInformations, bool $flush): void
+    public function remove(WorkerNode $workerInformations, bool $flush): void
     {
         $this->_em->remove($workerInformations);
 
@@ -41,7 +41,7 @@ class DoctrineWorkerInformationsRepository extends ServiceEntityRepository imple
         }
     }
 
-    public function findOneById(int $id): ?WorkerInformations
+    public function findOneById(int $id): ?WorkerNode
     {
         return $this->createQueryBuilder('w')
             ->andWhere('w.id = :id')

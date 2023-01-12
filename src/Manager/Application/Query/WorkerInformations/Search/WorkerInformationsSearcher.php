@@ -2,8 +2,8 @@
 
 namespace App\Manager\Application\Query\WorkerInformations\Search;
 
-use App\Manager\Domain\Contract\Repository\WorkerInformationsRepositoryInterface;
-use App\Manager\Domain\Model\Dto\WorkerInformations;
+use App\Manager\Domain\Contract\Out\Repository\WorkerInformationsRepositoryInterface;
+use App\Manager\Domain\Model\Dto\WorkerNode;
 
 class WorkerInformationsSearcher
 {
@@ -15,7 +15,7 @@ class WorkerInformationsSearcher
     /**         Methods         **/
 
     /**
-     * @return array<WorkerInformations>
+     * @return array<WorkerNode>
      */
     public function searchAll(): array
     {

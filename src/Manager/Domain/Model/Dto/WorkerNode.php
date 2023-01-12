@@ -3,37 +3,39 @@
 namespace App\Manager\Domain\Model\Dto;
 
 use App\Manager\Domain\Constante\Enum\WorkerState;
-use App\Manager\Domain\Contract\DtoV1Interface;
+use App\Manager\Domain\Model\DtoV1Interface;
 
-class WorkerInformations implements DtoV1Interface
+class WorkerNode implements DtoV1Interface
 {
-    /**         Properties         **/
     private int $id;
 
     private string $networkAddress;
 
     private int $networkPort;
 
-    private WorkerState $workerState;
+    private WorkerState $workerState = WorkerState::JOINING;
 
     private \DateTimeImmutable $joinedAt;
 
-    private WorkerPreferenceList $workerPreferenceList;
+    private PreferenceList $workerPreferenceList;
 
-    private string $labelName;
+    private string $labelName = '';
 
     /**
      * @var array<Label>
      */
-    private array $subLabels;
+    private array $subLabels = [];
 
     private int $weight;
 
-    /**         Constructor         **/
-    /**         Methods         **/
-    public function jsonSerialize(): mixed
+    public function __construct(string $networkAddress, int $networkPort, int $weight)
     {
-        // TODO: Implement jsonSerialize() method.
+        $this->networkAddress = $networkAddress;
+        $this->networkPort = $networkPort;
+        $this->weight = $weight;
+
+        $this->joinedAt = new \DateTimeImmutable();
+        $this->workerPreferenceList = PreferenceList::emptyList();
     }
 
     /**         Accessors         **/
@@ -77,12 +79,12 @@ class WorkerInformations implements DtoV1Interface
         $this->joinedAt = $joinedAt;
     }
 
-    public function getWorkerPreferenceList(): WorkerPreferenceList
+    public function getWorkerPreferenceList(): PreferenceList
     {
         return $this->workerPreferenceList;
     }
 
-    public function setWorkerPreferenceList(WorkerPreferenceList $workerPreferenceList): void
+    public function setWorkerPreferenceList(PreferenceList $workerPreferenceList): void
     {
         $this->workerPreferenceList = $workerPreferenceList;
     }

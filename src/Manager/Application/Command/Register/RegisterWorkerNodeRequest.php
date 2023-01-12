@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints\Ip;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-final class RegisterRequest
+final class RegisterWorkerNodeRequest
 {
     /**         Properties         **/
     private const MIN_PORT = 1024;

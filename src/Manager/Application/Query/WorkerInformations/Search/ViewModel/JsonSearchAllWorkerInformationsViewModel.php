@@ -7,15 +7,12 @@ use App\Shared\Infrastructure\Http\HttpCode;
 
 class JsonSearchAllWorkerInformationsViewModel implements JsonViewModelInterface
 {
-    /**         Properties         **/
     private HttpCode $code = HttpCode::SUCCESS;
 
-    /**         Constructor         **/
     public function __construct(private readonly array $searchWorkerInformationsResponses)
     {
     }
 
-    /**         Methods         **/
     public function jsonSerialize(): mixed
     {
         return [
