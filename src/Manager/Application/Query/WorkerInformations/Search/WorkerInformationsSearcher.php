@@ -2,13 +2,13 @@
 
 namespace App\Manager\Application\Query\WorkerInformations\Search;
 
-use App\Manager\Domain\Contract\Out\Repository\WorkerInformationsRepositoryInterface;
+use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
 use App\Manager\Domain\Model\Dto\WorkerNode;
 
 class WorkerInformationsSearcher
 {
     /**         Constructor         **/
-    public function __construct(private readonly WorkerInformationsRepositoryInterface $workerInformationsRepository)
+    public function __construct(private readonly WorkerNodeFinder $workerNodeFinder)
     {
     }
 
@@ -19,6 +19,6 @@ class WorkerInformationsSearcher
      */
     public function searchAll(): array
     {
-        return $this->workerInformationsRepository->findAll();
+        return $this->workerNodeFinder->findAll();
     }
 }

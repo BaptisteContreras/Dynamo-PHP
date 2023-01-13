@@ -123,4 +123,23 @@ class WorkerNode implements DtoV1Interface
     {
         return $this->id;
     }
+
+    public function addLabel(Label $label): self
+    {
+        $this->subLabels[] = $label;
+
+        return $this;
+    }
+
+    public function isJoining(): bool
+    {
+        return WorkerState::JOINING === $this->workerState;
+    }
+
+    public function markAsUp(): self
+    {
+        $this->workerState = WorkerState::UP;
+
+        return $this;
+    }
 }
