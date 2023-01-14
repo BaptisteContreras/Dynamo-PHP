@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Http\HttpCode;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class JsonRegisterWorkerNodeErrorViewModel extends JsonRegisterWorkerNodeViewModel
+class JsonRegisterWorkerNodeValidationErrorViewModel extends JsonRegisterWorkerNodeViewModel
 {
     public function __construct(private readonly ConstraintViolationListInterface $validationErrors)
     {

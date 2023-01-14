@@ -1,0 +1,27 @@
+parameters:
+  lockedLabelNameGeneratorFilePath: '%kernel.project_dir%/var/.lockedLabelNameGeneratorFilePath'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+
+  App\Manager\Domain\:
+    resource: '../../Domain/'
+
+  App\Manager\Application\:
+    resource: '../../Application/'
+    exclude:
+      - '../../Application/Command/Register/RegisterRequest.php'
+
+  App\Manager\Infrastructure\:
+    resource: '../'
+
+  App\Manager\Infrastructure\Symfony\Controller\:
+    resource: 'Controller/'
+    tags: ['controller.service_arguments']
+
+  App\Manager\Infrastructure\Symfony\Lock\LockedLabelNameGenerator:
+    arguments:
+      $counterFilePath: '%lockedLabelNameGeneratorFilePath%'

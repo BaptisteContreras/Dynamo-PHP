@@ -12,9 +12,9 @@ abstract class JsonRegisterWorkerNodeViewModel implements JsonViewModelInterface
     {
     }
 
-    public static function error(ConstraintViolationListInterface $validationErrors): self
+    public static function validationError(ConstraintViolationListInterface $validationErrors): self
     {
-        return new JsonRegisterWorkerNodeErrorViewModel($validationErrors);
+        return new JsonRegisterWorkerNodeValidationErrorViewModel($validationErrors);
     }
 
     public function getCode(): HttpCode

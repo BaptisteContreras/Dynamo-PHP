@@ -6,6 +6,7 @@ use App\Manager\Domain\Constante\Enum\WorkerState;
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\LockingFailsException;
+use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Exception\RingFullException;
 use App\Manager\Domain\Exception\WorkerAlreadyRegisteredException;
@@ -26,7 +27,7 @@ class Ring
     }
 
     /**
-     * Try to make the given worker node join the pool.
+     * Try to make the given worker node join the ring.
      * During this method, a lock is set and no other worker node with the same network address and network port can try
      * to join the pool. As it is a pessimist lock, it throws an exception without waiting.
      *
@@ -38,7 +39,7 @@ class Ring
      *
      * @throws RingFullException
      * @throws LockingFailsException
-     * @throws WorkerAlreadyRegisteredException|WrongWorkerStateException
+     * @throws WorkerAlreadyRegisteredException|WrongWorkerStateException|NoFreeLabelSlotFoundException
      */
     public function join(WorkerNode $workerNode): void
     {
@@ -60,12 +61,13 @@ class Ring
         if ($alreadyExistingWorker) {
             throw new WorkerAlreadyRegisteredException($workerNode->getNetworkAddress(), $workerNode->getNetworkPort());
         }
+
         $this->workerNodeRepository->add($workerNode, true);
 
         try {
             $this->labelSet->acquireLabels($workerNode, $workerNode->getWeight(), true);
-        } catch (NotEnoughFreeLabelSlotException $e) {
-            $this->workerNodeLocker->unLockWorkerNodeForJoining($workerNode);
+        } catch (NotEnoughFreeLabelSlotException|NoFreeLabelSlotFoundException $e) {
+            $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
 
             throw new RingFullException();
         }
@@ -74,7 +76,7 @@ class Ring
 
         $this->workerNodeRepository->update($workerNode, true);
 
-        $this->workerNodeLocker->unLockWorkerNodeForJoining($workerNode);
+        $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
     }
 
     /**

@@ -10,13 +10,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements WorkerNodeRepositoryInterface, WorkerNodeFinder
 {
-    /**         Constructor         **/
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, WorkerNode::class);
     }
 
-    /**         Methods         **/
     public function add(WorkerNode $workerNode, bool $flush): void
     {
         $this->_em->persist($workerNode);

@@ -2,8 +2,8 @@
 
 namespace App\Manager\Application\Command\Register\Presenter;
 
-use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeErrorResponse;
 use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeResponse;
+use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeValidationErrorResponse;
 use App\Manager\Application\Command\Register\ViewModel\JsonRegisterWorkerNodeViewModel;
 use App\Shared\Application\ViewModelInterface;
 use App\Shared\Infrastructure\Http\HttpCode;
@@ -14,8 +14,8 @@ class JsonRegisterWorkerNodePresenter extends RegisterWorkerNodePresenter
 
     public function present(RegisterWorkerNodeResponse $registerResponse): void
     {
-        if ($registerResponse instanceof RegisterWorkerNodeErrorResponse) {
-            $this->registerViewModel = JsonRegisterWorkerNodeViewModel::error($registerResponse->getValidationErrors());
+        if ($registerResponse instanceof RegisterWorkerNodeValidationErrorResponse) {
+            $this->registerViewModel = JsonRegisterWorkerNodeViewModel::validationError($registerResponse->getValidationErrors());
 
             return;
         }

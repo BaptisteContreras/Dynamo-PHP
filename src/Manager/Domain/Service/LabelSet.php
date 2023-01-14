@@ -3,9 +3,13 @@
 namespace App\Manager\Domain\Service;
 
 use App\Manager\Domain\Contract\Out\Finder\LabelFinder;
+use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
+use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
+use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Model\Dto\WorkerNode;
 use App\Manager\Domain\Service\Label\LabelAssignationStrategyInterface;
+use App\Manager\Domain\Service\Label\LabelLockerInterface;
 use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
 use Psr\Log\LoggerInterface;
 
@@ -15,7 +19,10 @@ class LabelSet
         private readonly LabelFinder $labelFinder,
         private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,
         private readonly LabelNameGeneratorInterface $labelNameGenerator,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly LabelLockerInterface $labelLocker,
+        private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
+        private readonly LabelRepositoryInterface $labelRepository
     ) {
     }
 
@@ -30,10 +37,16 @@ class LabelSet
      * $numberOfLabel MUST be positive or an exception is thrown
      *
      * @throws NotEnoughFreeLabelSlotException
+     * @throws NoFreeLabelSlotFoundException
      */
     public function acquireLabels(WorkerNode $workerNode, int $numberOfLabel, bool $strictRequirement): void
     {
         $labelSlots = $this->labelAssignationStrategy->selectSlots($numberOfLabel, $strictRequirement);
+        $nbLabelSlotsFound = count($labelSlots);
+
+        if (0 === $nbLabelSlotsFound) {
+            throw new NoFreeLabelSlotFoundException();
+        }
 
         $labelName = $this->labelNameGenerator->generate();
 
@@ -46,7 +59,7 @@ class LabelSet
 
         $workerNode->setLabelName($labelName);
 
-        if (($nbLabelSlotsFound = count($labelSlots)) !== $numberOfLabel) {
+        if ($nbLabelSlotsFound !== $numberOfLabel) {
             $this->logger->warning(sprintf(
                 '[LABEL SET] : could not find enough free label slots. Only %s instead of %s will be used for worker node %s %s',
                 $nbLabelSlotsFound,
@@ -73,7 +86,12 @@ class LabelSet
             ));
 
             $workerNode->addLabel($label);
+
+            $this->labelRepository->update($label, false);
         }
+
+        $this->workerNodeRepository->update($workerNode, true);
+        $this->labelLocker->unlockSlotsForAssignation($labelSlots);
     }
 
     /**
