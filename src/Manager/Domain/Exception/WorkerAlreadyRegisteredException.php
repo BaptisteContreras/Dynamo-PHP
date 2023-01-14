@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class WorkerAlreadyRegisteredException extends \Exception
+class WorkerAlreadyRegisteredException extends DomainException
 {
     public function __construct(string $networkAddress, int $networkPort)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class NoFreeLabelSlotFoundException extends \Exception
+class NoFreeLabelSlotFoundException extends DomainException
 {
     public function __construct()
     {

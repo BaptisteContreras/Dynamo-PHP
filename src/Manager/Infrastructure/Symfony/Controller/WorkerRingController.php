@@ -12,12 +12,12 @@ use BaptisteContreras\SymfonyRequestParamBundle\Model\SourceType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/pool', name: 'pool_')]
-class WorkerPoolController extends AbstractApiController
+#[Route('/ring', name: 'ring_')]
+class WorkerRingController extends AbstractApiController
 {
     #[Route(path: '/join', name: 'post')]
     #[AutoProvideRequestDto]
-    public function register(
+    public function join(
         #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] RegisterWorkerNodeRequest $registerRequest,
         RegisterWorkerNodeCommandHandler $registerCommandHandler
     ): Response {

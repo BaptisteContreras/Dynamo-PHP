@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class LockingFailsException extends \Exception
+class LockingFailsException extends DomainException
 {
     public function __construct()
     {

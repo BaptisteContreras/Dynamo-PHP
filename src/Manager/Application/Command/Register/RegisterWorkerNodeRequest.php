@@ -23,9 +23,10 @@ final class RegisterWorkerNodeRequest
     )]
     private ?int $networkPort;
 
+    #[NotBlank]
     #[Range(
-        min: -9999,
-        max: 9999,
+        min: 1,
+        max: 360, // TODO must be dynamic
     )]
     private ?int $weight;
 

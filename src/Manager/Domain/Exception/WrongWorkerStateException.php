@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Exception;
 
 use App\Manager\Domain\Constante\Enum\WorkerState;
 
-class WrongWorkerStateException extends \Exception
+class WrongWorkerStateException extends DomainException
 {
     public function __construct(WorkerState $expected, WorkerState $actual)
     {

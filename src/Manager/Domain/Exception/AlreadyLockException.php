@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class AlreadyLockException extends \Exception
+class AlreadyLockException extends DomainException
 {
     public function __construct()
     {

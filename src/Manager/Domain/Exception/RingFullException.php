@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class RingFullException extends \Exception
+class RingFullException extends DomainException
 {
     public function __construct()
     {

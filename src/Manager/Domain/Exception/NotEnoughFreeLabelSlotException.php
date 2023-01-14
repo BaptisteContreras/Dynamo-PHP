@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Exception;
 
-class NotEnoughFreeLabelSlotException extends \Exception
+class NotEnoughFreeLabelSlotException extends DomainException
 {
     public function __construct(int $nbRequired, int $nbFound)
     {

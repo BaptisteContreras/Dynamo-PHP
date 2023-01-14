@@ -12,7 +12,7 @@ class Label
 
     private float $position;
 
-    private float $coverZoneExpension;
+    private float $coverZoneLength;
 
     public function getId(): int
     {
@@ -49,13 +49,13 @@ class Label
         $this->position = $position;
     }
 
-    public function getCoverZoneExpension(): float
+    public function getCoverZoneLength(): float
     {
-        return $this->coverZoneExpension;
+        return $this->coverZoneLength;
     }
 
-    public function setCoverZoneExpension(float $coverZoneExpension): void
+    public function setCoverZoneLength(float $coverZoneLength): void
     {
-        $this->coverZoneExpension = $coverZoneExpension;
+        $this->coverZoneLength = $coverZoneLength;
     }
 }

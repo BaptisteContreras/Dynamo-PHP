@@ -4,10 +4,7 @@ namespace App\Manager\Application\Command\Register;
 
 use App\Manager\Application\Command\Register\Presenter\RegisterWorkerNodePresenter;
 use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeResponse;
-use App\Manager\Domain\Exception\LockingFailsException;
-use App\Manager\Domain\Exception\RingFullException;
-use App\Manager\Domain\Exception\WorkerAlreadyRegisteredException;
-use App\Manager\Domain\Exception\WrongWorkerStateException;
+use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNode;
 use App\Manager\Domain\Service\Ring;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,8 +20,6 @@ class RegisterWorkerNodeCommandHandler
     /**         Methods         **/
     public function __invoke(RegisterWorkerNodeRequest $registerRequest, RegisterWorkerNodePresenter $abstractRegisterWorkerPresenter): void
     {
-        // Validate Request
-
         $validationErrors = $this->validator->validate($registerRequest);
 
         if ($validationErrors->count() > 0) {
@@ -37,10 +32,10 @@ class RegisterWorkerNodeCommandHandler
 
         try {
             $this->workerPool->join($workerNode);
-        } catch (LockingFailsException $e) {
-        } catch (RingFullException $e) {
-        } catch (WorkerAlreadyRegisteredException $e) {
-        } catch (WrongWorkerStateException $e) {
+
+            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::success($workerNode));
+        } catch (DomainException $e) {
+            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::withError($e));
         }
     }
 
