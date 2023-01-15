@@ -4,7 +4,8 @@ namespace App\Manager\Infrastructure\Symfony\Controller;
 
 use App\Manager\Application\Command\LabelSlot\Init\InitCommandHandler;
 use App\Manager\Application\Command\LabelSlot\Init\InitRequest;
-use App\Manager\Application\Command\Worker\Register\Presenter\JsonRegisterWorkerNodePresenter;
+use App\Manager\Application\Command\LabelSlot\Init\Presenter\InitLabelSlotsPresenter;
+use App\Manager\Application\Command\Worker\Register\Presenter\RegisterWorkerNodePresenter;
 use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeCommandHandler;
 use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeRequest;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
@@ -23,7 +24,7 @@ class WorkerRingController extends AbstractApiController
         #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] RegisterWorkerNodeRequest $registerRequest,
         RegisterWorkerNodeCommandHandler $registerCommandHandler
     ): Response {
-        $presenter = new JsonRegisterWorkerNodePresenter();
+        $presenter = RegisterWorkerNodePresenter::json();
 
         $registerCommandHandler($registerRequest, $presenter);
 
@@ -36,7 +37,7 @@ class WorkerRingController extends AbstractApiController
         #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] InitRequest $initRequest,
         InitCommandHandler $initCommandHandler
     ): Response {
-        $presenter = new JsonRegisterWorkerNodePresenter();
+        $presenter = InitLabelSlotsPresenter::json();
 
         $initCommandHandler($initRequest, $presenter);
 

@@ -8,4 +8,9 @@ use App\Shared\Application\ResponsePresenter;
 abstract class InitLabelSlotsPresenter extends ResponsePresenter
 {
     abstract public function present(InitLabelSlotsResponse $initLabelSlotsResponse): void;
+
+    public static function json(): self
+    {
+        return new JsonPresenter();
+    }
 }

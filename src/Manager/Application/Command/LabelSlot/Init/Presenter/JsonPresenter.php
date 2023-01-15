@@ -6,7 +6,7 @@ use App\Manager\Application\Command\LabelSlot\Init\Response\InitLabelSlotsRespon
 use App\Manager\Application\Command\LabelSlot\Init\Response\ValidationErrorResponse;
 use App\Manager\Application\Command\LabelSlot\Init\ViewModel\JsonInitLabelSlotsViewModel;
 
-class JsonInitLabelSlotsPresenter extends InitLabelSlotsPresenter
+class JsonPresenter extends InitLabelSlotsPresenter
 {
     public function present(InitLabelSlotsResponse $initLabelSlotsResponse): void
     {

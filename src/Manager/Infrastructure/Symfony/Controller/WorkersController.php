@@ -2,7 +2,7 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
-use App\Manager\Application\Query\Worker\Search\Presenter\JsonSearchAllWorkerInformationsPresenter;
+use App\Manager\Application\Query\Worker\Search\Presenter\SearchAllWorkerInformationsPresenter;
 use App\Manager\Application\Query\Worker\Search\Request\SearchAllWorkerInformationsRequest;
 use App\Manager\Application\Query\Worker\Search\SearchAllWorkerInformationsQueryHandler;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
@@ -16,7 +16,7 @@ class WorkersController extends AbstractApiController
     public function listAll(SearchAllWorkerInformationsQueryHandler $searchAllWorkerInformationsQueryHandler): Response
     {
         // We only supports JSON content type for the moment.
-        $presenter = new JsonSearchAllWorkerInformationsPresenter();
+        $presenter = SearchAllWorkerInformationsPresenter::json();
 
         $searchAllWorkerInformationsQueryHandler(SearchAllWorkerInformationsRequest::build(), $presenter);
 

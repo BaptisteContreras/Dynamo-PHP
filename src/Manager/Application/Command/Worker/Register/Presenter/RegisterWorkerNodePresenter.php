@@ -8,4 +8,9 @@ use App\Shared\Application\ResponsePresenter;
 abstract class RegisterWorkerNodePresenter extends ResponsePresenter
 {
     abstract public function present(RegisterWorkerNodeResponse $registerResponse): void;
+
+    public static function json(): self
+    {
+        return new JsonPresenter();
+    }
 }

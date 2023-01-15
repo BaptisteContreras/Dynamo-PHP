@@ -8,7 +8,7 @@ use App\Manager\Application\Command\Worker\Register\Response\SuccessResponse;
 use App\Manager\Application\Command\Worker\Register\Response\ValidationErrorResponse;
 use App\Manager\Application\Command\Worker\Register\ViewModel\JsonRegisterWorkerNodeViewModel;
 
-class JsonRegisterWorkerNodePresenter extends RegisterWorkerNodePresenter
+class JsonPresenter extends RegisterWorkerNodePresenter
 {
     public function present(RegisterWorkerNodeResponse $registerResponse): void
     {
