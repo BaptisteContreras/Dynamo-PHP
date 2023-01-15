@@ -2,9 +2,9 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
-use App\Manager\Application\Command\Register\Presenter\JsonRegisterWorkerNodePresenter;
-use App\Manager\Application\Command\Register\RegisterWorkerNodeCommandHandler;
-use App\Manager\Application\Command\Register\RegisterWorkerNodeRequest;
+use App\Manager\Application\Command\Worker\Register\Presenter\JsonRegisterWorkerNodePresenter;
+use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeCommandHandler;
+use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeRequest;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\AutoProvideRequestDto;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\DtoRequestParam;

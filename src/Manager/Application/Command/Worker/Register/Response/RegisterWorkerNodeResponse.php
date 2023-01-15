@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\Register\Response;
+namespace App\Manager\Application\Command\Worker\Register\Response;
 
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNode;

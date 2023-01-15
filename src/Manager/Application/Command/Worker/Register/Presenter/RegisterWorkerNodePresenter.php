@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Manager\Application\Command\Register\Presenter;
+namespace App\Manager\Application\Command\Worker\Register\Presenter;
 
-use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeResponse;
+use App\Manager\Application\Command\Worker\Register\Response\RegisterWorkerNodeResponse;
 use App\Shared\Application\ResponsePresenterInterface;
 
 abstract class RegisterWorkerNodePresenter implements ResponsePresenterInterface

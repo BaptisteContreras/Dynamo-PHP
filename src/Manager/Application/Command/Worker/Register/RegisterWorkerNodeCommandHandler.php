@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Manager\Application\Command\Register;
+namespace App\Manager\Application\Command\Worker\Register;
 
-use App\Manager\Application\Command\Register\Presenter\RegisterWorkerNodePresenter;
-use App\Manager\Application\Command\Register\Response\RegisterWorkerNodeResponse;
+use App\Manager\Application\Command\Worker\Register\Presenter\RegisterWorkerNodePresenter;
+use App\Manager\Application\Command\Worker\Register\Response\RegisterWorkerNodeResponse;
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNode;
 use App\Manager\Domain\Service\Ring;

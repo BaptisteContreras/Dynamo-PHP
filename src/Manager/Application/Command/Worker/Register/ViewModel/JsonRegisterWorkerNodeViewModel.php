@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\Register\ViewModel;
+namespace App\Manager\Application\Command\Worker\Register\ViewModel;
 
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNode;
