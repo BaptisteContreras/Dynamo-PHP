@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Manager\Domain\Model\Dto;
+namespace App\Manager\Domain\Model\Entity;
 
 use App\Manager\Domain\Constante\Enum\WorkerState;
-use App\Manager\Domain\Model\DtoV1Interface;
+use App\Manager\Domain\Model\Dto\WorkerNodeDto;
 
-class WorkerNode implements DtoV1Interface
+class WorkerNode
 {
     private int $id;
 
@@ -22,7 +22,7 @@ class WorkerNode implements DtoV1Interface
     private string $labelName = '';
 
     /**
-     * @var array<Label>
+     * @var array<LabelSlot>
      */
     private array $subLabels = [];
 
@@ -124,7 +124,7 @@ class WorkerNode implements DtoV1Interface
         return $this->id;
     }
 
-    public function addLabel(Label $label): self
+    public function addLabel(LabelSlot $label): self
     {
         $this->subLabels[] = $label;
 
@@ -141,5 +141,10 @@ class WorkerNode implements DtoV1Interface
         $this->workerState = WorkerState::UP;
 
         return $this;
+    }
+
+    public function readOnly(): WorkerNodeDto
+    {
+        return WorkerNodeDto::fromEntity($this);
     }
 }

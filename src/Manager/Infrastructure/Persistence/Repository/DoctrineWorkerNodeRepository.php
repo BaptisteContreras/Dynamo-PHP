@@ -4,7 +4,7 @@ namespace App\Manager\Infrastructure\Persistence\Repository;
 
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

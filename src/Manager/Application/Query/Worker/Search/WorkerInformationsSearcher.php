@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search;
+namespace App\Manager\Application\Query\Worker\Search;
 
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 
 class WorkerInformationsSearcher
 {

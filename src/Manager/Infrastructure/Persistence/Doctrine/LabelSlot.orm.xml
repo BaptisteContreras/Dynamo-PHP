@@ -4,13 +4,13 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Manager\Domain\Model\Dto\Label" table="label">
+    <entity name="App\Manager\Domain\Model\Entity\LabelSlot" table="label">
         <id name="id" type="integer" column="id">
             <generator/>
         </id>
 
         <field name="name" column="name" length="255" nullable="true"/>
-        <field name="subDivision" column="sub_division" length="255" nullable="true" unique="true"/>
+        <field name="subDivision" column="sub_division" length="255" nullable="true" />
         <field name="position" column="position" type="float" unique="true"/>
         <field name="coverZoneLength" column="cover_zone_length" type="float"/>
     </entity>

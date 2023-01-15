@@ -2,6 +2,8 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
+use App\Manager\Application\Command\LabelSlot\Init\InitCommandHandler;
+use App\Manager\Application\Command\LabelSlot\Init\InitRequest;
 use App\Manager\Application\Command\Worker\Register\Presenter\JsonRegisterWorkerNodePresenter;
 use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeCommandHandler;
 use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeRequest;
@@ -15,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/ring', name: 'ring_')]
 class WorkerRingController extends AbstractApiController
 {
-    #[Route(path: '/join', name: 'post')]
+    #[Route(path: '/join', name: 'join', methods: ['POST'])]
     #[AutoProvideRequestDto]
     public function join(
         #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] RegisterWorkerNodeRequest $registerRequest,
@@ -24,6 +26,19 @@ class WorkerRingController extends AbstractApiController
         $presenter = new JsonRegisterWorkerNodePresenter();
 
         $registerCommandHandler($registerRequest, $presenter);
+
+        return $this->buildJsonResponse($presenter);
+    }
+
+    #[Route(path: '/slots/init', name: 'slots_init', methods: ['POST'])]
+    #[AutoProvideRequestDto]
+    public function init(
+        #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] InitRequest $initRequest,
+        InitCommandHandler $initCommandHandler
+    ): Response {
+        $presenter = new JsonRegisterWorkerNodePresenter();
+
+        $initCommandHandler($initRequest, $presenter);
 
         return $this->buildJsonResponse($presenter);
     }

@@ -3,7 +3,7 @@
 namespace App\Manager\Domain\Service\Label;
 
 use App\Manager\Domain\Exception\AlreadyLockException;
-use App\Manager\Domain\Model\Dto\Label;
+use App\Manager\Domain\Model\Entity\LabelSlot;
 
 interface LabelLockerInterface
 {
@@ -14,12 +14,12 @@ interface LabelLockerInterface
      *
      * @throws AlreadyLockException
      */
-    public function tryLockForAssignation(Label $label): bool;
+    public function tryLockForAssignation(LabelSlot $label): bool;
 
-    public function unlockForAssignation(Label $label): void;
+    public function unlockForAssignation(LabelSlot $label): void;
 
     /**
-     * @param array<Label> $labels
+     * @param array<LabelSlot> $labels
      */
     public function unlockSlotsForAssignation(array $labels): void;
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search;
+namespace App\Manager\Application\Query\Worker\Search;
 
-use App\Manager\Application\Query\WorkerInformations\Search\Presenter\AbstractSearchAllWorkerInformationsPresenter;
-use App\Manager\Application\Query\WorkerInformations\Search\Request\SearchAllWorkerInformationsRequest;
-use App\Manager\Application\Query\WorkerInformations\Search\Response\SearchAllWorkerInformationsResponse;
+use App\Manager\Application\Query\Worker\Search\Presenter\AbstractSearchAllWorkerInformationsPresenter;
+use App\Manager\Application\Query\Worker\Search\Request\SearchAllWorkerInformationsRequest;
+use App\Manager\Application\Query\Worker\Search\Response\SearchAllWorkerInformationsResponse;
 
 class SearchAllWorkerInformationsQueryHandler
 {

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Manager\Domain\Constante;
-
 
 final class RingInformations
 {

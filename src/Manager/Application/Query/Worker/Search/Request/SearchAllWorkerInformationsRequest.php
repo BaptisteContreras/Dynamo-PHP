@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search\Request;
+namespace App\Manager\Application\Query\Worker\Search\Request;
 
 final class SearchAllWorkerInformationsRequest
 {

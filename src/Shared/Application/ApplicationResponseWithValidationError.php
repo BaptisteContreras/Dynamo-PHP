@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\Response;
+namespace App\Shared\Application;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class RegisterWorkerNodeValidationErrorResponse extends RegisterWorkerNodeResponse
+trait ApplicationResponseWithValidationError
 {
     public function __construct(private readonly ConstraintViolationListInterface $validationErrors)
     {

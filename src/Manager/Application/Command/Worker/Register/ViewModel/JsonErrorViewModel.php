@@ -5,7 +5,7 @@ namespace App\Manager\Application\Command\Worker\Register\ViewModel;
 use App\Manager\Domain\Exception\DomainException;
 use App\Shared\Infrastructure\Http\HttpCode;
 
-class JsonRegisterWorkerNodeErrorViewModel extends JsonRegisterWorkerNodeViewModel
+class JsonErrorViewModel extends JsonRegisterWorkerNodeViewModel
 {
     public function __construct(private readonly DomainException $domainException)
     {

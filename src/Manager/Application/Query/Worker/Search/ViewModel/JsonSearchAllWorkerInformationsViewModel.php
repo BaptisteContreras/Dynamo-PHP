@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search\ViewModel;
+namespace App\Manager\Application\Query\Worker\Search\ViewModel;
 
 use App\Shared\Application\JsonViewModelInterface;
+use App\Shared\Application\ViewModel;
 use App\Shared\Infrastructure\Http\HttpCode;
 
-class JsonSearchAllWorkerInformationsViewModel implements JsonViewModelInterface
+class JsonSearchAllWorkerInformationsViewModel extends ViewModel implements JsonViewModelInterface
 {
-    private HttpCode $code = HttpCode::SUCCESS;
-
     public function __construct(private readonly array $searchWorkerInformationsResponses)
     {
+        parent::__construct(HttpCode::SUCCESS);
     }
 
     public function jsonSerialize(): mixed
@@ -18,11 +18,5 @@ class JsonSearchAllWorkerInformationsViewModel implements JsonViewModelInterface
         return [
             'workers' => $this->searchWorkerInformationsResponses,
         ];
-    }
-
-    /**         Accessor         **/
-    public function getCode(): HttpCode
-    {
-        return $this->code;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
-use App\Manager\Application\Query\WorkerInformations\Search\Presenter\JsonSearchAllWorkerInformationsPresenter;
-use App\Manager\Application\Query\WorkerInformations\Search\Request\SearchAllWorkerInformationsRequest;
-use App\Manager\Application\Query\WorkerInformations\Search\SearchAllWorkerInformationsQueryHandler;
+use App\Manager\Application\Query\Worker\Search\Presenter\JsonSearchAllWorkerInformationsPresenter;
+use App\Manager\Application\Query\Worker\Search\Request\SearchAllWorkerInformationsRequest;
+use App\Manager\Application\Query\Worker\Search\SearchAllWorkerInformationsQueryHandler;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

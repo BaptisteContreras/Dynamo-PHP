@@ -4,7 +4,7 @@ namespace App\Manager\Infrastructure\Persistence\Repository;
 
 use App\Manager\Domain\Contract\Out\Finder\LabelFinder;
 use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
-use App\Manager\Domain\Model\Dto\Label;
+use App\Manager\Domain\Model\Entity\LabelSlot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,7 +12,7 @@ class DoctrineLabelRepository extends ServiceEntityRepository implements LabelRe
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Label::class);
+        parent::__construct($registry, LabelSlot::class);
     }
 
     public function findFree(): array
@@ -20,15 +20,15 @@ class DoctrineLabelRepository extends ServiceEntityRepository implements LabelRe
         return [];
     }
 
-    public function add(Label $label, bool $flush): void
+    public function add(LabelSlot $label, bool $flush): void
     {
     }
 
-    public function remove(Label $label, bool $flush): void
+    public function remove(LabelSlot $label, bool $flush): void
     {
     }
 
-    public function update(Label $label, bool $flush): void
+    public function update(LabelSlot $label, bool $flush): void
     {
     }
 }

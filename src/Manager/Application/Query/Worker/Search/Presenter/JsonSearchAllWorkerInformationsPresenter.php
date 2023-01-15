@@ -1,30 +1,14 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search\Presenter;
+namespace App\Manager\Application\Query\Worker\Search\Presenter;
 
-use App\Manager\Application\Query\WorkerInformations\Search\Response\SearchAllWorkerInformationsResponse;
-use App\Manager\Application\Query\WorkerInformations\Search\ViewModel\JsonSearchAllWorkerInformationsViewModel;
-use App\Shared\Application\ViewModelInterface;
-use App\Shared\Infrastructure\Http\HttpCode;
+use App\Manager\Application\Query\Worker\Search\Response\SearchAllWorkerInformationsResponse;
+use App\Manager\Application\Query\Worker\Search\ViewModel\JsonSearchAllWorkerInformationsViewModel;
 
 class JsonSearchAllWorkerInformationsPresenter extends AbstractSearchAllWorkerInformationsPresenter
 {
-    /**         Properties         **/
-    private JsonSearchAllWorkerInformationsViewModel $jsonSearchAllWorkerInformationsViewModel;
-
-    /**         Methods         **/
     public function present(SearchAllWorkerInformationsResponse $searchAllWorkerInformationsResponse): void
     {
-        $this->jsonSearchAllWorkerInformationsViewModel = new JsonSearchAllWorkerInformationsViewModel($searchAllWorkerInformationsResponse->getWorkerInformationsReponses());
-    }
-
-    public function toViewModel(): ViewModelInterface
-    {
-        return $this->jsonSearchAllWorkerInformationsViewModel;
-    }
-
-    public function getReturnCode(): HttpCode
-    {
-        return $this->jsonSearchAllWorkerInformationsViewModel->getCode();
+        $this->viewModel = new JsonSearchAllWorkerInformationsViewModel($searchAllWorkerInformationsResponse->getWorkerInformationsReponses());
     }
 }

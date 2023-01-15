@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Contract\Out\Repository;
 
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 
 interface WorkerNodeRepositoryInterface
 {

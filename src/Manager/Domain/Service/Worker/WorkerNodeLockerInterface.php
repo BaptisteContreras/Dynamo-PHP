@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Service\Worker;
 
 use App\Manager\Domain\Exception\AlreadyLockException;
 use App\Manager\Domain\Exception\LockingFailsException;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 
 interface WorkerNodeLockerInterface
 {

@@ -1,8 +1,6 @@
 <?php
 
-
-namespace App\Manager\Application\Command\Ring\Init;
-
+namespace App\Manager\Application\Command\LabelSlot\Init;
 
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -17,6 +15,4 @@ final class InitRequest
     {
         return $this->allocationStrategyName;
     }
-
-
 }

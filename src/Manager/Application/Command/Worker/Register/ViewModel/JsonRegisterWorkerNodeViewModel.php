@@ -3,34 +3,25 @@
 namespace App\Manager\Application\Command\Worker\Register\ViewModel;
 
 use App\Manager\Domain\Exception\DomainException;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Dto\WorkerNodeDto;
 use App\Shared\Application\JsonViewModelInterface;
-use App\Shared\Infrastructure\Http\HttpCode;
+use App\Shared\Application\ViewModel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-abstract class JsonRegisterWorkerNodeViewModel implements JsonViewModelInterface
+abstract class JsonRegisterWorkerNodeViewModel extends ViewModel implements JsonViewModelInterface
 {
-    public function __construct(protected readonly HttpCode $httpCode)
-    {
-    }
-
     public static function validationError(ConstraintViolationListInterface $validationErrors): self
     {
-        return new JsonRegisterWorkerNodeValidationErrorViewModel($validationErrors);
+        return new JsonValidationErrorViewModel($validationErrors);
     }
 
     public static function error(DomainException $domainException): self
     {
-        return new JsonRegisterWorkerNodeErrorViewModel($domainException);
+        return new JsonErrorViewModel($domainException);
     }
 
-    public static function success(WorkerNode $workerNode): self
+    public static function success(WorkerNodeDto $workerNode): self
     {
-        return new JsonRegisterWorkerNodeSuccessViewModel($workerNode);
-    }
-
-    public function getCode(): HttpCode
-    {
-        return $this->httpCode;
+        return new JsonSuccessViewModel($workerNode);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search\Presenter;
+namespace App\Manager\Application\Query\Worker\Search\Presenter;
 
-use App\Manager\Application\Query\WorkerInformations\Search\Response\SearchAllWorkerInformationsResponse;
-use App\Shared\Application\ResponsePresenterInterface;
+use App\Manager\Application\Query\Worker\Search\Response\SearchAllWorkerInformationsResponse;
+use App\Shared\Application\ResponsePresenter;
 
-abstract class AbstractSearchAllWorkerInformationsPresenter implements ResponsePresenterInterface
+abstract class AbstractSearchAllWorkerInformationsPresenter extends ResponsePresenter
 {
     abstract public function present(SearchAllWorkerInformationsResponse $searchAllWorkerInformationsResponse): void;
 }

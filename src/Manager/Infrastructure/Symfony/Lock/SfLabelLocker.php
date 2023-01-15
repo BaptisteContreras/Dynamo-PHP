@@ -3,7 +3,7 @@
 namespace App\Manager\Infrastructure\Symfony\Lock;
 
 use App\Manager\Domain\Exception\AlreadyLockException;
-use App\Manager\Domain\Model\Dto\Label;
+use App\Manager\Domain\Model\Entity\LabelSlot;
 use App\Manager\Domain\Service\Label\LabelLockerInterface;
 use Symfony\Component\Lock\LockFactory;
 
@@ -25,7 +25,7 @@ class SfLabelLocker extends SfLocker implements LabelLockerInterface
     /**
      * @throws AlreadyLockException
      */
-    public function tryLockForAssignation(Label $label): bool
+    public function tryLockForAssignation(LabelSlot $label): bool
     {
         return $this->tryLockResourceForAction(
             self::ACTION_ASSIGNATION,
@@ -35,7 +35,7 @@ class SfLabelLocker extends SfLocker implements LabelLockerInterface
         );
     }
 
-    public function unlockForAssignation(Label $label): void
+    public function unlockForAssignation(LabelSlot $label): void
     {
         $this->tryUnlockWorkerNodeForJoining(self::ACTION_ASSIGNATION, $this->labelToLockKey($label));
     }
@@ -47,7 +47,7 @@ class SfLabelLocker extends SfLocker implements LabelLockerInterface
         }
     }
 
-    private function labelToLockKey(Label $label): string
+    private function labelToLockKey(LabelSlot $label): string
     {
         return sprintf(
             '%s-%s',

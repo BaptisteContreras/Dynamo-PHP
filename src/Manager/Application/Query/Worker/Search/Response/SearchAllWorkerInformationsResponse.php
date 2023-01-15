@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Manager\Application\Query\WorkerInformations\Search\Response;
+namespace App\Manager\Application\Query\Worker\Search\Response;
 
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Shared\Application\ApplicationResponseInterface;
 
 final class SearchAllWorkerInformationsResponse implements ApplicationResponseInterface

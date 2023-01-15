@@ -5,7 +5,7 @@ namespace App\Manager\Application\Command\Worker\Register;
 use App\Manager\Application\Command\Worker\Register\Presenter\RegisterWorkerNodePresenter;
 use App\Manager\Application\Command\Worker\Register\Response\RegisterWorkerNodeResponse;
 use App\Manager\Domain\Exception\DomainException;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Ring;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,7 +17,6 @@ class RegisterWorkerNodeCommandHandler
     ) {
     }
 
-    /**         Methods         **/
     public function __invoke(RegisterWorkerNodeRequest $registerRequest, RegisterWorkerNodePresenter $abstractRegisterWorkerPresenter): void
     {
         $validationErrors = $this->validator->validate($registerRequest);
@@ -33,7 +32,7 @@ class RegisterWorkerNodeCommandHandler
         try {
             $this->workerPool->join($workerNode);
 
-            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::success($workerNode));
+            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::success($workerNode->readOnly()));
         } catch (DomainException $e) {
             $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::withError($e));
         }

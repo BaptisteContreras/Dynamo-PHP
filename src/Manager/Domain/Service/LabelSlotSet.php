@@ -7,13 +7,13 @@ use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Label\LabelAssignationStrategyInterface;
 use App\Manager\Domain\Service\Label\LabelLockerInterface;
 use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
 use Psr\Log\LoggerInterface;
 
-class LabelSet
+class LabelSlotSet
 {
     public function __construct(
         private readonly LabelFinder $labelFinder,
@@ -39,9 +39,9 @@ class LabelSet
      * @throws NotEnoughFreeLabelSlotException
      * @throws NoFreeLabelSlotFoundException
      */
-    public function acquireLabels(WorkerNode $workerNode, int $numberOfLabel, bool $strictRequirement): void
+    public function acquireSlots(WorkerNode $workerNode, int $numberOfSlots, bool $strictRequirement): void
     {
-        $labelSlots = $this->labelAssignationStrategy->selectSlots($numberOfLabel, $strictRequirement);
+        $labelSlots = $this->labelAssignationStrategy->selectSlots($numberOfSlots, $strictRequirement);
         $nbLabelSlotsFound = count($labelSlots);
 
         if (0 === $nbLabelSlotsFound) {
@@ -59,11 +59,11 @@ class LabelSet
 
         $workerNode->setLabelName($labelName);
 
-        if ($nbLabelSlotsFound !== $numberOfLabel) {
+        if ($nbLabelSlotsFound !== $numberOfSlots) {
             $this->logger->warning(sprintf(
                 '[LABEL SET] : could not find enough free label slots. Only %s instead of %s will be used for worker node %s %s',
                 $nbLabelSlotsFound,
-                $numberOfLabel,
+                $numberOfSlots,
                 $workerNode->getNetworkAddress(),
                 $workerNode->getNetworkPort()
             ));

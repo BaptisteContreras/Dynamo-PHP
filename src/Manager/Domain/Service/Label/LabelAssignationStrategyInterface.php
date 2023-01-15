@@ -3,7 +3,7 @@
 namespace App\Manager\Domain\Service\Label;
 
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
-use App\Manager\Domain\Model\Dto\Label;
+use App\Manager\Domain\Model\Entity\LabelSlot;
 
 interface LabelAssignationStrategyInterface
 {
@@ -17,7 +17,7 @@ interface LabelAssignationStrategyInterface
      * If $throwExceptionOnInvalidRequirement is true, throw an exception if the strategy cannot return enough
      * label slots to assign.
      *
-     * @return array<Label>
+     * @return array<LabelSlot>
      *
      * @throws NotEnoughFreeLabelSlotException
      */

@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Contract\Out\Finder;
 
-use App\Manager\Domain\Model\Dto\Label;
+use App\Manager\Domain\Model\Entity\LabelSlot;
 
 interface LabelFinder
 {
@@ -12,7 +12,7 @@ interface LabelFinder
      * /!\ This method does not know anything about assignation and locking. It may return label slots that are locked
      * and in a process of being bound /!\
      *
-     * @return array<Label>
+     * @return array<LabelSlot>
      */
     public function findFree(): array;
 }

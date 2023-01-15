@@ -4,7 +4,7 @@ namespace App\Manager\Application\Command\Worker\Register\Response;
 
 use App\Manager\Domain\Exception\DomainException;
 
-class RegisterWorkerNodeErrorResponse extends RegisterWorkerNodeResponse
+class ErrorResponse extends RegisterWorkerNodeResponse
 {
     public function __construct(private readonly DomainException $domainException)
     {

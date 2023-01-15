@@ -5,13 +5,14 @@ namespace App\Manager\Domain\Service;
 use App\Manager\Domain\Constante\Enum\WorkerState;
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
+use App\Manager\Domain\Exception\AlreadyLockException;
 use App\Manager\Domain\Exception\LockingFailsException;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Exception\RingFullException;
 use App\Manager\Domain\Exception\WorkerAlreadyRegisteredException;
 use App\Manager\Domain\Exception\WrongWorkerStateException;
-use App\Manager\Domain\Model\Dto\WorkerNode;
+use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Worker\WorkerNodeLockerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -19,7 +20,7 @@ class Ring
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly LabelSet $labelSet,
+        private readonly LabelSlotSet $labelSet,
         private readonly WorkerNodeLockerInterface $workerNodeLocker,
         private readonly WorkerNodeFinder $workerNodeFinder,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository
@@ -40,6 +41,7 @@ class Ring
      * @throws RingFullException
      * @throws LockingFailsException
      * @throws WorkerAlreadyRegisteredException|WrongWorkerStateException|NoFreeLabelSlotFoundException
+     * @throws AlreadyLockException
      */
     public function join(WorkerNode $workerNode): void
     {
@@ -65,7 +67,7 @@ class Ring
         $this->workerNodeRepository->add($workerNode, true);
 
         try {
-            $this->labelSet->acquireLabels($workerNode, $workerNode->getWeight(), true);
+            $this->labelSet->acquireSlots($workerNode, $workerNode->getWeight(), true);
         } catch (NotEnoughFreeLabelSlotException|NoFreeLabelSlotFoundException $e) {
             $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
 
