@@ -103,6 +103,9 @@ class Ring
         $this->labelSet->init($allocationStrategy);
     }
 
+    /**
+     * @return array<WorkerNode>
+     */
     public function getWorkers(): array
     {
         return $this->workerNodeFinder->findAll();

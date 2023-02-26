@@ -12,7 +12,7 @@ final class InitRequest
     #[Choice(callback: [LabelsSlotsAllocationStrategy::class, 'getStrChoices'])]
     private ?string $allocationStrategyName = null;
 
-    public function getAllocationStrategyName(): string
+    public function getAllocationStrategyName(): ?string
     {
         return $this->allocationStrategyName;
     }

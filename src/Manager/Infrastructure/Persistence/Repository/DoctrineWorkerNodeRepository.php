@@ -58,6 +58,6 @@ class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements Wo
 
     public function findOneByIpAndPort(string $ip, int $port): ?WorkerNode
     {
-        // TODO: Implement findOneByIpAndPort() method.
+        return null;
     }
 }

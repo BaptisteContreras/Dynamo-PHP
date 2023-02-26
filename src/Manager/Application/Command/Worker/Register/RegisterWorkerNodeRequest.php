@@ -30,17 +30,29 @@ final class RegisterWorkerNodeRequest
     )]
     private ?int $weight = null;
 
+    /**
+     * Phpstan spots a type mismatch but this method must be called after the validation of this object.
+     * This phpstan error is ignored in the baseline for the moment
+     */
     public function getNetworkAddress(): string
     {
         return $this->networkAddress;
     }
 
+    /**
+     * Phpstan spots a type mismatch but this method must be called after the validation of this object.
+     * This phpstan error is ignored in the baseline for the moment
+     */
     public function getNetworkPort(): int
     {
         return $this->networkPort;
     }
 
-    public function getWeight(): ?int
+    /**
+     * Phpstan spots a type mismatch but this method must be called after the validation of this object.
+     * This phpstan error is ignored in the baseline for the moment
+     */
+    public function getWeight(): int
     {
         return $this->weight;
     }

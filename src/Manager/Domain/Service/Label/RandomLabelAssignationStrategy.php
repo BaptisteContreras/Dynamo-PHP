@@ -24,9 +24,9 @@ class RandomLabelAssignationStrategy implements LabelAssignationStrategyInterfac
 
         $slotReserved = [];
         $nbSlotReserved = 0;
-        $index = 0;
 
-        while ($currentSlot = $freeSlots[$index++] ?? null || $nbSlotReserved === $nbSlotRequired) {
+        while (($currentSlot = current($freeSlots)) && $nbSlotReserved < $nbSlotRequired) {
+            next($freeSlots);
             if ($this->labelLocker->tryLockForAssignation($currentSlot)) {
                 $slotReserved[] = $currentSlot;
                 ++$nbSlotReserved;
