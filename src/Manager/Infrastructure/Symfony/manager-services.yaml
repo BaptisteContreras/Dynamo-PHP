@@ -6,6 +6,10 @@ services:
     autowire: true
     autoconfigure: true
 
+  _instanceof:
+    App\Manager\Domain\Service\Label\Init\LabelSlotInitStrategyInterface:
+      tags: [ 'app.manager.label_slot_init_strategy' ]
+
 
   App\Manager\Domain\:
     resource: '../../Domain/'
@@ -25,3 +29,7 @@ services:
   App\Manager\Infrastructure\Symfony\Lock\LockedLabelNameGenerator:
     arguments:
       $counterFilePath: '%lockedLabelNameGeneratorFilePath%'
+
+  App\Manager\Domain\Service\LabelSlotSet:
+    arguments:
+      $initStrategies: !tagged_iterator app.manager.label_slot_init_strategy

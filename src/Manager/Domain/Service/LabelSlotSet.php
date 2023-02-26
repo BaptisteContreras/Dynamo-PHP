@@ -2,12 +2,16 @@
 
 namespace App\Manager\Domain\Service;
 
-use App\Manager\Domain\Contract\Out\Finder\LabelFinder;
+use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
+use App\Manager\Domain\Contract\Out\Counter\LabelCounter;
 use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
+use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
+use App\Manager\Domain\Exception\UnsupportedLabelSlotInitStrategyException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
+use App\Manager\Domain\Service\Label\Init\LabelSlotInitStrategyInterface;
 use App\Manager\Domain\Service\Label\LabelAssignationStrategyInterface;
 use App\Manager\Domain\Service\Label\LabelLockerInterface;
 use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
@@ -16,13 +20,14 @@ use Psr\Log\LoggerInterface;
 class LabelSlotSet
 {
     public function __construct(
-        private readonly LabelFinder $labelFinder,
+        private readonly LabelCounter $labelCounter,
         private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,
         private readonly LabelNameGeneratorInterface $labelNameGenerator,
         private readonly LoggerInterface $logger,
         private readonly LabelLockerInterface $labelLocker,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
-        private readonly LabelRepositoryInterface $labelRepository
+        private readonly LabelRepositoryInterface $labelRepository,
+        private readonly iterable $initStrategies
     ) {
     }
 
@@ -102,6 +107,39 @@ class LabelSlotSet
      */
     public function hasFreeSlots(): bool
     {
-        return count($this->labelFinder->findFree()) > 0;
+        return $this->labelCounter->countFree() > 0;
+    }
+
+    /**
+     * Init the slots following the $allocationStrategy plan.
+     * Returns the number of slots created.
+     *
+     * TODO -> lock for concurrency
+     *
+     * @throws LabelsSlotsAlreadyInitializedException
+     * @throws UnsupportedLabelSlotInitStrategyException
+     */
+    public function init(LabelsSlotsAllocationStrategy $allocationStrategy): void
+    {
+        if ($this->labelCounter->countAll() > 0) {
+            throw new LabelsSlotsAlreadyInitializedException();
+        }
+
+        $this->selectInitStrategyImplementation($allocationStrategy)->createSlots();
+    }
+
+    /**
+     * @throws UnsupportedLabelSlotInitStrategyException
+     */
+    private function selectInitStrategyImplementation(LabelsSlotsAllocationStrategy $allocationStrategy): LabelSlotInitStrategyInterface
+    {
+        /** @var LabelSlotInitStrategyInterface $initStrategy */
+        foreach ($this->initStrategies as $initStrategy) {
+            if ($initStrategy->supports($allocationStrategy)) {
+                return $initStrategy;
+            }
+        }
+
+        throw new UnsupportedLabelSlotInitStrategyException($allocationStrategy);
     }
 }

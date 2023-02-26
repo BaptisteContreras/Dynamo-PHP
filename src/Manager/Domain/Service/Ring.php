@@ -2,14 +2,17 @@
 
 namespace App\Manager\Domain\Service;
 
+use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
 use App\Manager\Domain\Constante\Enum\WorkerState;
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\AlreadyLockException;
+use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
 use App\Manager\Domain\Exception\LockingFailsException;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Exception\RingFullException;
+use App\Manager\Domain\Exception\UnsupportedLabelSlotInitStrategyException;
 use App\Manager\Domain\Exception\WorkerAlreadyRegisteredException;
 use App\Manager\Domain\Exception\WrongWorkerStateException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
@@ -71,6 +74,8 @@ class Ring
         } catch (NotEnoughFreeLabelSlotException|NoFreeLabelSlotFoundException $e) {
             $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
 
+            // TODO delete node
+
             throw new RingFullException();
         }
 
@@ -87,6 +92,15 @@ class Ring
     public function isFull(): bool
     {
         return !$this->labelSet->hasFreeSlots();
+    }
+
+    /**
+     * @throws LabelsSlotsAlreadyInitializedException
+     * @throws UnsupportedLabelSlotInitStrategyException
+     */
+    public function initLabelsSlots(LabelsSlotsAllocationStrategy $allocationStrategy): void
+    {
+        $this->labelSet->init($allocationStrategy);
     }
 
     public function getWorkers(): array
