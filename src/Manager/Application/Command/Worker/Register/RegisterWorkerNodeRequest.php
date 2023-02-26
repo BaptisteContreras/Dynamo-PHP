@@ -32,7 +32,7 @@ final class RegisterWorkerNodeRequest
 
     /**
      * Phpstan spots a type mismatch but this method must be called after the validation of this object.
-     * This phpstan error is ignored in the baseline for the moment
+     * This phpstan error is ignored in the baseline for the moment.
      */
     public function getNetworkAddress(): string
     {
@@ -41,7 +41,7 @@ final class RegisterWorkerNodeRequest
 
     /**
      * Phpstan spots a type mismatch but this method must be called after the validation of this object.
-     * This phpstan error is ignored in the baseline for the moment
+     * This phpstan error is ignored in the baseline for the moment.
      */
     public function getNetworkPort(): int
     {
@@ -50,7 +50,7 @@ final class RegisterWorkerNodeRequest
 
     /**
      * Phpstan spots a type mismatch but this method must be called after the validation of this object.
-     * This phpstan error is ignored in the baseline for the moment
+     * This phpstan error is ignored in the baseline for the moment.
      */
     public function getWeight(): int
     {
