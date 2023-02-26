@@ -8,7 +8,7 @@ use App\Shared\Application\ApplicationResponseInterface;
 final class SearchAllWorkerInformationsResponse implements ApplicationResponseInterface
 {
     /**
-     * @param  array<SearchWorkerInformationsResponse> $workerInformationsReponses
+     * @param array<SearchWorkerInformationsResponse> $workerInformationsReponses
      */
     public function __construct(private readonly array $workerInformationsReponses)
     {
