@@ -1,0 +1,101 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getError\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getValidationErrors\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\>$#"
+			count: 1
+			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getError\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getValidationErrors\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getWorkerNode\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\>$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getNetworkAddress\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getNetworkPort\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getWeight\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:getSubLabels\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
+
+		-
+			message: "#^Property App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:\\$subLabels is never written, only read\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
+
+		-
+			message: "#^Property App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:\\$workerPreferenceList is never written, only read\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\:\\:getSubLabels\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Entity/WorkerNode.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\:\\:setSubLabels\\(\\) has parameter \\$subLabels with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Entity/WorkerNode.php
+
+		-
+			message: "#^Property App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\:\\:\\$joinedAt type mapping mismatch\\: database can contain DateTime but property expects DateTimeImmutable\\.$#"
+			count: 1
+			path: src/Manager/Domain/Model/Entity/WorkerNode.php
+
+		-
+			message: "#^Property App\\\\Manager\\\\Domain\\\\Service\\\\Ring\\:\\:\\$logger is never read, only written\\.$#"
+			count: 1
+			path: src/Manager/Domain/Service/Ring.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineLabelRepository\\:\\:findAllSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\<int, object\\>\\.$#"
+			count: 1
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineLabelRepository.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineWorkerNodeRepository\\:\\:findAll\\(\\) should return array\\<int, object\\> but returns mixed\\.$#"
+			count: 1
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineWorkerNodeRepository.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineWorkerNodeRepository\\:\\:findOneById\\(\\) should return App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\|null but returns mixed\\.$#"
+			count: 1
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineWorkerNodeRepository.php

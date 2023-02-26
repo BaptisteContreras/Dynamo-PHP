@@ -19,6 +19,9 @@ use Psr\Log\LoggerInterface;
 
 class LabelSlotSet
 {
+    /**
+     * @param iterable<LabelSlotInitStrategyInterface> $initStrategies
+     */
     public function __construct(
         private readonly LabelCounter $labelCounter,
         private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,

@@ -7,11 +7,16 @@ use App\Shared\Application\ApplicationResponseInterface;
 
 final class SearchAllWorkerInformationsResponse implements ApplicationResponseInterface
 {
-    /** @var array<SearchWorkerInformationsResponse> */
+    /**
+     * @param  array<SearchWorkerInformationsResponse> $workerInformationsReponses
+     */
     public function __construct(private readonly array $workerInformationsReponses)
     {
     }
 
+    /**
+     * @return array<SearchWorkerInformationsResponse>
+     */
     public function getWorkerInformationsReponses(): array
     {
         return $this->workerInformationsReponses;
