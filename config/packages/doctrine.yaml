@@ -10,7 +10,7 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Manager/Infrastructure/Persistence/Doctrine/'
                 type: xml
-                prefix: App\Manager\Domain\Model\Dto
+                prefix: App\Manager\Domain\Model\Entity
 
 when@test:
     doctrine:

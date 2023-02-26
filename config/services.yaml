@@ -1,3 +1,5 @@
+imports:
+    - { resource: ../src/Manager/Infrastructure/Symfony/manager-services.yaml }
 parameters:
 
 services:
@@ -9,15 +11,3 @@ services:
         resource: '../src/Shared/'
         exclude:
             - '../src/Shared/Symfony/Kernel.php'
-    App\Manager\Domain\:
-        resource: '../src/Manager/Domain/'
-
-    App\Manager\Application\:
-        resource: '../src/Manager/Application/'
-
-    App\Manager\Infrastructure\:
-        resource: '../src/Manager/Infrastructure/'
-
-    App\Manager\Infrastructure\Symfony\Controller\:
-        resource: '../src/Manager/Infrastructure/Symfony/Controller/'
-        tags: ['controller.service_arguments']
