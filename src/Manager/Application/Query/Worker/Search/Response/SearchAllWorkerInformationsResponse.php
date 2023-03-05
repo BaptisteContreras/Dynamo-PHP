@@ -8,18 +8,18 @@ use App\Shared\Application\ApplicationResponseInterface;
 final class SearchAllWorkerInformationsResponse implements ApplicationResponseInterface
 {
     /**
-     * @param array<SearchWorkerInformationsResponse> $workerInformationsReponses
+     * @param array<SearchWorkerInformationsResponse> $workerInformationsResponses
      */
-    public function __construct(private readonly array $workerInformationsReponses)
+    public function __construct(private readonly array $workerInformationsResponses)
     {
     }
 
     /**
      * @return array<SearchWorkerInformationsResponse>
      */
-    public function getWorkerInformationsReponses(): array
+    public function getWorkerInformationsResponses(): array
     {
-        return $this->workerInformationsReponses;
+        return $this->workerInformationsResponses;
     }
 
     /**

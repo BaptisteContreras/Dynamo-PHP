@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\Response;
+namespace App\Manager\Application\Command\Worker\Join\Response;
 
 use App\Manager\Domain\Exception\DomainException;
 
-class ErrorResponse extends RegisterWorkerNodeResponse
+class ErrorResponse extends JoinResponse
 {
     public function __construct(private readonly DomainException $domainException)
     {

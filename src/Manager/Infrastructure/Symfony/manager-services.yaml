@@ -17,7 +17,7 @@ services:
   App\Manager\Application\:
     resource: '../../Application/'
     exclude:
-      - '../../Application/Command/Register/RegisterRequest.php'
+      - '../../Application/Command/Join/Request.php'
 
   App\Manager\Infrastructure\:
     resource: '../'

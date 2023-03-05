@@ -9,6 +9,6 @@ class JsonPresenter extends SearchAllWorkerInformationsPresenter
 {
     public function present(SearchAllWorkerInformationsResponse $searchAllWorkerInformationsResponse): void
     {
-        $this->viewModel = new JsonSearchAllWorkerInformationsViewModel($searchAllWorkerInformationsResponse->getWorkerInformationsReponses());
+        $this->viewModel = new JsonSearchAllWorkerInformationsViewModel($searchAllWorkerInformationsResponse->getWorkerInformationsResponses());
     }
 }

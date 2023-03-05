@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register;
+namespace App\Manager\Application\Command\Worker\Join;
 
 use App\Manager\Domain\Constante\RingInformations;
 use Symfony\Component\Validator\Constraints\Ip;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-final class RegisterWorkerNodeRequest
+final class JoinRequest
 {
     private const MIN_PORT = 1024;
     private const MAX_PORT = 65535;
