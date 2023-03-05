@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register;
+namespace App\Manager\Application\Command\Worker\Join;
 
-use App\Manager\Application\Command\Worker\Register\Presenter\RegisterWorkerNodePresenter;
-use App\Manager\Application\Command\Worker\Register\Response\RegisterWorkerNodeResponse;
+use App\Manager\Application\Command\Worker\Join\Presenter\JoinPresenter;
+use App\Manager\Application\Command\Worker\Join\Response\JoinResponse;
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Ring;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RegisterWorkerNodeCommandHandler
+class JoinCommandHandler
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -17,12 +17,12 @@ class RegisterWorkerNodeCommandHandler
     ) {
     }
 
-    public function __invoke(RegisterWorkerNodeRequest $registerRequest, RegisterWorkerNodePresenter $abstractRegisterWorkerPresenter): void
+    public function __invoke(JoinRequest $registerRequest, JoinPresenter $joinWorkerNodePresenter): void
     {
         $validationErrors = $this->validator->validate($registerRequest);
 
         if ($validationErrors->count() > 0) {
-            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::withValidationError($validationErrors));
+            $joinWorkerNodePresenter->present(JoinResponse::withValidationError($validationErrors));
 
             return;
         }
@@ -32,13 +32,13 @@ class RegisterWorkerNodeCommandHandler
         try {
             $this->workerPool->join($workerNode);
 
-            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::success($workerNode->readOnly()));
+            $joinWorkerNodePresenter->present(JoinResponse::success($workerNode->readOnly()));
         } catch (DomainException $e) {
-            $abstractRegisterWorkerPresenter->present(RegisterWorkerNodeResponse::withError($e));
+            $joinWorkerNodePresenter->present(JoinResponse::withError($e));
         }
     }
 
-    private function buildWorkerNodeFromRequest(RegisterWorkerNodeRequest $registerRequest): WorkerNode
+    private function buildWorkerNodeFromRequest(JoinRequest $registerRequest): WorkerNode
     {
         return new WorkerNode(
             $registerRequest->getNetworkAddress(),

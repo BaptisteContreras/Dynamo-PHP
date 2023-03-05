@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\ViewModel;
+namespace App\Manager\Application\Command\Worker\Join\ViewModel;
 
 use App\Manager\Domain\Model\Dto\WorkerNodeDto;
 use App\Shared\Infrastructure\Http\HttpCode;
 
-class JsonSuccessViewModel extends JsonRegisterWorkerNodeViewModel
+class JsonSuccessViewModel extends JsonJoinViewModel
 {
     public function __construct(private readonly WorkerNodeDto $workerNode)
     {

@@ -13,7 +13,7 @@ use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Exception\RingFullException;
 use App\Manager\Domain\Exception\UnsupportedLabelSlotInitStrategyException;
-use App\Manager\Domain\Exception\WorkerAlreadyRegisteredException;
+use App\Manager\Domain\Exception\WorkerAlreadyJoinedException;
 use App\Manager\Domain\Exception\WrongWorkerStateException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Worker\WorkerNodeLockerInterface;
@@ -43,7 +43,7 @@ class Ring
      *
      * @throws RingFullException
      * @throws LockingFailsException
-     * @throws WorkerAlreadyRegisteredException|WrongWorkerStateException|NoFreeLabelSlotFoundException
+     * @throws WorkerAlreadyJoinedException|WrongWorkerStateException|NoFreeLabelSlotFoundException
      * @throws AlreadyLockException
      */
     public function join(WorkerNode $workerNode): void
@@ -64,7 +64,7 @@ class Ring
         );
 
         if ($alreadyExistingWorker) {
-            throw new WorkerAlreadyRegisteredException($workerNode->getNetworkAddress(), $workerNode->getNetworkPort());
+            throw new WorkerAlreadyJoinedException($workerNode->getNetworkAddress(), $workerNode->getNetworkPort());
         }
 
         $this->workerNodeRepository->add($workerNode, true);

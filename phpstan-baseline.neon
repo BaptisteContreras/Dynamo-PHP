@@ -16,39 +16,39 @@ parameters:
 			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getError\\(\\)\\.$#"
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\JoinRequest\\:\\:getNetworkAddress\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Worker/Join/JoinRequest.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getValidationErrors\\(\\)\\.$#"
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\JoinRequest\\:\\:getNetworkPort\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Worker/Join/JoinRequest.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\:\\:getWorkerNode\\(\\)\\.$#"
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\JoinRequest\\:\\:getWeight\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Worker/Join/JoinRequest.php
 
 		-
-			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\Response\\\\RegisterWorkerNodeResponse\\>$#"
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\Response\\\\JoinResponse\\:\\:getError\\(\\)\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Worker/Join/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getNetworkAddress\\(\\) should return string but returns string\\|null\\.$#"
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\Response\\\\JoinResponse\\:\\:getValidationErrors\\(\\)\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+			path: src/Manager/Application/Command/Worker/Join/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getNetworkPort\\(\\) should return int but returns int\\|null\\.$#"
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\Response\\\\JoinResponse\\:\\:getWorkerNode\\(\\)\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+			path: src/Manager/Application/Command/Worker/Join/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Register\\\\RegisterWorkerNodeRequest\\:\\:getWeight\\(\\) should return int but returns int\\|null\\.$#"
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\Response\\\\JoinResponse\\>$#"
 			count: 1
-			path: src/Manager/Application/Command/Worker/Register/RegisterWorkerNodeRequest.php
+			path: src/Manager/Application/Command/Worker/Join/Presenter/JsonPresenter.php
 
 		-
 			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:getSubLabels\\(\\) return type has no value type specified in iterable type array\\.$#"

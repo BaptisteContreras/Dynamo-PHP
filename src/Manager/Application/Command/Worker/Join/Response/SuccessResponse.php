@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\Response;
+namespace App\Manager\Application\Command\Worker\Join\Response;
 
 use App\Manager\Domain\Model\Dto\WorkerNodeDto;
 
-class SuccessResponse extends RegisterWorkerNodeResponse
+class SuccessResponse extends JoinResponse
 {
     public function __construct(private readonly WorkerNodeDto $workerNode)
     {

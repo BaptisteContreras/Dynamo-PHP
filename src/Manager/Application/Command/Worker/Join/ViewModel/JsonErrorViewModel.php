@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\ViewModel;
+namespace App\Manager\Application\Command\Worker\Join\ViewModel;
 
 use App\Manager\Domain\Exception\DomainException;
 use App\Shared\Infrastructure\Http\HttpCode;
 
-class JsonErrorViewModel extends JsonRegisterWorkerNodeViewModel
+class JsonErrorViewModel extends JsonJoinViewModel
 {
     public function __construct(private readonly DomainException $domainException)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\Worker\Register\ViewModel;
+namespace App\Manager\Application\Command\Worker\Join\ViewModel;
 
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNodeDto;
@@ -8,7 +8,7 @@ use App\Shared\Application\JsonViewModelInterface;
 use App\Shared\Application\ViewModel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-abstract class JsonRegisterWorkerNodeViewModel extends ViewModel implements JsonViewModelInterface
+abstract class JsonJoinViewModel extends ViewModel implements JsonViewModelInterface
 {
     public static function validationError(ConstraintViolationListInterface $validationErrors): self
     {

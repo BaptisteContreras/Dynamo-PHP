@@ -5,9 +5,9 @@ namespace App\Manager\Infrastructure\Symfony\Controller;
 use App\Manager\Application\Command\LabelSlot\Init\InitCommandHandler;
 use App\Manager\Application\Command\LabelSlot\Init\InitRequest;
 use App\Manager\Application\Command\LabelSlot\Init\Presenter\InitLabelSlotsPresenter;
-use App\Manager\Application\Command\Worker\Register\Presenter\RegisterWorkerNodePresenter;
-use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeCommandHandler;
-use App\Manager\Application\Command\Worker\Register\RegisterWorkerNodeRequest;
+use App\Manager\Application\Command\Worker\Join\JoinCommandHandler;
+use App\Manager\Application\Command\Worker\Join\JoinRequest;
+use App\Manager\Application\Command\Worker\Join\Presenter\JoinPresenter;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\AutoProvideRequestDto;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\DtoRequestParam;
@@ -21,12 +21,12 @@ class WorkerRingController extends AbstractApiController
     #[Route(path: '/join', name: 'join', methods: ['POST'])]
     #[AutoProvideRequestDto]
     public function join(
-        #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] RegisterWorkerNodeRequest $registerRequest,
-        RegisterWorkerNodeCommandHandler $registerCommandHandler
+        #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] JoinRequest $joinWorkerNodeRequest,
+        JoinCommandHandler $joinWorkerNodeCommandHandler
     ): Response {
-        $presenter = RegisterWorkerNodePresenter::json();
+        $presenter = JoinPresenter::json();
 
-        $registerCommandHandler($registerRequest, $presenter);
+        $joinWorkerNodeCommandHandler($joinWorkerNodeRequest, $presenter);
 
         return $this->buildJsonResponse($presenter);
     }
