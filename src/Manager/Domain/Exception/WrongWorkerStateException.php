@@ -6,11 +6,10 @@ use App\Manager\Domain\Constante\Enum\WorkerState;
 
 class WrongWorkerStateException extends DomainException
 {
-    public function __construct(WorkerState $expected, WorkerState $actual)
+    public function __construct(WorkerState $actual)
     {
         parent::__construct(sprintf(
-            'The worker is not in the expected state %s. %s instead',
-            $expected->value,
+            '%s is not a valid state for this action.',
             $actual->value
         ));
     }

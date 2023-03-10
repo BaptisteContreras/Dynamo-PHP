@@ -6,6 +6,7 @@ enum HttpCode: int
 {
     case SUCCESS = 200;
     case CREATED = 201;
+    case NO_CONTENT = 204;
     case BAD_REQUEST = 400;
 
     case AUTHENTICATION_REQUIRED = 401;

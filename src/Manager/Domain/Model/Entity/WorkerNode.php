@@ -4,6 +4,8 @@ namespace App\Manager\Domain\Model\Entity;
 
 use App\Manager\Domain\Constante\Enum\WorkerState;
 use App\Manager\Domain\Model\Dto\WorkerNodeDto;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class WorkerNode
 {
@@ -22,9 +24,11 @@ class WorkerNode
     private string $labelName = '';
 
     /**
-     * @var array<LabelSlot>
+     * @var Collection<LabelSlot>
      */
-    private array $subLabels = [];
+    private Collection $labelSlots;
+
+    private int $currentSlotKey = 0;
 
     private int $weight;
 
@@ -35,6 +39,7 @@ class WorkerNode
         $this->weight = $weight;
 
         $this->joinedAt = new \DateTimeImmutable();
+        $this->labelSlots = new ArrayCollection();
         $this->workerPreferenceList = PreferenceList::emptyList();
     }
 
@@ -99,14 +104,12 @@ class WorkerNode
         $this->labelName = $labelName;
     }
 
-    public function getSubLabels(): array
+    /**
+     * @return array<LabelSlot>
+     */
+    public function getLabelSlots(): array
     {
-        return $this->subLabels;
-    }
-
-    public function setSubLabels(array $subLabels): void
-    {
-        $this->subLabels = $subLabels;
+        return $this->labelSlots->toArray();
     }
 
     public function getWeight(): int
@@ -124,11 +127,27 @@ class WorkerNode
         return $this->id;
     }
 
-    public function addLabel(LabelSlot $label): self
+    public function addLabelSlot(LabelSlot $label): self
     {
-        $this->subLabels[] = $label;
+        if (!$this->labelSlots->contains($label)) {
+            $this->labelSlots->add($label);
+        }
 
         return $this;
+    }
+
+    public function removeLabelSlot(LabelSlot $label): self
+    {
+        $this->labelSlots->removeElement($label);
+
+        return $this;
+    }
+
+    public function getCurrentLabelSlotKey(): int
+    {
+        $this->currentSlotKey = $this->currentSlotKey ?: (int) $this->labelSlots->key();
+
+        return ++$this->currentSlotKey;
     }
 
     public function isJoining(): bool
@@ -139,6 +158,20 @@ class WorkerNode
     public function markAsUp(): self
     {
         $this->workerState = WorkerState::UP;
+
+        return $this;
+    }
+
+    public function markAsLeaving(): self
+    {
+        $this->workerState = WorkerState::LEAVING;
+
+        return $this;
+    }
+
+    public function markAsJoiningError(): self
+    {
+        $this->workerState = WorkerState::JOINING_ERROR;
 
         return $this;
     }

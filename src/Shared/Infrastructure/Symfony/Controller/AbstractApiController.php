@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractApiController extends AbstractController
 {
-    /**         Methods         **/
     protected function buildJsonResponse(ResponsePresenterInterface $presenter): Response
     {
         return new JsonResponse($presenter->toViewModel(), $presenter->getReturnCode()->value);

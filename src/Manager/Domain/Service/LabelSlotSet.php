@@ -14,7 +14,6 @@ use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Label\Init\LabelSlotInitStrategyInterface;
 use App\Manager\Domain\Service\Label\LabelAssignationStrategyInterface;
 use App\Manager\Domain\Service\Label\LabelLockerInterface;
-use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
 use Psr\Log\LoggerInterface;
 
 class LabelSlotSet
@@ -25,7 +24,6 @@ class LabelSlotSet
     public function __construct(
         private readonly LabelCounter $labelCounter,
         private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,
-        private readonly LabelNameGeneratorInterface $labelNameGenerator,
         private readonly LoggerInterface $logger,
         private readonly LabelLockerInterface $labelLocker,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
@@ -56,20 +54,9 @@ class LabelSlotSet
             throw new NoFreeLabelSlotFoundException();
         }
 
-        $labelName = $this->labelNameGenerator->generate();
-
-        $this->logger->info(sprintf(
-            '[LABEL SET] : %s is the label name for worker node %s %s',
-            $labelName,
-            $workerNode->getNetworkAddress(),
-            $workerNode->getNetworkPort()
-        ));
-
-        $workerNode->setLabelName($labelName);
-
         if ($nbLabelSlotsFound !== $numberOfSlots) {
             $this->logger->warning(sprintf(
-                '[LABEL SET] : could not find enough free label slots. Only %s instead of %s will be used for worker node %s %s',
+                '[LABEL SLOT SET][ACQUIRE] : could not find enough free label slots. Only %s instead of %s will be used for worker node %s %s',
                 $nbLabelSlotsFound,
                 $numberOfSlots,
                 $workerNode->getNetworkAddress(),
@@ -77,29 +64,46 @@ class LabelSlotSet
             ));
         }
 
-        foreach ($labelSlots as $label) {
+        foreach ($labelSlots as $labelSlot) {
             $this->logger->info(sprintf(
-                '[LABEL SET] : give name %s to label %s',
-                $labelName,
-                $label->getId(),
+                '[LABEL SLOT SET][ACQUIRE] : give name %s to label %s',
+                $workerNode->getLabelName(),
+                $labelSlot->getId(),
             ));
 
-            $label->setName($labelName);
-
             $this->logger->info(sprintf(
-                '[LABEL SET] : bind label %s to worker node %s %s',
-                $label->getId(),
+                '[LABEL SLOT SET][ACQUIRE] : bind label %s to worker node %s %s',
+                $labelSlot->getId(),
                 $workerNode->getNetworkAddress(),
                 $workerNode->getNetworkPort()
             ));
 
-            $workerNode->addLabel($label);
+            $labelSlot->setOwnership($workerNode);
 
-            $this->labelRepository->update($label, false);
+            $this->labelRepository->update($labelSlot, false);
         }
 
         $this->workerNodeRepository->update($workerNode, true);
         $this->labelLocker->unlockSlotsForAssignation($labelSlots);
+    }
+
+    /**
+     * Set free all the slots owned by the given worker node.
+     */
+    public function releaseSlots(WorkerNode $workerNode): void
+    {
+        foreach ($workerNode->getLabelSlots() as $labelSlot) {
+            $this->logger->info(sprintf(
+                '[LABEL FREE] : label %s is now free',
+                $labelSlot->getId()
+            ));
+
+            $labelSlot->resetOwnership();
+
+            $this->labelRepository->update($labelSlot, false);
+        }
+
+        $this->labelRepository->flushTransaction();
     }
 
     /**

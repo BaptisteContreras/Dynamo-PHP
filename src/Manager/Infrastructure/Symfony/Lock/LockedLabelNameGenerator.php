@@ -27,38 +27,24 @@ class LockedLabelNameGenerator implements LabelNameGeneratorInterface
 
         $lock->acquire(true);
 
-        $counterFilePathFd = null;
-
         try {
             if (!file_exists($this->counterFilePath)) {
-                if (!$counterFilePathFd = fopen($this->counterFilePath, 'w')) {
-                    throw new CouldNotOpenLockFileException($this->counterFilePath);
-                }
-
                 $generatedName = self::FIRST_NAME;
             } else {
-                if (!$counterFilePathFd = fopen($this->counterFilePath, 'r+')) {
+                if (false === ($generatedName = file_get_contents($this->counterFilePath))) {
                     throw new CouldNotOpenLockFileException($this->counterFilePath);
-                }
-
-                if (!$generatedName = fgets($counterFilePathFd)) {
-                    throw new CouldNotReadLockFileException($this->counterFilePath);
                 }
 
                 ++$generatedName;
             }
 
-            if (!fwrite($counterFilePathFd, $generatedName)) {
+            if (!file_put_contents($this->counterFilePath, $generatedName)) {
                 throw new CouldNotWriteLockFileException($this->counterFilePath);
             }
 
             return $generatedName;
         } finally {
             $lock->release();
-
-            if ($counterFilePathFd) {
-                fclose($counterFilePathFd);
-            }
         }
     }
 }

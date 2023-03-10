@@ -20,14 +20,14 @@ class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements Wo
         $this->_em->persist($workerNode);
 
         if ($flush) {
-            $this->_em->flush();
+            $this->flushTransaction();
         }
     }
 
     public function update(WorkerNode $workerNode, bool $flush): void
     {
         if ($flush) {
-            $this->_em->flush();
+            $this->flushTransaction();
         }
     }
 
@@ -36,7 +36,7 @@ class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements Wo
         $this->_em->remove($workerNode);
 
         if ($flush) {
-            $this->_em->flush();
+            $this->flushTransaction();
         }
     }
 
@@ -46,7 +46,7 @@ class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements Wo
             ->andWhere('w.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
     public function findAll(): array
@@ -59,5 +59,10 @@ class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements Wo
     public function findOneByIpAndPort(string $ip, int $port): ?WorkerNode
     {
         return null;
+    }
+
+    public function flushTransaction(): void
+    {
+        $this->_em->flush();
     }
 }
