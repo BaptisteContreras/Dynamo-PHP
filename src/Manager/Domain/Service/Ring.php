@@ -16,6 +16,7 @@ use App\Manager\Domain\Exception\UnsupportedLabelSlotInitStrategyException;
 use App\Manager\Domain\Exception\WorkerAlreadyJoinedException;
 use App\Manager\Domain\Exception\WrongWorkerStateException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
+use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
 use App\Manager\Domain\Service\Worker\WorkerNodeLockerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -26,7 +27,8 @@ class Ring
         private readonly LabelSlotSet $labelSet,
         private readonly WorkerNodeLockerInterface $workerNodeLocker,
         private readonly WorkerNodeFinder $workerNodeFinder,
-        private readonly WorkerNodeRepositoryInterface $workerNodeRepository
+        private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
+        private readonly LabelNameGeneratorInterface $labelNameGenerator
     ) {
     }
 
@@ -49,7 +51,7 @@ class Ring
     public function join(WorkerNode $workerNode): void
     {
         if (!$workerNode->isJoining()) {
-            throw new WrongWorkerStateException(WorkerState::JOINING, $workerNode->getWorkerState());
+            throw new WrongWorkerStateException($workerNode->getWorkerState());
         }
 
         if ($this->isFull()) {
@@ -67,23 +69,75 @@ class Ring
             throw new WorkerAlreadyJoinedException($workerNode->getNetworkAddress(), $workerNode->getNetworkPort());
         }
 
+        $labelName = $this->labelNameGenerator->generate();
+
+        $this->logger->info(sprintf(
+            '[RING][JOIN] : %s is the label name for worker node %s %s',
+            $labelName,
+            $workerNode->getNetworkAddress(),
+            $workerNode->getNetworkPort()
+        ));
+
+        $workerNode->setLabelName($labelName);
+
         $this->workerNodeRepository->add($workerNode, true);
 
         try {
             $this->labelSet->acquireSlots($workerNode, $workerNode->getWeight(), true);
-        } catch (NotEnoughFreeLabelSlotException|NoFreeLabelSlotFoundException $e) {
-            $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
 
-            // TODO delete node
+            $workerNode->markAsUp();
+            $this->workerNodeRepository->update($workerNode, true);
+        } catch (NotEnoughFreeLabelSlotException|NoFreeLabelSlotFoundException $exception) {
+            $workerNode->markAsJoiningError();
+            $this->logger->error(sprintf(
+                '[RING][JOIN] : %s cannot join the ring : %s',
+                $workerNode->getId(),
+                $exception->getMessage()
+            ));
+
+            $this->leave($workerNode);
 
             throw new RingFullException();
-        }
+        } catch (\Throwable $exception) {
+            $workerNode->markAsJoiningError();
+            $this->logger->critical(sprintf(
+                '[RING][JOIN] : %s failed with fatal exception %s',
+                $workerNode->getId(),
+                $exception->getMessage()
+            ));
 
-        $workerNode->markAsUp();
+            $this->leave($workerNode);
+
+            throw $exception;
+        } finally {
+            $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
+        }
+    }
+
+    /**
+     * Make the given worker node leave the ring.
+     *
+     * A worker in joining or leaving state cannot leave the ring.
+     *
+     * @throws AlreadyLockException
+     * @throws LockingFailsException
+     * @throws WrongWorkerStateException
+     */
+    public function leave(WorkerNode $workerNode): void
+    {
+        $this->checkLeavingWorkerNodeStatus($workerNode);
+
+        $this->workerNodeLocker->lockWorkerNodeForLeaving($workerNode);
+
+        $workerNode->markAsLeaving();
 
         $this->workerNodeRepository->update($workerNode, true);
 
-        $this->workerNodeLocker->unlockWorkerNodeForJoining($workerNode);
+        $this->labelSet->releaseSlots($workerNode);
+
+        $this->workerNodeRepository->remove($workerNode, true);
+
+        $this->workerNodeLocker->unlockWorkerNodeForLeaving($workerNode);
     }
 
     /**
@@ -109,5 +163,18 @@ class Ring
     public function getWorkers(): array
     {
         return $this->workerNodeFinder->findAll();
+    }
+
+    /**
+     * @throws WrongWorkerStateException
+     */
+    private function checkLeavingWorkerNodeStatus(WorkerNode $workerNode): void
+    {
+        if (in_array($workerNode->getWorkerState(), [
+            WorkerState::JOINING,
+            WorkerState::LEAVING,
+            ], true)) {
+            throw new WrongWorkerStateException($workerNode->getWorkerState());
+        }
     }
 }

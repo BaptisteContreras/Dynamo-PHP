@@ -14,6 +14,8 @@ class LabelSlot
 
     private float $coverZoneLength;
 
+    private ?WorkerNode $owner = null;
+
     public function __construct(float $position, float $coverZoneLength)
     {
         $this->position = $position;
@@ -30,19 +32,9 @@ class LabelSlot
         return $this->name;
     }
 
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
-    }
-
     public function getSubDivision(): ?string
     {
         return $this->subDivision;
-    }
-
-    public function setSubDivision(?string $subDivision): void
-    {
-        $this->subDivision = $subDivision;
     }
 
     public function getPosition(): float
@@ -65,8 +57,31 @@ class LabelSlot
         $this->coverZoneLength = $coverZoneLength;
     }
 
-    public function isFree(): bool
+    public function getOwner(): ?WorkerNode
     {
-        return $this->name && $this->subDivision;
+        return $this->owner;
+    }
+
+    public function setOwnership(WorkerNode $workerNode): self
+    {
+        $this->owner = $workerNode;
+        $workerNode->addLabelSlot($this);
+        $this->name = $workerNode->getLabelName();
+        $this->subDivision = sprintf('%s%s', $this->name, $workerNode->getCurrentLabelSlotKey());
+
+        return $this;
+    }
+
+    public function resetOwnership(): self
+    {
+        if ($this->owner) {
+            $this->owner->removeLabelSlot($this);
+            $this->owner = null;
+        }
+
+        $this->name = null;
+        $this->subDivision = null;
+
+        return $this;
     }
 }

@@ -11,6 +11,7 @@ use Symfony\Component\Lock\LockFactory;
 class SfWorkerNodeLocker extends SfLocker implements WorkerNodeLockerInterface
 {
     private const ACTION_JOINING = 'action_joining';
+    private const ACTION_LEAVING = 'action_leaving';
 
     public function __construct(
         private readonly LockFactory $lockFactory
@@ -31,7 +32,7 @@ class SfWorkerNodeLocker extends SfLocker implements WorkerNodeLockerInterface
     {
         $this->tryLockResourceForAction(
             self::ACTION_JOINING,
-            $this->workerNodeToLockKey($workerNode),
+            $this->workerNodeToLockKey($workerNode, self::ACTION_JOINING),
             true,
             true
         );
@@ -39,15 +40,30 @@ class SfWorkerNodeLocker extends SfLocker implements WorkerNodeLockerInterface
 
     public function unlockWorkerNodeForJoining(WorkerNode $workerNode): void
     {
-        $this->tryUnlockWorkerNodeForJoining(self::ACTION_JOINING, $this->workerNodeToLockKey($workerNode));
+        $this->tryUnlockWorkerNodeForJoining(self::ACTION_JOINING, $this->workerNodeToLockKey($workerNode, self::ACTION_JOINING));
     }
 
-    private function workerNodeToLockKey(WorkerNode $workerNode): string
+    public function lockWorkerNodeForLeaving(WorkerNode $workerNode): void
+    {
+        $this->tryLockResourceForAction(
+            self::ACTION_LEAVING,
+            $this->workerNodeToLockKey($workerNode, self::ACTION_LEAVING),
+            true,
+            true
+        );
+    }
+
+    public function unlockWorkerNodeForLeaving(WorkerNode $workerNode): void
+    {
+        $this->tryUnlockWorkerNodeForJoining(self::ACTION_LEAVING, $this->workerNodeToLockKey($workerNode, self::ACTION_LEAVING));
+    }
+
+    private function workerNodeToLockKey(WorkerNode $workerNode, string $action): string
     {
         // We need to hash here because networkAddress and networkPort are data provided by user (even if there are validated)
         return hash('sha256', sprintf(
             '%s-%s-%s',
-            self::ACTION_JOINING,
+            $action,
             $workerNode->getNetworkAddress(),
             $workerNode->getNetworkPort()
         ));

@@ -25,7 +25,7 @@ class EqualInitStrategy implements LabelSlotInitStrategyInterface
             $labelsToCreate[] = new LabelSlot($i, self::SIZE);
         }
 
-        $this->labelRepository->bulkAdd($labelsToCreate);
+        $this->labelRepository->bulkAdd($labelsToCreate, true);
     }
 
     public function supports(LabelsSlotsAllocationStrategy $allocationStrategy): bool

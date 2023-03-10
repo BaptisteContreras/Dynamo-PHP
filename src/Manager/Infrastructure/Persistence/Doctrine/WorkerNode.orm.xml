@@ -12,9 +12,11 @@
         <field name="networkAddress" column="network_address" length="15"/>
         <field name="networkPort" column="network_port" type="integer"/>
         <field name="workerState" column="worker_state" length="32"/>
-        <field name="joinedAt" column="joined_at" type="datetime"/>
+        <field name="joinedAt" column="joined_at" type="datetime_immutable"/>
         <field name="labelName" column="label_name" length="4" unique="true"/>
         <field name="weight" column="weight" type="integer"/>
+
+        <one-to-many field="labelSlots" target-entity="App\Manager\Domain\Model\Entity\LabelSlot" mapped-by="owner" />
     </entity>
 
 </doctrine-mapping>

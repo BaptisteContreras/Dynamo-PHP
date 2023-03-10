@@ -4,6 +4,7 @@ parameters:
 	paths:
 		- src
 	checkGenericClassInNonGenericObjectType: false
+	reportUnmatchedIgnoredErrors: false
 	doctrine:
 		objectManagerLoader: tests/object-manager.php
 

@@ -7,7 +7,7 @@ enum WorkerState: string
     case JOINING = 'joining';
     case UP = 'up';
     case LEAVING = 'leaving';
-    case LEFT = 'left';
-    case ON_ERROR = 'on_error';
+    case ERROR = 'on_error';
+    case JOINING_ERROR = 'joining_error';
     case RECOVERING = 'recovering';
 }

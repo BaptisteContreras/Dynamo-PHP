@@ -8,6 +8,9 @@ use App\Manager\Application\Command\LabelSlot\Init\Presenter\InitLabelSlotsPrese
 use App\Manager\Application\Command\Worker\Join\JoinCommandHandler;
 use App\Manager\Application\Command\Worker\Join\JoinRequest;
 use App\Manager\Application\Command\Worker\Join\Presenter\JoinPresenter;
+use App\Manager\Application\Command\Worker\Leave\LeaveCommandHandler;
+use App\Manager\Application\Command\Worker\Leave\LeaveRequest;
+use App\Manager\Application\Command\Worker\Leave\Presenter\LeavePresenter;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\AutoProvideRequestDto;
 use BaptisteContreras\SymfonyRequestParamBundle\Configuration\DtoRequestParam;
@@ -27,6 +30,19 @@ class WorkerRingController extends AbstractApiController
         $presenter = JoinPresenter::json();
 
         $joinWorkerNodeCommandHandler($joinWorkerNodeRequest, $presenter);
+
+        return $this->buildJsonResponse($presenter);
+    }
+
+    #[Route(path: '/leave/{workerId}', name: 'leave', methods: ['DELETE'])]
+    #[AutoProvideRequestDto]
+    public function leave(
+        int $workerId,
+        LeaveCommandHandler $leftCommandHandler
+    ): Response {
+        $presenter = LeavePresenter::json();
+
+        $leftCommandHandler(LeaveRequest::build($workerId), $presenter);
 
         return $this->buildJsonResponse($presenter);
     }
