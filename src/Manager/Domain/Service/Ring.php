@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Service;
 
 use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
 use App\Manager\Domain\Constante\Enum\WorkerState;
-use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
+use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinderInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\AlreadyLockException;
 use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
@@ -26,7 +26,7 @@ class Ring
         private readonly LoggerInterface $logger,
         private readonly LabelSlotSet $labelSet,
         private readonly WorkerNodeLockerInterface $workerNodeLocker,
-        private readonly WorkerNodeFinder $workerNodeFinder,
+        private readonly WorkerNodeFinderInterface $workerNodeFinder,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
         private readonly LabelNameGeneratorInterface $labelNameGenerator
     ) {
@@ -127,17 +127,28 @@ class Ring
     {
         $this->checkLeavingWorkerNodeStatus($workerNode);
 
-        $this->workerNodeLocker->lockWorkerNodeForLeaving($workerNode);
+        $this->leaveWithoutCheck($workerNode);
+    }
 
-        $workerNode->markAsLeaving();
+    /**
+     * Make all worker node leave and delete all label slots.
+     *
+     * /!\ Concurrent joining worker node cannot be deleted /!\
+     * /!\ Only for test purpose /!\
+     */
+    public function reset(): void
+    {
+        foreach ($this->workerNodeFinder->findAll() as $workerNode) {
+            try {
+                $this->leaveWithoutCheck($workerNode);
+            } catch (AlreadyLockException|LockingFailsException) {
+                // @ignoreException
+            }
+        }
 
-        $this->workerNodeRepository->update($workerNode, true);
+        $this->workerNodeRepository->flushTransaction();
 
-        $this->labelSet->releaseSlots($workerNode);
-
-        $this->workerNodeRepository->remove($workerNode, true);
-
-        $this->workerNodeLocker->unlockWorkerNodeForLeaving($workerNode);
+        $this->labelSet->reset();
     }
 
     /**
@@ -154,6 +165,7 @@ class Ring
      */
     public function initLabelsSlots(LabelsSlotsAllocationStrategy $allocationStrategy): void
     {
+        $this->labelNameGenerator->initSequence(); // todo move in init ring method
         $this->labelSet->init($allocationStrategy);
     }
 
@@ -176,5 +188,24 @@ class Ring
             ], true)) {
             throw new WrongWorkerStateException($workerNode->getWorkerState());
         }
+    }
+
+    /**
+     * @throws LockingFailsException
+     * @throws AlreadyLockException
+     */
+    private function leaveWithoutCheck(WorkerNode $workerNode): void
+    {
+        $this->workerNodeLocker->lockWorkerNodeForLeaving($workerNode);
+
+        $workerNode->markAsLeaving();
+
+        $this->workerNodeRepository->update($workerNode, true);
+
+        $this->labelSet->releaseSlots($workerNode);
+
+        $this->workerNodeRepository->remove($workerNode, true);
+
+        $this->workerNodeLocker->unlockWorkerNodeForLeaving($workerNode);
     }
 }

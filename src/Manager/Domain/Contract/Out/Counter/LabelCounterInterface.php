@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Contract\Out\Counter;
 
-interface LabelCounter
+interface LabelCounterInterface
 {
     /**
      * Returns the number of label slots.

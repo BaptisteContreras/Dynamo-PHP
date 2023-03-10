@@ -3,7 +3,8 @@
 namespace App\Manager\Domain\Service;
 
 use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
-use App\Manager\Domain\Contract\Out\Counter\LabelCounter;
+use App\Manager\Domain\Contract\Out\Counter\LabelCounterInterface;
+use App\Manager\Domain\Contract\Out\Finder\LabelFinderInterface;
 use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
@@ -22,12 +23,13 @@ class LabelSlotSet
      * @param iterable<LabelSlotInitStrategyInterface> $initStrategies
      */
     public function __construct(
-        private readonly LabelCounter $labelCounter,
+        private readonly LabelCounterInterface $labelCounter,
         private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,
         private readonly LoggerInterface $logger,
         private readonly LabelLockerInterface $labelLocker,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
         private readonly LabelRepositoryInterface $labelRepository,
+        private readonly LabelFinderInterface $labelFinder,
         private readonly iterable $initStrategies
     ) {
     }
@@ -115,6 +117,22 @@ class LabelSlotSet
     public function hasFreeSlots(): bool
     {
         return $this->labelCounter->countFree() > 0;
+    }
+
+    /**
+     * Delete all label slots.
+     *
+     * /!\ Not concurrent safe /!\
+     * /!\ Only for test purpose /!\
+     */
+    public function reset(): void
+    {
+        foreach ($this->labelFinder->findAllSlots() as $labelSlot) {
+            $labelSlot->resetOwnership();
+            $this->labelRepository->remove($labelSlot, false);
+        }
+
+        $this->labelRepository->flushTransaction();
     }
 
     /**

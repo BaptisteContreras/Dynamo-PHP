@@ -4,7 +4,7 @@ namespace App\Manager\Application\Command\Worker\Leave;
 
 use App\Manager\Application\Command\Worker\Leave\Presenter\LeavePresenter;
 use App\Manager\Application\Command\Worker\Leave\Response\LeaveResponse;
-use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
+use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinderInterface;
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Service\Ring;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -14,7 +14,7 @@ class LeaveCommandHandler
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly Ring $ring,
-        private readonly WorkerNodeFinder $workerNodeFinder
+        private readonly WorkerNodeFinderInterface $workerNodeFinder
     ) {
     }
 

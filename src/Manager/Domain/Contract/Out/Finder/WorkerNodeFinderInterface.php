@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Contract\Out\Finder;
 
 use App\Manager\Domain\Model\Entity\WorkerNode;
 
-interface WorkerNodeFinder
+interface WorkerNodeFinderInterface
 {
     public function findOneById(int $id): ?WorkerNode;
 

@@ -2,6 +2,8 @@
 
 namespace App\Manager\Infrastructure\Symfony\Lock;
 
+use App\Manager\Domain\Exception\LabelNameGeneratorSequenceInitException;
+use App\Manager\Domain\Exception\LabelNameGeneratorSequenceInitFailedException;
 use App\Manager\Domain\Service\Label\LabelNameGeneratorInterface;
 use Symfony\Component\Lock\LockFactory;
 
@@ -18,8 +20,8 @@ class LockedLabelNameGenerator implements LabelNameGeneratorInterface
 
     /**
      * @throws CouldNotOpenLockFileException
-     * @throws CouldNotReadLockFileException
      * @throws CouldNotWriteLockFileException
+     * @throws LabelNameGeneratorSequenceInitException
      */
     public function generate(): string
     {
@@ -29,22 +31,28 @@ class LockedLabelNameGenerator implements LabelNameGeneratorInterface
 
         try {
             if (!file_exists($this->counterFilePath)) {
-                $generatedName = self::FIRST_NAME;
-            } else {
-                if (false === ($generatedName = file_get_contents($this->counterFilePath))) {
-                    throw new CouldNotOpenLockFileException($this->counterFilePath);
-                }
-
-                ++$generatedName;
+                throw new LabelNameGeneratorSequenceInitException();
             }
 
-            if (!file_put_contents($this->counterFilePath, $generatedName)) {
+            if (false === ($generatedName = file_get_contents($this->counterFilePath))) {
+                throw new CouldNotOpenLockFileException($this->counterFilePath);
+            }
+
+            $currentName = $generatedName;
+            if (!file_put_contents($this->counterFilePath, ++$generatedName)) {
                 throw new CouldNotWriteLockFileException($this->counterFilePath);
             }
 
-            return $generatedName;
+            return $currentName;
         } finally {
             $lock->release();
+        }
+    }
+
+    public function initSequence(): void
+    {
+        if (!file_put_contents($this->counterFilePath, self::FIRST_NAME)) {
+            throw new LabelNameGeneratorSequenceInitFailedException();
         }
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Manager\Infrastructure\Persistence\Repository;
 
-use App\Manager\Domain\Contract\Out\Counter\LabelCounter;
-use App\Manager\Domain\Contract\Out\Finder\LabelFinder;
+use App\Manager\Domain\Contract\Out\Counter\LabelCounterInterface;
+use App\Manager\Domain\Contract\Out\Finder\LabelFinderInterface;
 use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
 use App\Manager\Domain\Model\Entity\LabelSlot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineLabelRepository extends ServiceEntityRepository implements LabelRepositoryInterface, LabelFinder, LabelCounter
+class DoctrineInterfaceLabelRepositoryInterface extends ServiceEntityRepository implements LabelRepositoryInterface, LabelFinderInterface, LabelCounterInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
