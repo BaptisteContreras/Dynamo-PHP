@@ -16,6 +16,21 @@ parameters:
 			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
 
 		-
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\Response\\\\ResetRingResponse\\:\\:getError\\(\\)\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Ring/Reset/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\Response\\\\ResetRingResponse\\>$#"
+			count: 1
+			path: src/Manager/Application/Command/Ring/Reset/Presenter/JsonPresenter.php
+
+		-
+			message: "#^Property App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\ResetRingCommandHandler\\:\\:\\$validator is never read, only written\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Ring/Reset/ResetRingCommandHandler.php
+
+		-
 			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\JoinRequest\\:\\:getNetworkAddress\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/Manager/Application/Command/Worker/Join/JoinRequest.php
@@ -91,26 +106,21 @@ parameters:
 			path: src/Manager/Domain/Model/Entity/WorkerNode.php
 
 		-
-			message: "#^Property App\\\\Manager\\\\Domain\\\\Service\\\\Ring\\:\\:\\$logger is never read, only written\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelRepositoryInterface\\:\\:findAllSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\<int, object\\>\\.$#"
 			count: 1
-			path: src/Manager/Domain/Service/Ring.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelRepositoryInterface.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineLabelRepository\\:\\:findAllSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\<int, object\\>\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelRepositoryInterface\\:\\:findFree\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns mixed\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineLabelRepository.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelRepositoryInterface.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineLabelRepository\\:\\:findFree\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns mixed\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceWorkerNodeRepository\\:\\:findAll\\(\\) should return array\\<int, object\\> but returns mixed\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineLabelRepository.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceWorkerNodeRepository.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineWorkerNodeRepository\\:\\:findAll\\(\\) should return array\\<int, object\\> but returns mixed\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceWorkerNodeRepository\\:\\:findOneById\\(\\) should return App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\|null but returns mixed\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineWorkerNodeRepository.php
-
-		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineWorkerNodeRepository\\:\\:findOneById\\(\\) should return App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\|null but returns mixed\\.$#"
-			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineWorkerNodeRepository.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceWorkerNodeRepository.php

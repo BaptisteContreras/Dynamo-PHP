@@ -2,13 +2,13 @@
 
 namespace App\Manager\Infrastructure\Persistence\Repository;
 
-use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinder;
+use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinderInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Model\Entity\WorkerNode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineWorkerNodeRepository extends ServiceEntityRepository implements WorkerNodeRepositoryInterface, WorkerNodeFinder
+class DoctrineInterfaceWorkerNodeRepository extends ServiceEntityRepository implements WorkerNodeRepositoryInterface, WorkerNodeFinderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
