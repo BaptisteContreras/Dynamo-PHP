@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init;
+namespace App\Manager\Application\Command\Ring\Init;
 
 use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
 use Symfony\Component\Validator\Constraints\Choice;

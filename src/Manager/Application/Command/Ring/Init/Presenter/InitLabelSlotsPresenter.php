@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init\Presenter;
+namespace App\Manager\Application\Command\Ring\Init\Presenter;
 
-use App\Manager\Application\Command\LabelSlot\Init\Response\InitLabelSlotsResponse;
+use App\Manager\Application\Command\Ring\Init\Response\InitLabelSlotsResponse;
 use App\Shared\Application\ResponsePresenter;
 
 abstract class InitLabelSlotsPresenter extends ResponsePresenter

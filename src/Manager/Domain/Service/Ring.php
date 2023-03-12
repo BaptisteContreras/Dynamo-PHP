@@ -7,6 +7,7 @@ use App\Manager\Domain\Constante\Enum\WorkerState;
 use App\Manager\Domain\Contract\Out\Finder\WorkerNodeFinderInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\AlreadyLockException;
+use App\Manager\Domain\Exception\LabelNameGeneratorSequenceInitFailedException;
 use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
 use App\Manager\Domain\Exception\LockingFailsException;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
@@ -161,11 +162,11 @@ class Ring
 
     /**
      * @throws LabelsSlotsAlreadyInitializedException
-     * @throws UnsupportedLabelSlotInitStrategyException
+     * @throws UnsupportedLabelSlotInitStrategyException|LabelNameGeneratorSequenceInitFailedException
      */
-    public function initLabelsSlots(LabelsSlotsAllocationStrategy $allocationStrategy): void
+    public function init(LabelsSlotsAllocationStrategy $allocationStrategy): void
     {
-        $this->labelNameGenerator->initSequence(); // todo move in init ring method
+        $this->labelNameGenerator->initSequence();
         $this->labelSet->init($allocationStrategy);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init\Response;
+namespace App\Manager\Application\Command\Ring\Init\Response;
 
 use App\Shared\Application\ApplicationResponseWithValidationError;
 

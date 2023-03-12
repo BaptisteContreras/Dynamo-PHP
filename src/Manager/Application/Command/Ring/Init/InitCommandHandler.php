@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init;
+namespace App\Manager\Application\Command\Ring\Init;
 
-use App\Manager\Application\Command\LabelSlot\Init\Presenter\InitLabelSlotsPresenter;
-use App\Manager\Application\Command\LabelSlot\Init\Response\InitLabelSlotsResponse;
+use App\Manager\Application\Command\Ring\Init\Presenter\InitLabelSlotsPresenter;
+use App\Manager\Application\Command\Ring\Init\Response\InitLabelSlotsResponse;
 use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Service\Ring;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +27,7 @@ class InitCommandHandler
         }
 
         try {
-            $this->ring->initLabelsSlots($initRequest->getAllocationStrategyNameEnum());
+            $this->ring->init($initRequest->getAllocationStrategyNameEnum());
         } catch (DomainException $domainException) {
             $presenter->present(InitLabelSlotsResponse::withError($domainException));
 

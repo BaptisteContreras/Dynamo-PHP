@@ -1,19 +1,19 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getError\\(\\)\\.$#"
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getError\\(\\)\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Ring/Init/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getValidationErrors\\(\\)\\.$#"
+			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\:\\:getValidationErrors\\(\\)\\.$#"
 			count: 1
-			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Ring/Init/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\LabelSlot\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\>$#"
+			message: "#^Match expression does not handle remaining value\\: class\\-string\\<App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Init\\\\Response\\\\InitLabelSlotsResponse\\>$#"
 			count: 1
-			path: src/Manager/Application/Command/LabelSlot/Init/Presenter/JsonPresenter.php
+			path: src/Manager/Application/Command/Ring/Init/Presenter/JsonPresenter.php
 
 		-
 			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\Response\\\\ResetRingResponse\\:\\:getError\\(\\)\\.$#"

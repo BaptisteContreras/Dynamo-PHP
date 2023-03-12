@@ -2,9 +2,9 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
-use App\Manager\Application\Command\LabelSlot\Init\InitCommandHandler;
-use App\Manager\Application\Command\LabelSlot\Init\InitRequest;
-use App\Manager\Application\Command\LabelSlot\Init\Presenter\InitLabelSlotsPresenter;
+use App\Manager\Application\Command\Ring\Init\InitCommandHandler;
+use App\Manager\Application\Command\Ring\Init\InitRequest;
+use App\Manager\Application\Command\Ring\Init\Presenter\InitLabelSlotsPresenter;
 use App\Manager\Application\Command\Ring\Reset\Presenter\ResetRingPresenter;
 use App\Manager\Application\Command\Ring\Reset\ResetRingCommandHandler;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/ring', name: 'ring_')]
 class RingController extends AbstractApiController
 {
-    #[Route(path: '/slots/init', name: 'slots_init', methods: ['POST'])]
+    #[Route(path: '/init', name: 'init', methods: ['POST'])]
     #[AutoProvideRequestDto]
     public function init(
         #[DtoRequestParam(sourceType: SourceType::JSON, validateDto: false)] InitRequest $initRequest,
