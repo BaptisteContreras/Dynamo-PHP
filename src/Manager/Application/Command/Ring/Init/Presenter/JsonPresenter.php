@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init\Presenter;
+namespace App\Manager\Application\Command\Ring\Init\Presenter;
 
-use App\Manager\Application\Command\LabelSlot\Init\Response\ErrorResponse;
-use App\Manager\Application\Command\LabelSlot\Init\Response\InitLabelSlotsResponse;
-use App\Manager\Application\Command\LabelSlot\Init\Response\SuccessResponse;
-use App\Manager\Application\Command\LabelSlot\Init\Response\ValidationErrorResponse;
-use App\Manager\Application\Command\LabelSlot\Init\ViewModel\JsonInitLabelSlotsViewModel;
+use App\Manager\Application\Command\Ring\Init\Response\ErrorResponse;
+use App\Manager\Application\Command\Ring\Init\Response\InitLabelSlotsResponse;
+use App\Manager\Application\Command\Ring\Init\Response\SuccessResponse;
+use App\Manager\Application\Command\Ring\Init\Response\ValidationErrorResponse;
+use App\Manager\Application\Command\Ring\Init\ViewModel\JsonInitLabelSlotsViewModel;
 
 class JsonPresenter extends InitLabelSlotsPresenter
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\LabelSlot\Init\ViewModel;
+namespace App\Manager\Application\Command\Ring\Init\ViewModel;
 
 use App\Manager\Domain\Exception\DomainException;
 use App\Shared\Infrastructure\Http\HttpCode;
