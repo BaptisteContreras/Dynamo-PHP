@@ -6,12 +6,12 @@ use App\Shared\Infrastructure\Http\HttpCode;
 
 abstract class ViewModel implements ViewModelInterface
 {
-    public function __construct(protected readonly HttpCode $httpCode)
+    public function __construct(protected readonly HttpCode $code)
     {
     }
 
     public function getCode(): HttpCode
     {
-        return $this->httpCode;
+        return $this->code;
     }
 }

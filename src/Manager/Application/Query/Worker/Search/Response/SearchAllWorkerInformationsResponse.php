@@ -28,8 +28,8 @@ final class SearchAllWorkerInformationsResponse implements ApplicationResponseIn
     public static function buildFromWorkerInformationsArray(array $workerInformations): self
     {
         return new self(
-            array_map(function (WorkerNode $workerInformations) {
-                return SearchWorkerInformationsResponse::buildFromWorkerInformations($workerInformations);
+            array_map(function (WorkerNode $workerNode) {
+                return SearchWorkerInformationsResponse::buildFromWorkerNodeDto($workerNode->readOnly());
             }, $workerInformations)
         );
     }

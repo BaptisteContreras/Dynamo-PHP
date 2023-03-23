@@ -10,9 +10,4 @@ class JsonNotFoundViewModel extends JsonLeaveViewModel
     {
         parent::__construct(HttpCode::NOT_FOUND);
     }
-
-    public function jsonSerialize(): mixed
-    {
-        return [];
-    }
 }

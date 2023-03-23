@@ -6,6 +6,8 @@ use App\Manager\Domain\Exception\DomainException;
 use App\Manager\Domain\Model\Dto\WorkerNodeDto;
 use App\Shared\Application\JsonViewModelInterface;
 use App\Shared\Application\ViewModel;
+use App\Shared\Infrastructure\Http\HttpCode;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 abstract class JsonJoinViewModel extends ViewModel implements JsonViewModelInterface
@@ -23,5 +25,11 @@ abstract class JsonJoinViewModel extends ViewModel implements JsonViewModelInter
     public static function success(WorkerNodeDto $workerNode): self
     {
         return new JsonSuccessViewModel($workerNode);
+    }
+
+    #[Ignore]
+    public function getCode(): HttpCode
+    {
+        return parent::getCode();
     }
 }

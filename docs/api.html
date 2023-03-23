@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset="UTF-8">
+        <title>DynamoPHP master node</title>
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/style.css">
+    
+                    <script id="swagger-data" type="application/json">{"spec":{"openapi":"3.0.0","info":{"title":"DynamoPHP master node","description":"Master node API. You can join / leave or check the state of the ring","version":"1.0.0"},"paths":{"/ring":{"post":{"tags":["Ring"],"operationId":"post_ring_init","requestBody":{"description":"The payload with all informations needed to initialize the ring","content":{"application/json":{"schema":{"$ref":"#/components/schemas/InitRequest"}}}},"responses":{"204":{"description":"The ring is initialized"},"400":{"description":"Invalid Payload","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ValidationErrorList"}}}},"409":{"description":"Conflicts with the current state of the server","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BusinessError"}}}},"500":{"description":"Technical error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicalError"}}}}}},"delete":{"tags":["Ring"],"operationId":"delete_ring_reset","responses":{"204":{"description":"The ring is successfully reset"},"409":{"description":"Conflicts with the current state of the server","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BusinessError"}}}},"500":{"description":"Technical error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicalError"}}}}}}},"/workers":{"get":{"tags":["Workers"],"operationId":"get_workers_list","responses":{"200":{"description":"The list of all workers","content":{"application/json":{"schema":{"$ref":"#/components/schemas/JsonSearchAllWorkerInformationsViewModel"}}}},"500":{"description":"Technical error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicalError"}}}}}},"post":{"tags":["Workers"],"operationId":"post_workers_join","requestBody":{"description":"The payload with all informations needed to join the ring","content":{"application/json":{"schema":{"$ref":"#/components/schemas/JoinRequest"}}}},"responses":{"201":{"description":"The worker successfully joined the ring","content":{"application/json":{"schema":{"$ref":"#/components/schemas/JsonSuccessViewModel"}}}},"400":{"description":"Invalid Payload","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ValidationErrorList"}}}},"409":{"description":"Conflicts with the current state of the server","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BusinessError"}}}},"500":{"description":"Technical error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicalError"}}}}}}},"/workers/{workerId}":{"delete":{"tags":["Workers"],"operationId":"delete_workers_leave","parameters":[{"name":"workerId","in":"path","description":"The worker ID","required":true,"schema":{"type":"string"},"example":1}],"responses":{"204":{"description":"The worker successfully left the ring"},"404":{"description":"There is no worker for the given ID"},"409":{"description":"Conflicts with the current state of the server","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BusinessError"}}}},"500":{"description":"Technical error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/TechnicalError"}}}}}}}},"components":{"schemas":{"LabelSlot":{"description":"Represent a slot in the ring","properties":{"id":{"description":"The unique ID of the slot in the ring","type":"integer","minimum":1,"example":1},"position":{"description":"The position of the slot in the ring","type":"number","format":"float","maximum":360,"minimum":0,"example":150},"coverZoneLength":{"description":"The area, from the position, covered by the slot. For example, given the position 5 and a coverZoneLength of 3, the covered area is [5;8]","type":"number","format":"float","maximum":360,"minimum":0,"example":3},"subDivision":{"description":"The sub label given to the slot","type":"string","example":"A1"}},"type":"object"},"ValidationErrorList":{"description":"Represents a list of invalid value for a payload","properties":{"errors":{"type":"array","items":{"$ref":"#/components/schemas/ValidationError"}}},"type":"object"},"ValidationError":{"description":"Represents an invalid value for a property of a payload","properties":{"property":{"description":"The faulty property name","type":"string","example":"propertyName"},"message":{"description":"The error message for this property","type":"string","example":"error"}},"type":"object"},"BusinessError":{"description":"Represents an invalid action that is not allowed in the current state of the application","properties":{"error":{"description":"More details about the exception that happened","type":"string","example":"error message"}},"type":"object"},"TechnicalError":{"description":"Represents a technical error on our side","type":"string","example":"error message"},"InitRequest":{"properties":{"allocationStrategyNameEnum":{"$ref":"#/components/schemas/LabelsSlotsAllocationStrategy"}},"type":"object"},"JsonSearchAllWorkerInformationsViewModel":{"title":"WorkerListSuccessResponse","properties":{"workers":{"type":"array","items":{"$ref":"#/components/schemas/SearchWorkerInformationsResponse"}}},"type":"object"},"JoinRequest":{"required":["networkAddress","networkPort","weight"],"properties":{"networkAddress":{"title":"IPv4 of the node","description":"This field must respect the IPv4 format","type":"string","example":"127.0.0.1"},"networkPort":{"title":"Port of the node","description":"The port on which the DynamoPHP-worker service listen to","type":"integer","maximum":65535,"minimum":1024,"example":9003},"weight":{"title":"Weight of the node in the ring","description":"How many slots should be assigned to the node","type":"integer","maximum":360,"minimum":1,"example":3}},"type":"object"},"JsonSuccessViewModel":{"title":"WorkerJoinSuccessResponse","properties":{"id":{"description":"The unique ID of the worker in the ring","type":"integer","minimum":1,"example":1},"label":{"description":"The unique label of the worker in the ring","type":"string","example":"A"},"slots":{"type":"array","items":{"$ref":"#/components/schemas/LabelSlot"}}},"type":"object"},"LabelsSlotsAllocationStrategy":{"type":"string","enum":["equal-size"]},"SearchWorkerInformationsResponse":{"properties":{"id":{"description":"The unique ID of the worker in the ring","type":"integer","example":1},"networkAddress":{"title":"IPv4 of the node","type":"string","example":"127.0.0.1"},"networkPort":{"title":"Port of the node","type":"integer","example":9003},"joinedAt":{"title":"The Date and Time at which the worker node joined the ring","type":"datetime","example":"2023-01-01T15:30:00+00:00"},"label":{"description":"The unique label of the worker in the ring","type":"string","example":"A"},"weight":{"title":"Weight of the node in the ring","description":"How many slots should be assigned to the node","type":"integer","example":3},"workerState":{"title":"The state of the worker node","type":"string","example":"up"}},"type":"object"}}}}}</script>
+    </head>
+<body>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="swagger-ui-logos">
+            <defs>
+                <symbol viewBox="0 0 20 20" id="unlocked">
+                    <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V6h2v-.801C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="locked">
+                    <path d="M15.8 8H14V5.6C14 2.703 12.665 1 10 1 7.334 1 6 2.703 6 5.6V8H4c-.553 0-1 .646-1 1.199V17c0 .549.428 1.139.951 1.307l1.197.387C5.672 18.861 6.55 19 7.1 19h5.8c.549 0 1.428-.139 1.951-.307l1.196-.387c.524-.167.953-.757.953-1.306V9.199C17 8.646 16.352 8 15.8 8zM12 8H8V5.199C8 3.754 8.797 3 10 3c1.203 0 2 .754 2 2.199V8z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="close">
+                    <path d="M14.348 14.849c-.469.469-1.229.469-1.697 0L10 11.819l-2.651 3.029c-.469.469-1.229.469-1.697 0-.469-.469-.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-.469-.469-.469-1.228 0-1.697.469-.469 1.228-.469 1.697 0L10 8.183l2.651-3.031c.469-.469 1.228-.469 1.697 0 .469.469.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c.469.469.469 1.229 0 1.698z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="large-arrow">
+                    <path d="M13.25 10L6.109 2.58c-.268-.27-.268-.707 0-.979.268-.27.701-.27.969 0l7.83 7.908c.268.271.268.709 0 .979l-7.83 7.908c-.268.271-.701.27-.969 0-.268-.269-.268-.707 0-.979L13.25 10z"></path>
+                </symbol>
+                <symbol viewBox="0 0 20 20" id="large-arrow-down">
+                    <path d="M17.418 6.109c.272-.268.709-.268.979 0s.271.701 0 .969l-7.908 7.83c-.27.268-.707.268-.979 0l-7.908-7.83c-.27-.268-.27-.701 0-.969.271-.268.709-.268.979 0L10 13.25l7.418-7.141z"></path>
+                </symbol>
+                <symbol viewBox="0 0 24 24" id="jump-to">
+                    <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"></path>
+                </symbol>
+                <symbol viewBox="0 0 24 24" id="expand">
+                    <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"></path>
+                </symbol>
+            </defs>
+        </svg>
+        
+            <header>
+                            <a id="logo" href="https://github.com/nelmio/NelmioApiDocBundle">
+                    <img src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/logo.png" alt="NelmioApiDocBundle">
+                </a>
+                    </header>
+    
+            <div id="swagger-ui" class="api-platform"></div>
+    
+            <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui-bundle.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/swagger-ui/swagger-ui-standalone-preset.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/nelmio/NelmioApiDocBundle/Resources/public/init-swagger-ui.js"></script>
+
+            <script type="text/javascript">
+            (function () {
+                var swaggerUI = [];
+                window.onload = loadSwaggerUI(swaggerUI);
+            })();
+        </script>
+    </body>
+</html>
+

@@ -12,6 +12,7 @@ enum HttpCode: int
     case AUTHENTICATION_REQUIRED = 401;
     case AUTHORIZATION_ERROR = 403;
     case NOT_FOUND = 404;
+    case CONFLICT = 409;
 
     case SERVER_ERROR = 500;
 }

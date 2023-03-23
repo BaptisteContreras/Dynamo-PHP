@@ -8,11 +8,6 @@ class JsonSuccessViewModel extends JsonInitLabelSlotsViewModel
 {
     public function __construct()
     {
-        parent::__construct(HttpCode::CREATED);
-    }
-
-    public function jsonSerialize(): mixed
-    {
-        return [];
+        parent::__construct(HttpCode::NO_CONTENT);
     }
 }

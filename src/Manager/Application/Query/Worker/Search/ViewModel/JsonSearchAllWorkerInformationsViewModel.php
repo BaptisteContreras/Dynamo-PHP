@@ -6,21 +6,33 @@ use App\Manager\Application\Query\Worker\Search\Response\SearchWorkerInformation
 use App\Shared\Application\JsonViewModelInterface;
 use App\Shared\Application\ViewModel;
 use App\Shared\Infrastructure\Http\HttpCode;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
+#[OA\Schema(
+    title: 'WorkerListSuccessResponse',
+)]
 class JsonSearchAllWorkerInformationsViewModel extends ViewModel implements JsonViewModelInterface
 {
     /**
      * @param array<SearchWorkerInformationsResponse> $searchWorkerInformationsResponses
      */
-    public function __construct(private readonly array $searchWorkerInformationsResponses)
+    public function __construct(#[Ignore] private readonly array $searchWorkerInformationsResponses)
     {
         parent::__construct(HttpCode::SUCCESS);
     }
 
-    public function jsonSerialize(): mixed
+    /**
+     * @return array<SearchWorkerInformationsResponse>
+     */
+    public function getWorkers(): array
     {
-        return [
-            'workers' => $this->searchWorkerInformationsResponses,
-        ];
+        return $this->searchWorkerInformationsResponses;
+    }
+
+    #[Ignore]
+    public function getCode(): HttpCode
+    {
+        return parent::getCode();
     }
 }

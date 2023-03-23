@@ -18,6 +18,7 @@ Once the docker stack is up and running, a Nginx server is listening on port 80 
 manage your database using adminer on port 8089
 
 - [App](http://localhost)
+- [API Swagger](http://localhost/api/doc)
 - [Adminer](http://localhost:8089)
 - [Postgres](database:5432)
 
