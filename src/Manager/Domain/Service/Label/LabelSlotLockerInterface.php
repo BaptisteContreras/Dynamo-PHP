@@ -5,7 +5,7 @@ namespace App\Manager\Domain\Service\Label;
 use App\Manager\Domain\Exception\AlreadyLockException;
 use App\Manager\Domain\Model\Entity\LabelSlot;
 
-interface LabelLockerInterface
+interface LabelSlotLockerInterface
 {
     /**
      * Try to lock the label and returns true if it succeeds. Instead, of throwing an exception if the lock fail, it

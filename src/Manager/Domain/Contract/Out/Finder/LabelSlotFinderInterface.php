@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Contract\Out\Finder;
 
 use App\Manager\Domain\Model\Entity\LabelSlot;
 
-interface LabelFinderInterface
+interface LabelSlotFinderInterface
 {
     /**
      * Returns all free labels slots.

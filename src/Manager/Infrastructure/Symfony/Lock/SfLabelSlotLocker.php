@@ -4,10 +4,10 @@ namespace App\Manager\Infrastructure\Symfony\Lock;
 
 use App\Manager\Domain\Exception\AlreadyLockException;
 use App\Manager\Domain\Model\Entity\LabelSlot;
-use App\Manager\Domain\Service\Label\LabelLockerInterface;
+use App\Manager\Domain\Service\Label\LabelSlotLockerInterface;
 use Symfony\Component\Lock\LockFactory;
 
-class SfLabelLocker extends SfLocker implements LabelLockerInterface
+class SfLabelSlotLocker extends SfLocker implements LabelSlotLockerInterface
 {
     private const ACTION_ASSIGNATION = 'action_assignation';
 

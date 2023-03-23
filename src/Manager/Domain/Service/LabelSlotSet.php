@@ -3,9 +3,9 @@
 namespace App\Manager\Domain\Service;
 
 use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
-use App\Manager\Domain\Contract\Out\Counter\LabelCounterInterface;
-use App\Manager\Domain\Contract\Out\Finder\LabelFinderInterface;
-use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
+use App\Manager\Domain\Contract\Out\Counter\LabelSlotCounterInterface;
+use App\Manager\Domain\Contract\Out\Finder\LabelSlotFinderInterface;
+use App\Manager\Domain\Contract\Out\Repository\LabelSlotRepositoryInterface;
 use App\Manager\Domain\Contract\Out\Repository\WorkerNodeRepositoryInterface;
 use App\Manager\Domain\Exception\LabelsSlotsAlreadyInitializedException;
 use App\Manager\Domain\Exception\NoFreeLabelSlotFoundException;
@@ -13,8 +13,8 @@ use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Exception\UnsupportedLabelSlotInitStrategyException;
 use App\Manager\Domain\Model\Entity\WorkerNode;
 use App\Manager\Domain\Service\Label\Init\LabelSlotInitStrategyInterface;
-use App\Manager\Domain\Service\Label\LabelAssignationStrategyInterface;
-use App\Manager\Domain\Service\Label\LabelLockerInterface;
+use App\Manager\Domain\Service\Label\LabelSlotAssignationStrategyInterface;
+use App\Manager\Domain\Service\Label\LabelSlotLockerInterface;
 use Psr\Log\LoggerInterface;
 
 class LabelSlotSet
@@ -23,13 +23,13 @@ class LabelSlotSet
      * @param iterable<LabelSlotInitStrategyInterface> $initStrategies
      */
     public function __construct(
-        private readonly LabelCounterInterface $labelCounter,
-        private readonly LabelAssignationStrategyInterface $labelAssignationStrategy,
+        private readonly LabelSlotCounterInterface $labelSlotCounter,
+        private readonly LabelSlotAssignationStrategyInterface $labelSlotAssignationStrategy,
         private readonly LoggerInterface $logger,
-        private readonly LabelLockerInterface $labelLocker,
+        private readonly LabelSlotLockerInterface $labelSlotLocker,
         private readonly WorkerNodeRepositoryInterface $workerNodeRepository,
-        private readonly LabelRepositoryInterface $labelRepository,
-        private readonly LabelFinderInterface $labelFinder,
+        private readonly LabelSlotRepositoryInterface $labelSlotRepository,
+        private readonly LabelSlotFinderInterface $labelSlotFinder,
         private readonly iterable $initStrategies
     ) {
     }
@@ -49,7 +49,7 @@ class LabelSlotSet
      */
     public function acquireSlots(WorkerNode $workerNode, int $numberOfSlots, bool $strictRequirement): void
     {
-        $labelSlots = $this->labelAssignationStrategy->selectSlots($numberOfSlots, $strictRequirement);
+        $labelSlots = $this->labelSlotAssignationStrategy->selectSlots($numberOfSlots, $strictRequirement);
         $nbLabelSlotsFound = count($labelSlots);
 
         if (0 === $nbLabelSlotsFound) {
@@ -82,11 +82,11 @@ class LabelSlotSet
 
             $labelSlot->setOwnership($workerNode);
 
-            $this->labelRepository->update($labelSlot, false);
+            $this->labelSlotRepository->update($labelSlot, false);
         }
 
         $this->workerNodeRepository->update($workerNode, true);
-        $this->labelLocker->unlockSlotsForAssignation($labelSlots);
+        $this->labelSlotLocker->unlockSlotsForAssignation($labelSlots);
     }
 
     /**
@@ -102,10 +102,10 @@ class LabelSlotSet
 
             $labelSlot->resetOwnership();
 
-            $this->labelRepository->update($labelSlot, false);
+            $this->labelSlotRepository->update($labelSlot, false);
         }
 
-        $this->labelRepository->flushTransaction();
+        $this->labelSlotRepository->flushTransaction();
     }
 
     /**
@@ -116,7 +116,7 @@ class LabelSlotSet
      */
     public function hasFreeSlots(): bool
     {
-        return $this->labelCounter->countFree() > 0;
+        return $this->labelSlotCounter->countFree() > 0;
     }
 
     /**
@@ -127,12 +127,12 @@ class LabelSlotSet
      */
     public function reset(): void
     {
-        foreach ($this->labelFinder->findAllSlots() as $labelSlot) {
+        foreach ($this->labelSlotFinder->findAllSlots() as $labelSlot) {
             $labelSlot->resetOwnership();
-            $this->labelRepository->remove($labelSlot, false);
+            $this->labelSlotRepository->remove($labelSlot, false);
         }
 
-        $this->labelRepository->flushTransaction();
+        $this->labelSlotRepository->flushTransaction();
     }
 
     /**
@@ -146,7 +146,7 @@ class LabelSlotSet
      */
     public function init(LabelsSlotsAllocationStrategy $allocationStrategy): void
     {
-        if ($this->labelCounter->countAll() > 0) {
+        if ($this->labelSlotCounter->countAll() > 0) {
             throw new LabelsSlotsAlreadyInitializedException();
         }
 

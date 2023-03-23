@@ -16,6 +16,11 @@ parameters:
 			path: src/Manager/Application/Command/Ring/Init/Presenter/JsonPresenter.php
 
 		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Init\\\\ViewModel\\\\JsonValidationErrorViewModel\\:\\:getErrors\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Ring/Init/ViewModel/JsonValidationErrorViewModel.php
+
+		-
 			message: "#^Call to an undefined method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\Response\\\\ResetRingResponse\\:\\:getError\\(\\)\\.$#"
 			count: 1
 			path: src/Manager/Application/Command/Ring/Reset/Presenter/JsonPresenter.php
@@ -29,6 +34,11 @@ parameters:
 			message: "#^Property App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\ResetRingCommandHandler\\:\\:\\$validator is never read, only written\\.$#"
 			count: 1
 			path: src/Manager/Application/Command/Ring/Reset/ResetRingCommandHandler.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Ring\\\\Reset\\\\ViewModel\\\\JsonValidationErrorViewModel\\:\\:getErrors\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Ring/Reset/ViewModel/JsonValidationErrorViewModel.php
 
 		-
 			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\JoinRequest\\:\\:getNetworkAddress\\(\\) should return string but returns string\\|null\\.$#"
@@ -66,6 +76,16 @@ parameters:
 			path: src/Manager/Application/Command/Worker/Join/Presenter/JsonPresenter.php
 
 		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\ViewModel\\\\JsonSuccessViewModel\\:\\:getSlots\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Join/ViewModel/JsonSuccessViewModel.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Join\\\\ViewModel\\\\JsonValidationErrorViewModel\\:\\:getErrors\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Application/Command/Worker/Join/ViewModel/JsonValidationErrorViewModel.php
+
+		-
 			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Leave\\\\LeaveRequest\\:\\:getWorkerId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Manager/Application/Command/Worker/Leave/LeaveRequest.php
@@ -86,19 +106,9 @@ parameters:
 			path: src/Manager/Application/Command/Worker/Leave/Presenter/JsonPresenter.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:getSubLabels\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Worker\\\\Leave\\\\ViewModel\\\\JsonValidationErrorViewModel\\:\\:getErrors\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
-
-		-
-			message: "#^Property App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:\\$subLabels is never written, only read\\.$#"
-			count: 1
-			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
-
-		-
-			message: "#^Property App\\\\Manager\\\\Domain\\\\Model\\\\Dto\\\\WorkerNodeDto\\:\\:\\$workerPreferenceList is never written, only read\\.$#"
-			count: 1
-			path: src/Manager/Domain/Model/Dto/WorkerNodeDto.php
+			path: src/Manager/Application/Command/Worker/Leave/ViewModel/JsonValidationErrorViewModel.php
 
 		-
 			message: "#^Method App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\WorkerNode\\:\\:getLabelSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\.$#"
@@ -106,14 +116,14 @@ parameters:
 			path: src/Manager/Domain/Model/Entity/WorkerNode.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelRepositoryInterface\\:\\:findAllSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\<int, object\\>\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelSlotRepositoryInterfaceSlotSlot\\:\\:findAllSlots\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns array\\<int, object\\>\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelRepositoryInterface.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelSlotRepositoryInterfaceSlotSlot.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelRepositoryInterface\\:\\:findFree\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns mixed\\.$#"
+			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceLabelSlotRepositoryInterfaceSlotSlot\\:\\:findFree\\(\\) should return array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Entity\\\\LabelSlot\\> but returns mixed\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelRepositoryInterface.php
+			path: src/Manager/Infrastructure/Persistence/Repository/DoctrineInterfaceLabelSlotRepositoryInterfaceSlotSlot.php
 
 		-
 			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\DoctrineInterfaceWorkerNodeRepository\\:\\:findAll\\(\\) should return array\\<int, object\\> but returns mixed\\.$#"

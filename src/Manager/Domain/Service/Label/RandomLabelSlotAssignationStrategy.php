@@ -2,17 +2,17 @@
 
 namespace App\Manager\Domain\Service\Label;
 
-use App\Manager\Domain\Contract\Out\Finder\LabelFinderInterface;
+use App\Manager\Domain\Contract\Out\Finder\LabelSlotFinderInterface;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 
 /**
  * This is not a very smart strategy to assign label, but it does the job for testing so..
  */
-class RandomLabelAssignationStrategy implements LabelAssignationStrategyInterface
+class RandomLabelSlotAssignationStrategy implements LabelSlotAssignationStrategyInterface
 {
     public function __construct(
-        private readonly LabelFinderInterface $labelFinder,
-        private readonly LabelLockerInterface $labelLocker
+        private readonly LabelSlotFinderInterface $labelFinder,
+        private readonly LabelSlotLockerInterface $labelLocker
     ) {
     }
 
