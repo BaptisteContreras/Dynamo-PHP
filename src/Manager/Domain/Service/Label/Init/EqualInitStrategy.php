@@ -3,7 +3,7 @@
 namespace App\Manager\Domain\Service\Label\Init;
 
 use App\Manager\Domain\Constante\Enum\LabelsSlotsAllocationStrategy;
-use App\Manager\Domain\Contract\Out\Repository\LabelRepositoryInterface;
+use App\Manager\Domain\Contract\Out\Repository\LabelSlotRepositoryInterface;
 use App\Manager\Domain\Model\Entity\LabelSlot;
 
 class EqualInitStrategy implements LabelSlotInitStrategyInterface
@@ -12,7 +12,7 @@ class EqualInitStrategy implements LabelSlotInitStrategyInterface
     private const MAX = 360; // TODO should be a parameter later
 
     public function __construct(
-        private readonly LabelRepositoryInterface $labelRepository
+        private readonly LabelSlotRepositoryInterface $labelRepository
     ) {
     }
 

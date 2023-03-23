@@ -5,7 +5,7 @@ namespace App\Manager\Domain\Service\Label;
 use App\Manager\Domain\Exception\NotEnoughFreeLabelSlotException;
 use App\Manager\Domain\Model\Entity\LabelSlot;
 
-interface LabelAssignationStrategyInterface
+interface LabelSlotAssignationStrategyInterface
 {
     /**
      * The strategy must select $nbSlotRequired free label slot to assign to a worker node.

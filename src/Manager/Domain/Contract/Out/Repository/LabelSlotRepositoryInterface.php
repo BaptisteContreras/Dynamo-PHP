@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Contract\Out\Repository;
 
 use App\Manager\Domain\Model\Entity\LabelSlot;
 
-interface LabelRepositoryInterface
+interface LabelSlotRepositoryInterface
 {
     /**
      * Add the creation of the label to the current transaction.
