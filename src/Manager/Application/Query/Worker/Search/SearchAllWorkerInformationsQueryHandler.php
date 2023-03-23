@@ -8,12 +8,10 @@ use App\Manager\Application\Query\Worker\Search\Response\SearchAllWorkerInformat
 
 class SearchAllWorkerInformationsQueryHandler
 {
-    /**         Constructor         **/
     public function __construct(private readonly WorkerInformationsSearcher $workerInformationsSearcher)
     {
     }
 
-    /**         Methods         **/
     public function __invoke(
         SearchAllWorkerInformationsRequest $searchAllWorkerInformationsRequest,
         SearchAllWorkerInformationsPresenter $abstractSearchAllWorkerInformationsPresenter

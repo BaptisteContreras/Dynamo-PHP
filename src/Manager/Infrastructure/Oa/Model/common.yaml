@@ -1,0 +1,37 @@
+parameters:
+  OaValidationErrorList:
+    description: 'Represents a list of invalid value for a payload'
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: '#/components/schemas/ValidationError'
+
+
+  OaValidationError:
+    description: 'Represents an invalid value for a property of a payload'
+    type: object
+    properties:
+      property:
+        description: 'The faulty property name'
+        type: string
+        example: 'propertyName'
+      message:
+        description: 'The error message for this property'
+        type: string
+        example: 'error'
+
+  OaBusinessError:
+    description: 'Represents an invalid action that is not allowed in the current state of the application'
+    type: object
+    properties:
+      error:
+        description: 'More details about the exception that happened'
+        type: string
+        example: 'error message'
+
+  OaTechnicalError:
+    description: 'Represents a technical error on our side'
+    type: string
+    example: 'error message'

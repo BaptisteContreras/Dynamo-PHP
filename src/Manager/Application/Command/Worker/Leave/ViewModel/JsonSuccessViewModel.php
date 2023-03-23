@@ -10,9 +10,4 @@ class JsonSuccessViewModel extends JsonLeaveViewModel
     {
         parent::__construct(HttpCode::NO_CONTENT);
     }
-
-    public function jsonSerialize(): mixed
-    {
-        return [];
-    }
 }

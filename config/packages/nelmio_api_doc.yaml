@@ -1,0 +1,19 @@
+imports:
+    - { resource: ../../src/Manager/Infrastructure/Symfony/manager-nelmio_api_doc.yaml }
+
+nelmio_api_doc:
+    documentation:
+        info:
+            title: DynamoPHP master node
+            description: Master node API. You can join / leave or check the state of the ring
+            version: 1.0.0
+        components:
+            schemas:
+                LabelSlot: '%OaLabelSlot%'
+                ValidationErrorList: '%OaValidationErrorList%'
+                ValidationError: '%OaValidationError%'
+                BusinessError: '%OaBusinessError%'
+                TechnicalError: '%OaTechnicalError%'
+    areas:
+        default:
+            path_patterns: [ ^/ring, ^/workers ]

@@ -2,6 +2,6 @@
 
 namespace App\Shared\Application;
 
-interface JsonViewModelInterface extends ViewModelInterface, \JsonSerializable
+interface JsonViewModelInterface extends ViewModelInterface
 {
 }

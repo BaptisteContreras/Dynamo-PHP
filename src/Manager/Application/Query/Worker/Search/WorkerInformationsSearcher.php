@@ -7,12 +7,9 @@ use App\Manager\Domain\Model\Entity\WorkerNode;
 
 class WorkerInformationsSearcher
 {
-    /**         Constructor         **/
     public function __construct(private readonly WorkerNodeFinderInterface $workerNodeFinder)
     {
     }
-
-    /**         Methods         **/
 
     /**
      * @return array<WorkerNode>
