@@ -1,0 +1,4 @@
+manager_controllers:
+  resource: ../../src/Manager/Infrastructure/Symfony/Controller/
+  prefix: /manager
+  type: attribute

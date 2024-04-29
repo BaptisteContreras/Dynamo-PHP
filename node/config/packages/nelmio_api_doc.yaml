@@ -1,0 +1,25 @@
+imports:
+    - { resource: ../../src/Manager/Infrastructure/Symfony/config/manager-nelmio_api_doc.yaml }
+
+nelmio_api_doc:
+    documentation:
+        info:
+            title: DynamoPHP node
+            description: Node API
+            version: 1.0.0
+        components:
+            schemas:
+                LabelSlot: '%OaLabelSlot%'
+                ValidationErrorList: '%OaValidationErrorList%'
+                ValidationError: '%OaValidationError%'
+                BusinessError: '%OaBusinessError%'
+                TechnicalError: '%OaTechnicalError%'
+                BadRequestError: '%OaBadRequestError%'
+
+    areas:
+        default:
+            path_patterns: [ ^/api ]
+        background:
+            path_patterns: [ ^/background ]
+        manager:
+            path_patterns: [ ^/manager ]

@@ -1,0 +1,4 @@
+background_controllers:
+  resource: ../../src/Background/Infrastructure/Symfony/Controller/
+  prefix: /background
+  type: attribute

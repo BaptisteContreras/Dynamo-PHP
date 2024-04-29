@@ -1,0 +1,4 @@
+imports:
+  - { resource: ../../Oa/Model/node.yaml }
+  - { resource: ../../Oa/Model/label-slot.yaml }
+  - { resource: ../../Oa/Model/common.yaml }

@@ -1,0 +1,3 @@
+parameters:
+  OaNode:
+    description: "Represent a node participating in the ring"
