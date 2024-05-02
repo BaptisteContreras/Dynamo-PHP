@@ -9,12 +9,13 @@ final class Node
 {
     public function __construct(
         private readonly UuidV7 $id,
-        private readonly string $networkAddress,
+        private readonly string $host,
         private readonly int $networkPort,
         private NodeState $state,
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
-        private readonly bool $selfEntry
+        private readonly bool $selfEntry,
+        private readonly bool $seed
     ) {
     }
 
@@ -23,9 +24,9 @@ final class Node
         return $this->id;
     }
 
-    public function getNetworkAddress(): string
+    public function getHost(): string
     {
-        return $this->networkAddress;
+        return $this->host;
     }
 
     public function getNetworkPort(): int
@@ -56,5 +57,10 @@ final class Node
     public function isSelfEntry(): bool
     {
         return $this->selfEntry;
+    }
+
+    public function isSeed(): bool
+    {
+        return $this->seed;
     }
 }

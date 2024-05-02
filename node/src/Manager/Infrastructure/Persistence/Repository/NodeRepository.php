@@ -18,7 +18,7 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         parent::__construct($registry, NodeEntity::class);
     }
 
-    public function createSelfNode(string $networkAddress, int $networkPort, int $weight, \DateTimeImmutable $joinedAt): void
+    public function createSelfNode(string $networkAddress, int $networkPort, int $weight, bool $isSeed, \DateTimeImmutable $joinedAt): void
     {
         $selfNode = new NodeEntity(
             $networkAddress,
@@ -26,7 +26,8 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             NodeState::JOINING,
             $joinedAt,
             $weight,
-            true
+            true,
+            $isSeed
         );
 
         $this->getEntityManager()->persist($selfNode);
@@ -40,13 +41,14 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
     private function dtoToEntity(Node $node): NodeEntity
     {
         return new NodeEntity(
-            $node->getNetworkAddress(),
+            $node->getHost(),
             $node->getNetworkPort(),
             $node->getState(),
             $node->getJoinedAt(),
             $node->getWeight(),
             $node->isSelfEntry(),
-            $node->getId(),
+            $node->isSeed(),
+            $node->getId()
         );
     }
 
@@ -65,12 +67,13 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
 
         return new Node(
             $id,
-            $nodeEntity->getNetworkAddress(),
+            $nodeEntity->getHost(),
             $nodeEntity->getNetworkPort(),
             $nodeEntity->getState(),
             $nodeEntity->getJoinedAt(),
             $nodeEntity->getWeight(),
-            $nodeEntity->isSelfEntry()
+            $nodeEntity->isSelfEntry(),
+            $nodeEntity->isSeed()
         );
     }
 

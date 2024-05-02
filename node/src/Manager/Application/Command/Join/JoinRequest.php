@@ -4,7 +4,7 @@ namespace App\Manager\Application\Command\Join;
 
 use App\Shared\Domain\Const\RingInformations;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Validator\Constraints\Ip;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
@@ -14,14 +14,14 @@ final class JoinRequest
     private const MAX_PORT = 65535;
 
     #[OA\Property(
-        title: 'IPv4 of the node',
-        description: 'This field must respect the IPv4 format',
+        title: 'Host of the node',
+        description: 'Network host of the node',
         type: 'string',
-        example: '127.0.0.1',
+        example: 'localhost',
     )]
     #[NotBlank]
-    #[Ip]
-    private ?string $networkAddress = null;
+    #[Length(min: 3, max: 255)]
+    private ?string $host = null;
 
     #[OA\Property(
         title: 'Port of the node',
@@ -53,16 +53,23 @@ final class JoinRequest
     )]
     private ?int $weight = null;
 
-    public function __construct(?string $networkAddress, ?int $networkPort, ?int $weight)
+    #[OA\Property(
+        title: 'Is this node a seed',
+        type: 'bool',
+        example: true,
+    )]
+    private bool $seed = false;
+
+    public function __construct(?string $host, ?int $networkPort, ?int $weight)
     {
-        $this->networkAddress = $networkAddress;
+        $this->host = $host;
         $this->networkPort = $networkPort;
         $this->weight = $weight;
     }
 
-    public function getNetworkAddress(): string
+    public function getHost(): string
     {
-        return $this->networkAddress;
+        return $this->host;
     }
 
     public function getNetworkPort(): int
@@ -73,5 +80,10 @@ final class JoinRequest
     public function getWeight(): int
     {
         return $this->weight;
+    }
+
+    public function isSeed(): bool
+    {
+        return $this->seed;
     }
 }

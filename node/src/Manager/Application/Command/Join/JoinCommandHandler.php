@@ -24,9 +24,10 @@ readonly class JoinCommandHandler
         $this->canJoin();
 
         $this->nodeCreator->createSelfNode(
-            $joinRequest->getNetworkAddress(),
+            $joinRequest->getHost(),
             $joinRequest->getNetworkPort(),
             $joinRequest->getWeight(),
+            $joinRequest->isSeed(),
             new \DateTimeImmutable()
         );
 

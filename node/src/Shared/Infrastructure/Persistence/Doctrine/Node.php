@@ -14,12 +14,13 @@ use Symfony\Component\Uid\UuidV7;
 class Node
 {
     public function __construct(
-        #[Column(type: Types::STRING, length: 15)] private string $networkAddress,
+        #[Column(type: Types::STRING, length: 255)] private string $host,
         #[Column(type: Types::INTEGER)] private int $networkPort,
         #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $state,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $joinedAt,
         #[Column(type: Types::SMALLINT)] private int $weight,
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
+        #[Column(type: Types::BOOLEAN)] private bool $seed,
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
     ) {
     }
@@ -29,9 +30,9 @@ class Node
         return $this->id;
     }
 
-    public function getNetworkAddress(): string
+    public function getHost(): string
     {
-        return $this->networkAddress;
+        return $this->host;
     }
 
     public function getNetworkPort(): int
@@ -62,5 +63,10 @@ class Node
     public function isSelfEntry(): bool
     {
         return $this->selfEntry;
+    }
+
+    public function isSeed(): bool
+    {
+        return $this->seed;
     }
 }
