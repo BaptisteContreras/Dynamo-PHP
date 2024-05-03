@@ -23,11 +23,13 @@ readonly class JoinCommandHandler
     {
         $this->canJoin();
 
+        $selfNodeRequest = $joinRequest->getSelfNode();
+
         $this->nodeCreator->createSelfNode(
-            $joinRequest->getHost(),
-            $joinRequest->getNetworkPort(),
-            $joinRequest->getWeight(),
-            $joinRequest->isSeed(),
+            $selfNodeRequest->getHost(),
+            $selfNodeRequest->getNetworkPort(),
+            $selfNodeRequest->getWeight(),
+            $selfNodeRequest->isSeed(),
             new \DateTimeImmutable()
         );
 
