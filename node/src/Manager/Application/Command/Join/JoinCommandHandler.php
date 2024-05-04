@@ -8,14 +8,17 @@ use App\Manager\Domain\Exception\AlreadyJoinedException;
 use App\Manager\Domain\Model\Node;
 use App\Manager\Domain\Out\Node\CreatorInterface;
 use App\Manager\Domain\Out\Node\FinderInterface;
+use App\Shared\Domain\Event\EventBusInterface;
+use App\Shared\Domain\Event\Sync\JoinedRingEvent;
 use App\Shared\Domain\Out\StorageTransactionManagerInterface;
 
-readonly class JoinCommandHandler
+final readonly class JoinCommandHandler
 {
     public function __construct(
         private StorageTransactionManagerInterface $storageTransactionManager,
         private CreatorInterface $nodeCreator,
-        private FinderInterface $nodeFinder
+        private FinderInterface $nodeFinder,
+        private EventBusInterface $eventBus
     ) {
     }
 
@@ -38,6 +41,11 @@ readonly class JoinCommandHandler
         /** @var Node $selfNode */
         $selfNode = $this->nodeFinder->findSelfEntry();
 
+        $this->eventBus->publish(new JoinedRingEvent(
+            $selfNode->getId()->toRfc4122(),
+            $this->convertSeedsForEvent($joinRequest->getInitialSeeds())
+        ));
+
         $joinPresenter->present(JoinResponse::success($selfNode));
     }
 
@@ -49,5 +57,18 @@ readonly class JoinCommandHandler
         if ($this->nodeFinder->findSelfEntry()) {
             throw new AlreadyJoinedException();
         }
+    }
+
+    /**
+     * @param array<SeedRequest> $seeds
+     *
+     * @return array<array{'host': string, 'networkPort': positive-int}>
+     */
+    private function convertSeedsForEvent(array $seeds): array
+    {
+        return array_map(fn (SeedRequest $seedRequest) => [
+            'host' => $seedRequest->getHost(),
+            'networkPort' => $seedRequest->getNetworkPort(),
+        ], $seeds);
     }
 }

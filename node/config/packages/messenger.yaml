@@ -1,0 +1,18 @@
+framework:
+    messenger:
+        transports:
+             sync: 'sync://'
+
+        routing:
+            App\Shared\Domain\Event\Sync\SyncDomainEvent: 'sync'
+            '*' : 'sync'
+
+        default_bus: event.bus
+        buses:
+            event.bus:
+                default_middleware:
+                    enabled: true
+                    allow_no_handlers: true
+                    allow_no_senders: true
+                middleware:
+                    - validation

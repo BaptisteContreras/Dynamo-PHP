@@ -48,8 +48,12 @@ abstract readonly class NodeRequest
         return $this->host;
     }
 
+    /**
+     * @return positive-int
+     */
     public function getNetworkPort(): int
     {
+        /* @var positive-int */
         return $this->networkPort;
     }
 }
