@@ -50,9 +50,11 @@ class Node
         return $this->state;
     }
 
-    public function setState(NodeState $state): void
+    public function setState(NodeState $state): static
     {
         $this->state = $state;
+
+        return $this;
     }
 
     public function getJoinedAt(): \DateTimeImmutable

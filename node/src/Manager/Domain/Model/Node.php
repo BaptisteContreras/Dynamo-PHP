@@ -78,4 +78,9 @@ final class Node
     {
         return $this->label;
     }
+
+    public function setState(NodeState $state): void
+    {
+        $this->state = $state;
+    }
 }

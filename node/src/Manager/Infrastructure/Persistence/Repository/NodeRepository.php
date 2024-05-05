@@ -39,7 +39,16 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
 
     public function saveNode(Node $node): void
     {
-        $this->getEntityManager()->persist($this->dtoToEntity($node));
+        $nodeEntity = $this->find($node->getId());
+
+        if ($nodeEntity instanceof NodeEntity) {
+            $this->mergeDtoInEntity($node, $nodeEntity);
+        } else {
+            $nodeEntity = $this->dtoToEntity($node);
+        }
+
+        $this->getEntityManager()->persist($nodeEntity);
+        $this->getEntityManager()->flush();
     }
 
     public function findAll(): array
@@ -58,36 +67,43 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         return $selfNode ? $this->entityToDto($selfNode) : null;
     }
 
-    private function dtoToEntity(Node $node): NodeEntity
+    private function dtoToEntity(Node $dto): NodeEntity
     {
         return new NodeEntity(
-            $node->getHost(),
-            $node->getNetworkPort(),
-            $node->getState(),
-            $node->getJoinedAt(),
-            $node->getWeight(),
-            $node->isSelfEntry(),
-            $node->isSeed(),
-            $node->getLabel(),
-            $node->getId()
+            $dto->getHost(),
+            $dto->getNetworkPort(),
+            $dto->getState(),
+            $dto->getJoinedAt(),
+            $dto->getWeight(),
+            $dto->isSelfEntry(),
+            $dto->isSeed(),
+            $dto->getLabel(),
+            $dto->getId()
         );
     }
 
-    private function entityToDto(NodeEntity $nodeEntity): Node
+    private function entityToDto(NodeEntity $entity): Node
     {
         /** @var UuidV7 $id */
-        $id = $nodeEntity->getId();
+        $id = $entity->getId();
 
         return new Node(
             $id,
-            $nodeEntity->getHost(),
-            $nodeEntity->getNetworkPort(),
-            $nodeEntity->getState(),
-            $nodeEntity->getJoinedAt(),
-            $nodeEntity->getWeight(),
-            $nodeEntity->isSelfEntry(),
-            $nodeEntity->isSeed(),
-            $nodeEntity->getLabel()
+            $entity->getHost(),
+            $entity->getNetworkPort(),
+            $entity->getState(),
+            $entity->getJoinedAt(),
+            $entity->getWeight(),
+            $entity->isSelfEntry(),
+            $entity->isSeed(),
+            $entity->getLabel()
         );
+    }
+
+    private function mergeDtoInEntity(Node $dto, NodeEntity $entity): void
+    {
+        $entity
+            ->setState($dto->getState())
+        ;
     }
 }

@@ -41,7 +41,7 @@ final readonly class JoinCommandHandler
 
         $this->virtualNodeAttributor->attributeVirtualNodes($selfNode, $ringConfigRequest->getVirtualNodeAttributionStrategy());
 
-        //        $this->nodeCreator->saveNode($selfNode);
+        $this->nodeCreator->saveNode($selfNode);
 
         $this->eventBus->publish(new JoinedRingEvent(
             $selfNode->getId()->toRfc4122(),
