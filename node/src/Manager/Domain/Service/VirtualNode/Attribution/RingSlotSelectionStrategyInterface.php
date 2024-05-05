@@ -2,16 +2,14 @@
 
 namespace App\Manager\Domain\Service\VirtualNode\Attribution;
 
-use App\Manager\Domain\Model\VirtualNode;
-
-interface VirtualNodeAttributionStrategyInterface
+interface RingSlotSelectionStrategyInterface
 {
     public function getName(): string;
 
     /**
      * @param positive-int $numberOfVirtualNode
      *
-     * @return array<VirtualNode>
+     * @return array<int, int>
      */
     public function getVirtualNodes(string $label, int $numberOfVirtualNode): array;
 }

@@ -8,7 +8,8 @@ use Symfony\Component\Uid\UuidV7;
 final class Node
 {
     /**
-     * @param positive-int $weight
+     * @param positive-int       $weight
+     * @param array<VirtualNode> $virtualNodes
      */
     public function __construct(
         private readonly UuidV7 $id,
@@ -19,7 +20,8 @@ final class Node
         private int $weight,
         private readonly bool $selfEntry,
         private readonly bool $seed,
-        private readonly string $label
+        private readonly string $label,
+        private array $virtualNodes = []
     ) {
     }
 
@@ -82,5 +84,20 @@ final class Node
     public function setState(NodeState $state): void
     {
         $this->state = $state;
+    }
+
+    /**
+     * @return array<VirtualNode>
+     */
+    public function getVirtualNodes(): array
+    {
+        return $this->virtualNodes;
+    }
+
+    public function addVirtualNode(VirtualNode $virtualNode): static
+    {
+        $this->virtualNodes[] = $virtualNode;
+
+        return $this;
     }
 }

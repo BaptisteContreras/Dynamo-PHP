@@ -14,7 +14,7 @@ final readonly class ConfigRequest
         title: 'Virtual node attribution strategy',
         description: 'Strategy to initialize the virtual node int the ring for this node',
         type: 'string',
-        maximum: RingInformations::MAX_LABEL_SLOTS,
+        maximum: RingInformations::MAX_SLOTS,
         example: RandomStrategy::NAME,
     )]
     #[NotBlank]

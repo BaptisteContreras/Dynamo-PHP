@@ -1,6 +1,6 @@
 <?php
 
-use App\Manager\Domain\Service\VirtualNode\Attribution\VirtualNodeAttributionStrategyInterface;
+use App\Manager\Domain\Service\VirtualNode\Attribution\RingSlotSelectionStrategyInterface;
 use App\Manager\Domain\Service\VirtualNode\Attribution\VirtualNodeAttributor;
 use App\Shared\Domain\Event\EventHandlerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -17,8 +17,8 @@ return function (ContainerConfigurator $container): void {
     $services->instanceof(EventHandlerInterface::class)
         ->tag('messenger.message_handler', ['bus' => 'event.bus']);
 
-    $services->instanceof(VirtualNodeAttributionStrategyInterface::class)
-        ->tag('app.manager.virtual_node_attribution_strategy');
+    $services->instanceof(RingSlotSelectionStrategyInterface::class)
+        ->tag('app.manager.ring_slot_selection_strategy');
 
     $services->load('App\\Manager\\Application\\', '../../../Application');
     $services->load('App\\Manager\\Domain\\', '../../../Domain');
@@ -27,5 +27,5 @@ return function (ContainerConfigurator $container): void {
         ->exclude('config');
 
     $services->set(VirtualNodeAttributor::class)
-        ->arg('$attributionStrategies', tagged_iterator('app.manager.virtual_node_attribution_strategy'));
+        ->arg('$ringSlotSelectionStategies', tagged_iterator('app.manager.ring_slot_selection_strategy'));
 };

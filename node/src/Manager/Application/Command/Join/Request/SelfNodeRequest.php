@@ -15,14 +15,14 @@ final readonly class SelfNodeRequest extends NodeRequest
         title: 'Weight of the node in the ring',
         description: 'How many slots should be assigned to the node',
         type: 'integer',
-        maximum: RingInformations::MAX_LABEL_SLOTS,
+        maximum: RingInformations::MAX_SLOTS,
         minimum: 1,
         example: 3,
     )]
     #[NotBlank]
     #[Range(
         min: 1,
-        max: RingInformations::MAX_LABEL_SLOTS,
+        max: RingInformations::MAX_SLOTS,
     )]
     private int $weight;
 
