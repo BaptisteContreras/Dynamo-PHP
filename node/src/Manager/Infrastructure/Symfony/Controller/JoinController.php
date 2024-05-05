@@ -3,8 +3,8 @@
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
 use App\Manager\Application\Command\Join\JoinCommandHandler;
-use App\Manager\Application\Command\Join\JoinRequest;
 use App\Manager\Application\Command\Join\Presenter\JoinPresenter;
+use App\Manager\Application\Command\Join\Request\JoinRequest;
 use App\Manager\Application\Command\Join\ViewModel\JsonSuccessViewModel;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Nelmio\ApiDocBundle\Annotation\Model;

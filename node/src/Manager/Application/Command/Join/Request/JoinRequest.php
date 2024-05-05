@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\Join;
+namespace App\Manager\Application\Command\Join\Request;
 
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -22,13 +22,20 @@ final readonly class JoinRequest
     #[Valid]
     private array $initialSeeds;
 
+    #[OA\Property(
+        title: 'Ring configuration',
+    )]
+    #[Valid]
+    private ConfigRequest $config;
+
     /**
      * @param array<SeedRequest> $initialSeeds
      */
-    public function __construct(SelfNodeRequest $selfNode, array $initialSeeds = [])
+    public function __construct(SelfNodeRequest $selfNode, ConfigRequest $config, array $initialSeeds = [])
     {
         $this->selfNode = $selfNode;
         $this->initialSeeds = $initialSeeds;
+        $this->config = $config;
     }
 
     public function getSelfNode(): SelfNodeRequest
@@ -42,5 +49,10 @@ final readonly class JoinRequest
     public function getInitialSeeds(): array
     {
         return $this->initialSeeds;
+    }
+
+    public function getConfig(): ConfigRequest
+    {
+        return $this->config;
     }
 }

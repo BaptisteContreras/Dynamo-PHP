@@ -3,22 +3,23 @@
 namespace App\Manager\Application\Command\Join;
 
 use App\Manager\Application\Command\Join\Presenter\JoinPresenter;
+use App\Manager\Application\Command\Join\Request\JoinRequest;
+use App\Manager\Application\Command\Join\Request\SeedRequest;
 use App\Manager\Application\Command\Join\Response\JoinResponse;
 use App\Manager\Domain\Exception\AlreadyJoinedException;
-use App\Manager\Domain\Model\Node;
 use App\Manager\Domain\Out\Node\CreatorInterface;
 use App\Manager\Domain\Out\Node\FinderInterface;
+use App\Manager\Domain\Service\VirtualNode\Attribution\VirtualNodeAttributor;
 use App\Shared\Domain\Event\EventBusInterface;
 use App\Shared\Domain\Event\Sync\JoinedRingEvent;
-use App\Shared\Domain\Out\StorageTransactionManagerInterface;
 
 final readonly class JoinCommandHandler
 {
     public function __construct(
-        private StorageTransactionManagerInterface $storageTransactionManager,
         private CreatorInterface $nodeCreator,
         private FinderInterface $nodeFinder,
-        private EventBusInterface $eventBus
+        private EventBusInterface $eventBus,
+        private VirtualNodeAttributor $virtualNodeAttributor
     ) {
     }
 
@@ -27,19 +28,20 @@ final readonly class JoinCommandHandler
         $this->canJoin();
 
         $selfNodeRequest = $joinRequest->getSelfNode();
+        $ringConfigRequest = $joinRequest->getConfig();
 
-        $this->nodeCreator->createSelfNode(
+        $selfNode = $this->nodeCreator->createSelfNode(
             $selfNodeRequest->getHost(),
             $selfNodeRequest->getNetworkPort(),
             $selfNodeRequest->getWeight(),
             $selfNodeRequest->isSeed(),
+            $selfNodeRequest->getLabel(),
             new \DateTimeImmutable()
         );
 
-        $this->storageTransactionManager->flush();
+        $this->virtualNodeAttributor->attributeVirtualNodes($selfNode, $ringConfigRequest->getVirtualNodeAttributionStrategy());
 
-        /** @var Node $selfNode */
-        $selfNode = $this->nodeFinder->findSelfEntry();
+        //        $this->nodeCreator->saveNode($selfNode);
 
         $this->eventBus->publish(new JoinedRingEvent(
             $selfNode->getId()->toRfc4122(),

@@ -7,6 +7,9 @@ use Symfony\Component\Uid\UuidV7;
 
 final class Node
 {
+    /**
+     * @param positive-int $weight
+     */
     public function __construct(
         private readonly UuidV7 $id,
         private readonly string $host,
@@ -15,7 +18,8 @@ final class Node
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private readonly bool $selfEntry,
-        private readonly bool $seed
+        private readonly bool $seed,
+        private readonly string $label
     ) {
     }
 
@@ -44,11 +48,17 @@ final class Node
         return $this->joinedAt;
     }
 
+    /**
+     * @return positive-int
+     */
     public function getWeight(): int
     {
         return $this->weight;
     }
 
+    /**
+     * @param positive-int $weight
+     */
     public function setWeight(int $weight): void
     {
         $this->weight = $weight;
@@ -62,5 +72,10 @@ final class Node
     public function isSeed(): bool
     {
         return $this->seed;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->label;
     }
 }

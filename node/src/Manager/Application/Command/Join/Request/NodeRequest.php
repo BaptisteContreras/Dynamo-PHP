@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Application\Command\Join;
+namespace App\Manager\Application\Command\Join\Request;
 
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints\Length;

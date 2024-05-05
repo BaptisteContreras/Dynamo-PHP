@@ -21,6 +21,7 @@ class Node
         #[Column(type: Types::SMALLINT)] private int $weight,
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
         #[Column(type: Types::BOOLEAN)] private bool $seed,
+        #[Column(type: Types::STRING, length: 10, unique: true)] private string $label,
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
     ) {
     }
@@ -35,8 +36,12 @@ class Node
         return $this->host;
     }
 
+    /**
+     * @return positive-int
+     */
     public function getNetworkPort(): int
     {
+        /* @var positive-int */
         return $this->networkPort;
     }
 
@@ -55,8 +60,12 @@ class Node
         return $this->joinedAt;
     }
 
+    /**
+     * @return positive-int
+     */
     public function getWeight(): int
     {
+        /* @var positive-int */
         return $this->weight;
     }
 
@@ -68,5 +77,10 @@ class Node
     public function isSeed(): bool
     {
         return $this->seed;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->label;
     }
 }

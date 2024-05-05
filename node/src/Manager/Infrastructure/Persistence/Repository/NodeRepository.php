@@ -18,7 +18,7 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         parent::__construct($registry, NodeEntity::class);
     }
 
-    public function createSelfNode(string $networkAddress, int $networkPort, int $weight, bool $isSeed, \DateTimeImmutable $joinedAt): void
+    public function createSelfNode(string $networkAddress, int $networkPort, int $weight, bool $isSeed, string $label, \DateTimeImmutable $joinedAt): Node
     {
         $selfNode = new NodeEntity(
             $networkAddress,
@@ -27,10 +27,14 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $joinedAt,
             $weight,
             true,
-            $isSeed
+            $isSeed,
+            $label
         );
 
         $this->getEntityManager()->persist($selfNode);
+        $this->getEntityManager()->flush();
+
+        return $this->entityToDto($selfNode);
     }
 
     public function saveNode(Node $node): void
@@ -48,6 +52,7 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $node->getWeight(),
             $node->isSelfEntry(),
             $node->isSeed(),
+            $node->getLabel(),
             $node->getId()
         );
     }
@@ -73,7 +78,8 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $nodeEntity->getJoinedAt(),
             $nodeEntity->getWeight(),
             $nodeEntity->isSelfEntry(),
-            $nodeEntity->isSeed()
+            $nodeEntity->isSeed(),
+            $nodeEntity->getLabel()
         );
     }
 
