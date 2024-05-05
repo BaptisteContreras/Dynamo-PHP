@@ -42,6 +42,22 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         $this->getEntityManager()->persist($this->dtoToEntity($node));
     }
 
+    public function findAll(): array
+    {
+        /** @var array<NodeEntity> $entityArray */
+        $entityArray = parent::findAll();
+
+        return array_map(fn (NodeEntity $nodeEntity) => $this->entityToDto($nodeEntity), $entityArray);
+    }
+
+    public function findSelfEntry(): ?Node
+    {
+        /** @var ?NodeEntity $selfNode */
+        $selfNode = $this->findOneBy(['selfEntry' => true]);
+
+        return $selfNode ? $this->entityToDto($selfNode) : null;
+    }
+
     private function dtoToEntity(Node $node): NodeEntity
     {
         return new NodeEntity(
@@ -55,14 +71,6 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $node->getLabel(),
             $node->getId()
         );
-    }
-
-    public function findAll(): array
-    {
-        /** @var array<NodeEntity> $entityArray */
-        $entityArray = parent::findAll();
-
-        return array_map(fn (NodeEntity $nodeEntity) => $this->entityToDto($nodeEntity), $entityArray);
     }
 
     private function entityToDto(NodeEntity $nodeEntity): Node
@@ -81,13 +89,5 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $nodeEntity->isSeed(),
             $nodeEntity->getLabel()
         );
-    }
-
-    public function findSelfEntry(): ?Node
-    {
-        /** @var ?NodeEntity $selfNode */
-        $selfNode = $this->findOneBy(['selfEntry' => true]);
-
-        return $selfNode ? $this->entityToDto($selfNode) : null;
     }
 }
