@@ -14,14 +14,14 @@ class VirtualNodeAttributor
     private readonly array $ringSlotSelectionStrategiesMap;
 
     /**
-     * @param iterable<RingSlotSelectionStrategyInterface> $ringSlotSelectionStategies
+     * @param iterable<RingSlotSelectionStrategyInterface> $ringSlotSelectionStrategies
      */
-    public function __construct(iterable $ringSlotSelectionStategies)
+    public function __construct(iterable $ringSlotSelectionStrategies)
     {
         $ringSlotSelectionStrategiesMap = [];
 
-        foreach ($ringSlotSelectionStategies as $ringSlotSelectionStategy) {
-            $ringSlotSelectionStrategiesMap[$ringSlotSelectionStategy->getName()] = $ringSlotSelectionStategy;
+        foreach ($ringSlotSelectionStrategies as $ringSlotSelectionStrategy) {
+            $ringSlotSelectionStrategiesMap[$ringSlotSelectionStrategy->getName()] = $ringSlotSelectionStrategy;
         }
 
         $this->ringSlotSelectionStrategiesMap = $ringSlotSelectionStrategiesMap;

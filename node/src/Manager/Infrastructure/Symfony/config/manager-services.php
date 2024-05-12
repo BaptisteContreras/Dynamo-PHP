@@ -27,5 +27,5 @@ return function (ContainerConfigurator $container): void {
         ->exclude('config');
 
     $services->set(VirtualNodeAttributor::class)
-        ->arg('$ringSlotSelectionStategies', tagged_iterator('app.manager.ring_slot_selection_strategy'));
+        ->arg('$ringSlotSelectionStrategies', tagged_iterator('app.manager.ring_slot_selection_strategy'));
 };
