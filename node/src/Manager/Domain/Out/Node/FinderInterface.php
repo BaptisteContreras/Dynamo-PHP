@@ -2,7 +2,7 @@
 
 namespace App\Manager\Domain\Out\Node;
 
-use App\Manager\Domain\Model\Node;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 
 interface FinderInterface
 {

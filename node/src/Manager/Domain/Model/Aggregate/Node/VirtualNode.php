@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager\Domain\Model;
+namespace App\Manager\Domain\Model\Aggregate\Node;
 
 use Symfony\Component\Uid\UuidV7;
 
@@ -13,7 +13,6 @@ final class VirtualNode
         private readonly \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
         private readonly UuidV7 $id = new UuidV7()
     ) {
-        $this->node->addVirtualNode($this);
     }
 
     public function getSubLabel(): string

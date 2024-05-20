@@ -3,7 +3,6 @@ parameters:
 	paths:
 		- config
 		- src
-	checkGenericClassInNonGenericObjectType: false
 	reportUnmatchedIgnoredErrors: false
 	doctrine:
 		objectManagerLoader: tests/object-manager.php

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240505075250 extends AbstractMigration
+final class Version20240517133641 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,12 +24,20 @@ final class Version20240505075250 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_857FE845EA750E8 ON node (label)');
         $this->addSql('COMMENT ON COLUMN node.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN node.joined_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE virtual_node (id UUID NOT NULL, node_id UUID NOT NULL, sub_label VARCHAR(255) NOT NULL, slot INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_6CF7F57D460D9FD7 ON virtual_node (node_id)');
+        $this->addSql('COMMENT ON COLUMN virtual_node.id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN virtual_node.node_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN virtual_node.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('ALTER TABLE virtual_node ADD CONSTRAINT FK_6CF7F57D460D9FD7 FOREIGN KEY (node_id) REFERENCES node (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('ALTER TABLE virtual_node DROP CONSTRAINT FK_6CF7F57D460D9FD7');
         $this->addSql('DROP TABLE node');
+        $this->addSql('DROP TABLE virtual_node');
     }
 }

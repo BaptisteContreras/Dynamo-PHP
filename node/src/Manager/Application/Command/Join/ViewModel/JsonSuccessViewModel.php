@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Command\Join\ViewModel;
 
-use App\Manager\Domain\Model\Node;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Ignore;

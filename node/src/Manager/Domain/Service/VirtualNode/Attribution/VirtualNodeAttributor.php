@@ -3,8 +3,7 @@
 namespace App\Manager\Domain\Service\VirtualNode\Attribution;
 
 use App\Manager\Domain\Exception\UnknownVirtualNodeAttributionStrategyException;
-use App\Manager\Domain\Model\Node;
-use App\Manager\Domain\Model\VirtualNode;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 
 class VirtualNodeAttributor
 {
@@ -37,10 +36,9 @@ class VirtualNodeAttributor
         $slots = $strategy->getVirtualNodes($node->getLabel(), $node->getWeight());
 
         foreach ($slots as $index => $slot) {
-            new VirtualNode(
+            $node->addVirtualNode(
                 $this->generateSubLabel($node->getLabel(), $index),
-                $slot,
-                $node
+                $slot
             );
         }
     }

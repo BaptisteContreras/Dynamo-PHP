@@ -4,7 +4,7 @@ services:
   phpfpm-node:
     build: './php'
     volumes:
-      - dynamosrcdir:/app
+      - ../:/app
       - ./php/custom.ini:/opt/bitnami/php/etc/conf.d/custom.ini
   nginx-node:
     image: 'bitnami/nginx:latest'
@@ -15,7 +15,7 @@ services:
       - '443:443'
     volumes:
       - ./nginx/node.conf:/opt/bitnami/nginx/conf/server_blocks/node.conf
-      - dynamosrcdir:/app
+      - ../:/app
   database-node:
     image: 'postgres:16'
     restart: always

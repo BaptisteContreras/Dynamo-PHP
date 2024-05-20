@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Command\Join\ViewModel;
 
-use App\Manager\Domain\Model\Node;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 use App\Shared\Application\JsonViewModelInterface;
 use App\Shared\Application\ViewModel;
 use Symfony\Component\Serializer\Annotation\Ignore;

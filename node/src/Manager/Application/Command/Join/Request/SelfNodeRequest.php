@@ -57,7 +57,6 @@ final readonly class SelfNodeRequest extends NodeRequest
      */
     public function getWeight(): int
     {
-        /* @var positive-int */
         return $this->weight;
     }
 

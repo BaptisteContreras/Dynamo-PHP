@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Command\Join\Response;
 
-use App\Manager\Domain\Model\Node;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 use App\Shared\Application\ApplicationResponseInterface;
 
 abstract class JoinResponse implements ApplicationResponseInterface

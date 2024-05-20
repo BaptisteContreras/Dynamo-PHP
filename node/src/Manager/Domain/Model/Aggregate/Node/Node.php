@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Manager\Domain\Model;
+namespace App\Manager\Domain\Model\Aggregate\Node;
 
+use App\Manager\Domain\Model\Aggregate\Node\Collection\RoVirtualNodeCollection;
+use App\Manager\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
 final class Node
 {
     /**
-     * @param positive-int       $weight
-     * @param array<VirtualNode> $virtualNodes
+     * @param positive-int $weight
      */
     public function __construct(
         private readonly UuidV7 $id,
@@ -21,7 +22,7 @@ final class Node
         private readonly bool $selfEntry,
         private readonly bool $seed,
         private readonly string $label,
-        private array $virtualNodes = []
+        private VirtualNodeCollection $virtualNodes
     ) {
     }
 
@@ -86,18 +87,45 @@ final class Node
         $this->state = $state;
     }
 
-    /**
-     * @return array<VirtualNode>
-     */
-    public function getVirtualNodes(): array
+    public function getVirtualNodes(): RoVirtualNodeCollection
     {
         return $this->virtualNodes;
     }
 
-    public function addVirtualNode(VirtualNode $virtualNode): static
+    public function addVirtualNode(string $subLabel, int $slot): static
     {
-        $this->virtualNodes[] = $virtualNode;
+        $this->virtualNodes->add(
+            new VirtualNode(
+                $subLabel,
+                $slot,
+                $this
+            )
+        );
 
         return $this;
+    }
+
+    public function addExistingVirtualNode(VirtualNode $virtualNode): static
+    {
+        if (!$this->hasSameId($virtualNode->getNode())) {
+            throw new \LogicException(sprintf('Virtual node %s is already owned by node %s', $virtualNode->getId()->toRfc4122(), $this->getId()->toRfc4122()));
+        }
+
+        $this->virtualNodes->add($virtualNode);
+
+        return $this;
+    }
+
+    public function hasSameId(self $node): bool
+    {
+        return $this->id->equals($node->getId());
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getRemovedVirtualNodes(): array
+    {
+        return $this->virtualNodes->getRemovedElements();
     }
 }

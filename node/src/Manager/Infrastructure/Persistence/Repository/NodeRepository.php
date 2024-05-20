@@ -2,18 +2,24 @@
 
 namespace App\Manager\Infrastructure\Persistence\Repository;
 
-use App\Manager\Domain\Model\Node;
+use App\Manager\Domain\Model\Aggregate\Node\Node;
 use App\Manager\Domain\Out\Node\CreatorInterface;
 use App\Manager\Domain\Out\Node\FinderInterface;
+use App\Manager\Infrastructure\Persistence\Mapper\NodeMapper;
 use App\Shared\Domain\Const\NodeState;
 use App\Shared\Infrastructure\Persistence\Doctrine\Node as NodeEntity;
+use App\Shared\Infrastructure\Persistence\Doctrine\VirtualNode as VirtualNodeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Uid\UuidV7;
 
+/**
+ * @extends ServiceEntityRepository<NodeEntity>
+ */
 class NodeRepository extends ServiceEntityRepository implements FinderInterface, CreatorInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private readonly VirtualNodeRepository $virtualNodeRepository, ManagerRegistry $registry)
     {
         parent::__construct($registry, NodeEntity::class);
     }
@@ -31,24 +37,26 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $label
         );
 
-        $this->getEntityManager()->persist($selfNode);
-        $this->getEntityManager()->flush();
+        $em = $this->getEntityManager();
+        $em->persist($selfNode);
+        $em->flush();
 
-        return $this->entityToDto($selfNode);
+        return NodeMapper::entityToDto($selfNode);
     }
 
     public function saveNode(Node $node): void
     {
-        $nodeEntity = $this->find($node->getId());
+        $nodeEntity = $this->createOrUpdate($node);
 
-        if ($nodeEntity instanceof NodeEntity) {
-            $this->mergeDtoInEntity($node, $nodeEntity);
-        } else {
-            $nodeEntity = $this->dtoToEntity($node);
-        }
+        // handle virtual nodes relation
+        $virtualNodeEntities = $this->convertVirtualNodeCollectionForDoctrine($node, $nodeEntity);
+        $nodeEntity->setVirtualNodes($virtualNodeEntities);
 
-        $this->getEntityManager()->persist($nodeEntity);
-        $this->getEntityManager()->flush();
+        $this->handleRemovedVirtualNodes($node);
+
+        $em = $this->getEntityManager();
+        $em->persist($nodeEntity);
+        $em->flush();
     }
 
     public function findAll(): array
@@ -56,7 +64,7 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         /** @var array<NodeEntity> $entityArray */
         $entityArray = parent::findAll();
 
-        return array_map(fn (NodeEntity $nodeEntity) => $this->entityToDto($nodeEntity), $entityArray);
+        return array_map(fn (NodeEntity $nodeEntity) => NodeMapper::entityToDto($nodeEntity), $entityArray);
     }
 
     public function findSelfEntry(): ?Node
@@ -64,46 +72,44 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         /** @var ?NodeEntity $selfNode */
         $selfNode = $this->findOneBy(['selfEntry' => true]);
 
-        return $selfNode ? $this->entityToDto($selfNode) : null;
+        return $selfNode ? NodeMapper::entityToDto($selfNode) : null;
     }
 
-    private function dtoToEntity(Node $dto): NodeEntity
+    private function createOrUpdate(Node $node): NodeEntity
     {
-        return new NodeEntity(
-            $dto->getHost(),
-            $dto->getNetworkPort(),
-            $dto->getState(),
-            $dto->getJoinedAt(),
-            $dto->getWeight(),
-            $dto->isSelfEntry(),
-            $dto->isSeed(),
-            $dto->getLabel(),
-            $dto->getId()
-        );
+        $nodeEntity = $this->find($node->getId());
+
+        if ($nodeEntity instanceof NodeEntity) {
+            NodeMapper::mergeDtoInEntity($node, $nodeEntity);
+        } else {
+            $nodeEntity = NodeMapper::dtoToEntity($node);
+        }
+
+        return $nodeEntity;
     }
 
-    private function entityToDto(NodeEntity $entity): Node
+    /**
+     * @return Collection<int, VirtualNodeEntity>
+     */
+    private function convertVirtualNodeCollectionForDoctrine(Node $node, NodeEntity $nodeEntity): Collection
     {
-        /** @var UuidV7 $id */
-        $id = $entity->getId();
+        /** @var ArrayCollection<int, VirtualNodeEntity> $virtualNodeEntities */
+        $virtualNodeEntities = new ArrayCollection();
 
-        return new Node(
-            $id,
-            $entity->getHost(),
-            $entity->getNetworkPort(),
-            $entity->getState(),
-            $entity->getJoinedAt(),
-            $entity->getWeight(),
-            $entity->isSelfEntry(),
-            $entity->isSeed(),
-            $entity->getLabel()
-        );
+        foreach ($node->getVirtualNodes() as $virtualNode) {
+            $virtualNodeEntities->add($this->virtualNodeRepository->createOrUpdate(
+                $virtualNode,
+                $nodeEntity
+            ));
+        }
+
+        return $virtualNodeEntities;
     }
 
-    private function mergeDtoInEntity(Node $dto, NodeEntity $entity): void
+    private function handleRemovedVirtualNodes(Node $node): void
     {
-        $entity
-            ->setState($dto->getState())
-        ;
+        foreach ($node->getRemovedVirtualNodes() as $removedVirtualNode) {
+            $this->virtualNodeRepository->remove($removedVirtualNode);
+        }
     }
 }
