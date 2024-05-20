@@ -105,17 +105,6 @@ final class Node
         return $this;
     }
 
-    public function addExistingVirtualNode(VirtualNode $virtualNode): static
-    {
-        if (!$this->hasSameId($virtualNode->getNode())) {
-            throw new \LogicException(sprintf('Virtual node %s is already owned by node %s', $virtualNode->getId()->toRfc4122(), $this->getId()->toRfc4122()));
-        }
-
-        $this->virtualNodes->add($virtualNode);
-
-        return $this;
-    }
-
     public function hasSameId(self $node): bool
     {
         return $this->id->equals($node->getId());
