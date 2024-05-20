@@ -19,6 +19,7 @@
         "symfony/dotenv": "^7",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "^7",
+        "symfony/lock": "^7",
         "symfony/messenger": "^7",
         "symfony/monolog-bundle": "^3.10",
         "symfony/property-access": "^7",

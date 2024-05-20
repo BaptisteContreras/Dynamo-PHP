@@ -34,6 +34,9 @@ abstract class ReadOnlyCollection implements \IteratorAggregate, \Countable
      */
     abstract protected function getKeyFromElement(mixed $element): string;
 
+    /**
+     * @return self<T>
+     */
     abstract public function asReadOnly(): self;
 
     /**

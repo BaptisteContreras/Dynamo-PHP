@@ -9,6 +9,7 @@ use App\Manager\Application\Command\Join\Response\JoinResponse;
 use App\Manager\Domain\Exception\AlreadyJoinedException;
 use App\Manager\Domain\Out\Node\CreatorInterface;
 use App\Manager\Domain\Out\Node\FinderInterface;
+use App\Manager\Domain\Out\Node\LockManagerInterface;
 use App\Manager\Domain\Service\VirtualNode\Attribution\VirtualNodeAttributor;
 use App\Shared\Domain\Event\EventBusInterface;
 use App\Shared\Domain\Event\Sync\JoinedRingEvent;
@@ -19,12 +20,15 @@ final readonly class JoinCommandHandler
         private CreatorInterface $nodeCreator,
         private FinderInterface $nodeFinder,
         private EventBusInterface $eventBus,
-        private VirtualNodeAttributor $virtualNodeAttributor
+        private VirtualNodeAttributor $virtualNodeAttributor,
+        private LockManagerInterface $nodeLockManager
     ) {
     }
 
     public function __invoke(JoinRequest $joinRequest, JoinPresenter $joinPresenter): void
     {
+        $this->nodeLockManager->lockJoinAction();
+
         $this->canJoin();
 
         $selfNodeRequest = $joinRequest->getSelfNode();
@@ -49,6 +53,8 @@ final readonly class JoinCommandHandler
         ));
 
         $joinPresenter->present(JoinResponse::success($selfNode));
+
+        $this->nodeLockManager->unlockJoinAction();
     }
 
     /**
