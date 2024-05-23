@@ -47,7 +47,15 @@ abstract class ReadOnlyCollection implements \IteratorAggregate, \Countable
         return $this->internal[$key] ?? null;
     }
 
-    public function exists(string $key): bool
+    /**
+     * @param T $element
+     */
+    public function exists(mixed $element): bool
+    {
+        return $this->keyExists($this->getKeyFromElement($element));
+    }
+
+    public function keyExists(string $key): bool
     {
         return isset($this->internal[$key]);
     }
