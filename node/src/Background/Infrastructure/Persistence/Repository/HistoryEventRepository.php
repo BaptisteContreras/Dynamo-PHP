@@ -3,6 +3,7 @@
 namespace App\Background\Infrastructure\Persistence\Repository;
 
 use App\Background\Domain\Model\Aggregate\History\Collection\HistoryEventCollection;
+use App\Background\Domain\Model\Aggregate\History\HistoryEvent;
 use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
 use App\Background\Domain\Out\History\CreatorInterface;
 use App\Background\Domain\Out\History\FinderInterface;
@@ -23,11 +24,10 @@ class HistoryEventRepository extends ServiceEntityRepository implements FinderIn
 
     public function saveHistoryTimeline(HistoryTimeline $historyTimeline): void
     {
-        // TODO handle existing event
         $em = $this->getEntityManager();
 
         foreach ($historyTimeline->getEvents() as $event) {
-            $em->persist(HistoryMapper::dtoToEntity($event));
+            $em->persist($this->createOrUpdate($event));
         }
 
         $em->flush();
@@ -44,5 +44,18 @@ class HistoryEventRepository extends ServiceEntityRepository implements FinderIn
                 $events
             ))
         );
+    }
+
+    private function createOrUpdate(HistoryEvent $event): HistoryEventEntity
+    {
+        $eventEntity = $this->find($event->getId());
+
+        if ($eventEntity) {
+            HistoryMapper::mergeDtoInEntity($event, $eventEntity);
+        } else {
+            $eventEntity = HistoryMapper::dtoToEntity($event);
+        }
+
+        return $eventEntity;
     }
 }

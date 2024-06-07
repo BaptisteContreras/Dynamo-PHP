@@ -30,4 +30,8 @@ final class HistoryMapper
             $entity->getReceivedAt()
         );
     }
+
+    public static function mergeDtoInEntity(HistoryEvent $dto, HistoryEventEntity $entity): void
+    {
+    }
 }
