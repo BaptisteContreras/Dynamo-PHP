@@ -32,7 +32,7 @@ final class NodeMapper
         /** @var UuidV7 $id */
         $id = $entity->getId();
 
-        $virtualNodeCollection = new VirtualNodeCollection();
+        $virtualNodeCollection = VirtualNodeCollection::createEmpty();
 
         $node = new Node(
             $id,

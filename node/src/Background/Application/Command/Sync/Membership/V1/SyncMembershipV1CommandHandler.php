@@ -9,14 +9,18 @@ use App\Background\Application\Command\Sync\Membership\V1\Response\SyncMembershi
 use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\NodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
-use App\Background\Domain\Out\History\CreatorInterface;
-use App\Background\Domain\Out\History\FinderInterface;
+use App\Background\Domain\Out\History\FinderInterface as HistoryFinderInterface;
+use App\Background\Domain\Out\History\UpdaterInterface as HistoryUpdaterInterface;
+use App\Background\Domain\Out\Ring\FinderInterface as RingFinderInterface;
+use App\Background\Domain\Out\Ring\UpdaterInterface as RingUpdaterInterface;
 
 final readonly class SyncMembershipV1CommandHandler
 {
     public function __construct(
-        private FinderInterface $historyFinder,
-        private CreatorInterface $historyCreator
+        private HistoryFinderInterface $historyFinder,
+        private HistoryUpdaterInterface $historyCreator,
+        private RingFinderInterface $ringFinder,
+        private RingUpdaterInterface $ringUpdater
     ) {
     }
 
@@ -45,7 +49,8 @@ final readonly class SyncMembershipV1CommandHandler
     private function syncNodes(SyncRequest $syncRequest): void
     {
         $remoteRing = $this->createRingFromRequest($syncRequest);
-        dd($remoteRing);
+        dump($remoteRing);
+        dd($this->ringFinder->getLocalRing());
     }
 
     private function createTimelineFromRequest(SyncRequest $syncRequest): HistoryTimeline

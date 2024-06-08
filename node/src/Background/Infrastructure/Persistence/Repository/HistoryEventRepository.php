@@ -5,8 +5,8 @@ namespace App\Background\Infrastructure\Persistence\Repository;
 use App\Background\Domain\Model\Aggregate\History\Collection\HistoryEventCollection;
 use App\Background\Domain\Model\Aggregate\History\HistoryEvent;
 use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
-use App\Background\Domain\Out\History\CreatorInterface;
 use App\Background\Domain\Out\History\FinderInterface;
+use App\Background\Domain\Out\History\UpdaterInterface;
 use App\Background\Infrastructure\Persistence\Mapper\HistoryMapper;
 use App\Shared\Infrastructure\Persistence\Doctrine\HistoryEvent as HistoryEventEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -15,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<HistoryEventEntity>
  */
-class HistoryEventRepository extends ServiceEntityRepository implements FinderInterface, CreatorInterface
+class HistoryEventRepository extends ServiceEntityRepository implements FinderInterface, UpdaterInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -4,7 +4,7 @@ namespace App\Background\Domain\Out\History;
 
 use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
 
-interface CreatorInterface
+interface UpdaterInterface
 {
     public function saveHistoryTimeline(HistoryTimeline $historyTimeline): void;
 }

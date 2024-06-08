@@ -2,15 +2,15 @@
 
 namespace App\Background\Application\Command\Local\Join;
 
-use App\Background\Domain\Out\History\CreatorInterface;
 use App\Background\Domain\Out\History\FinderInterface;
+use App\Background\Domain\Out\History\UpdaterInterface;
 use App\Shared\Domain\Event\Sync\JoinedRingEvent;
 
 final readonly class LocalNodeJoinCommandHandler
 {
     public function __construct(
         private FinderInterface $historyTimelineFinder,
-        private CreatorInterface $historyTimelineCreator,
+        private UpdaterInterface $historyTimelineCreator,
     ) {
     }
 

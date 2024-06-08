@@ -19,7 +19,8 @@ final readonly class Node
         private bool $seed,
         private \DateTimeImmutable $updatedAt,
         private string $label,
-        private VirtualNodeCollection $virtualNodeCollection = new VirtualNodeCollection()
+        private VirtualNodeCollection $virtualNodeCollection = new VirtualNodeCollection(),
+        private bool $local = false,
     ) {
     }
 
@@ -71,5 +72,10 @@ final readonly class Node
     public function getVirtualNodeCollection(): RoVirtualNodeCollection
     {
         return $this->virtualNodeCollection;
+    }
+
+    public function isLocal(): bool
+    {
+        return $this->local;
     }
 }
