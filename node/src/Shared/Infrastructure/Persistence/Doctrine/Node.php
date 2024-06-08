@@ -28,6 +28,7 @@ class Node
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
         #[Column(type: Types::BOOLEAN)] private bool $seed,
         #[Column(type: Types::STRING, length: 10, unique: true)] private string $label,
+        #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $updatedAt,
         #[OneToMany(targetEntity: VirtualNode::class, mappedBy: 'node')] private Collection $virtualNodes = new ArrayCollection(),
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
     ) {
@@ -99,11 +100,23 @@ class Node
         return $this->virtualNodes;
     }
 
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
     /**
      * @param Collection<int, VirtualNode> $virtualNodes
      */
     public function setVirtualNodes(Collection $virtualNodes): void
     {
         $this->virtualNodes = $virtualNodes;
+    }
+
+    public function update(): self
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
     }
 }

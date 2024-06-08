@@ -64,13 +64,11 @@ final readonly class HistoryTimeline
 
     public function merge(self $otherTimeline): self
     {
-        $mergedTimeline = new self(clone $this->events);
-
         foreach ($otherTimeline->getEvents() as $otherEvent) {
-            $mergedTimeline->addEvent($otherEvent);
+            $this->addEvent($otherEvent);
         }
 
-        return $mergedTimeline;
+        return $this;
     }
 
     public function getEvents(): RoHistoryEventCollection

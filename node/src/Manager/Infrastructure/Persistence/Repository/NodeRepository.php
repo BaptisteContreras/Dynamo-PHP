@@ -34,7 +34,8 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
             $weight,
             true,
             $isSeed,
-            $label
+            $label,
+            new \DateTimeImmutable()
         );
 
         $em = $this->getEntityManager();

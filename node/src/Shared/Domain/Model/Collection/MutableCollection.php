@@ -56,4 +56,20 @@ trait MutableCollection
     {
         return $this->removedElements;
     }
+
+    /**
+     * @param ReadOnlyCollectionInterface<T> $otherCollection
+     */
+    public function merge(mixed $otherCollection, bool $keepExistingElement = true): static
+    {
+        foreach ($otherCollection as $otherElement) {
+            $key = $this->getKeyFromElement($otherElement);
+
+            if (($keepExistingElement && !isset($this->internal[$key])) || !$keepExistingElement) {
+                $this->add($otherElement);
+            }
+        }
+
+        return $this;
+    }
 }

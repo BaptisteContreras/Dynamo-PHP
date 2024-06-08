@@ -21,6 +21,7 @@ final class NodeMapper
             $dto->isSelfEntry(),
             $dto->isSeed(),
             $dto->getLabel(),
+            new \DateTimeImmutable(),
             new ArrayCollection(),
             $dto->getId()
         );
@@ -58,6 +59,7 @@ final class NodeMapper
     {
         $entity
             ->setState($dto->getState())
+            ->update()
         ;
     }
 }

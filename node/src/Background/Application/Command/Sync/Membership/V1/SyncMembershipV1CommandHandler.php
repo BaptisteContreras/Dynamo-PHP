@@ -3,9 +3,12 @@
 namespace App\Background\Application\Command\Sync\Membership\V1;
 
 use App\Background\Application\Command\Sync\Membership\V1\Presenter\SyncMembershipPresenter;
+use App\Background\Application\Command\Sync\Membership\V1\Request\NodeRequest;
 use App\Background\Application\Command\Sync\Membership\V1\Request\SyncRequest;
 use App\Background\Application\Command\Sync\Membership\V1\Response\SyncMembershipV1Response;
 use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
+use App\Background\Domain\Model\Aggregate\Ring\Collection\NodeCollection;
+use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Background\Domain\Out\History\CreatorInterface;
 use App\Background\Domain\Out\History\FinderInterface;
 
@@ -19,18 +22,30 @@ final readonly class SyncMembershipV1CommandHandler
 
     public function __invoke(SyncRequest $syncRequest, SyncMembershipPresenter $syncMembershipPresenter): void
     {
-        $localHistory = $this->historyFinder->getLocalHistoryTimeline();
+        $localHistory = $this->syncHistory($syncRequest);
 
-        $remoteHistory = $this->createTimelineFromRequest($syncRequest);
-
-        $mergedLocalHistory = $localHistory->merge($remoteHistory);
-
-        $this->historyCreator->saveHistoryTimeline($mergedLocalHistory);
+        $this->syncNodes($syncRequest);
 
         // update nodes
         // update virtual nodes
 
         $syncMembershipPresenter->present(SyncMembershipV1Response::success());
+    }
+
+    private function syncHistory(SyncRequest $syncRequest): HistoryTimeline
+    {
+        $localHistory = $this->historyFinder->getLocalHistoryTimeline();
+        $remoteHistory = $this->createTimelineFromRequest($syncRequest);
+
+        $this->historyCreator->saveHistoryTimeline($localHistory->merge($remoteHistory));
+
+        return $localHistory;
+    }
+
+    private function syncNodes(SyncRequest $syncRequest): void
+    {
+        $remoteRing = $this->createRingFromRequest($syncRequest);
+        dd($remoteRing);
     }
 
     private function createTimelineFromRequest(SyncRequest $syncRequest): HistoryTimeline
@@ -48,5 +63,12 @@ final readonly class SyncMembershipV1CommandHandler
         }
 
         return $timeline;
+    }
+
+    private function createRingFromRequest(SyncRequest $syncRequest): Ring
+    {
+        return new Ring(new NodeCollection(
+            array_map(fn (NodeRequest $nodeRequest) => $nodeRequest->asDto(), $syncRequest->getNodes())
+        ));
     }
 }

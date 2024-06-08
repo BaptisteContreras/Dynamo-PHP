@@ -5,9 +5,11 @@ namespace App\Shared\Domain\Model\Collection;
 /**
  * @template T
  *
- * @implements \IteratorAggregate<string, T>
+ * @implements ReadOnlyCollectionInterface<T>
+ *
+ * @phpstan-consistent-constructor
  */
-abstract class ReadOnlyCollection implements \IteratorAggregate, \Countable
+abstract class ReadOnlyCollection implements ReadOnlyCollectionInterface
 {
     /**
      * @var array<string, T>
@@ -27,6 +29,11 @@ abstract class ReadOnlyCollection implements \IteratorAggregate, \Countable
         foreach ($initialValues as $value) {
             $this->internal[$this->getKeyFromElement($value)] = $value;
         }
+    }
+
+    public static function createEmpty(): static
+    {
+        return new static();
     }
 
     /**

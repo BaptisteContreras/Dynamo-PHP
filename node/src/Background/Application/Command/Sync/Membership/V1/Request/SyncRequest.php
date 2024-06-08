@@ -24,13 +24,24 @@ final readonly class SyncRequest
     #[NotBlank(message: 'History cannot be empty')]
     private array $historyEvents;
 
+    /** @var array<NodeRequest> */
+    #[OA\Property(
+        title: 'Nodes',
+        description: 'All nodes to sync',
+    )]
+    #[Valid]
+    #[NotBlank(message: 'Node list cannot be empty')]
+    private array $nodes;
+
     /**
      * @param array<HistoryEventRequest> $historyEvents
+     * @param array<NodeRequest>         $nodes
      */
-    public function __construct(string $sourceNode, array $historyEvents)
+    public function __construct(string $sourceNode, array $historyEvents, array $nodes)
     {
         $this->sourceNode = $sourceNode;
         $this->historyEvents = $historyEvents;
+        $this->nodes = $nodes;
     }
 
     /**
@@ -44,5 +55,13 @@ final readonly class SyncRequest
     public function getSourceNode(): string
     {
         return $this->sourceNode;
+    }
+
+    /**
+     * @return array<NodeRequest>
+     */
+    public function getNodes(): array
+    {
+        return $this->nodes;
     }
 }
