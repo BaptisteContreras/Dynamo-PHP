@@ -12,7 +12,7 @@ final class VirtualNode
         private readonly int $slot,
         private readonly \DateTimeImmutable $createdAt,
         private readonly Node $node,
-        private bool $active = true // TODO change this
+        private bool $active
     ) {
     }
 

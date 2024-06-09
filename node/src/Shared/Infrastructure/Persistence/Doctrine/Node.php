@@ -119,4 +119,32 @@ class Node
 
         return $this;
     }
+
+    public function setHost(string $host): self
+    {
+        $this->host = $host;
+
+        return $this;
+    }
+
+    public function setNetworkPort(int $networkPort): self
+    {
+        $this->networkPort = $networkPort;
+
+        return $this;
+    }
+
+    public function setWeight(int $weight): self
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function setSeed(bool $seed): self
+    {
+        $this->seed = $seed;
+
+        return $this;
+    }
 }

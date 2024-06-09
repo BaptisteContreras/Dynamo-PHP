@@ -76,7 +76,7 @@ final class Node
         return $this->label;
     }
 
-    public function getVirtualNodeCollection(): RoVirtualNodeCollection
+    public function getVirtualNodes(): RoVirtualNodeCollection
     {
         return $this->virtualNodeCollection;
     }

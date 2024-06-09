@@ -34,7 +34,7 @@ final class Ring
     public function addNode(Node $node): self
     {
         $this->nodeCollection->add($node);
-        $this->virtualNodeCollection->merge($node->getVirtualNodeCollection());
+        $this->virtualNodeCollection->merge($node->getVirtualNodes());
 
         $this->updateInternalRing();
 
@@ -134,8 +134,8 @@ final class Ring
         );
 
         $mergedVirtualNodeCollection
-            ->merge($node->getVirtualNodeCollection())
-            ->merge($otherNode->getVirtualNodeCollection());
+            ->merge($node->getVirtualNodes())
+            ->merge($otherNode->getVirtualNodes());
 
         return $mergedNode;
     }
@@ -143,7 +143,7 @@ final class Ring
     private function updateVirtualNodeCollection(): void
     {
         foreach ($this->nodeCollection as $node) {
-            $this->virtualNodeCollection->merge($node->getVirtualNodeCollection());
+            $this->virtualNodeCollection->merge($node->getVirtualNodes());
         }
     }
 

@@ -16,6 +16,7 @@ final class VirtualNodeMapper
             $dto->getSlot(),
             $nodeEntity,
             $dto->getCreatedAt(),
+            $dto->isActive(),
             $dto->getId()
         );
     }
@@ -26,6 +27,7 @@ final class VirtualNodeMapper
             $entity->getSubLabel(),
             $entity->getSlot(),
             $node,
+            $entity->isActive(),
             $entity->getCreatedAt(),
             $entity->getId()
         );
@@ -33,5 +35,7 @@ final class VirtualNodeMapper
 
     public static function mergeDtoInEntity(VirtualNode $dto, VirtualNodeEntity $entity): void
     {
+        $entity
+            ->setActive($dto->isActive());
     }
 }

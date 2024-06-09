@@ -49,10 +49,11 @@ final readonly class SyncMembershipV1CommandHandler
     private function syncNodes(SyncRequest $syncRequest, History $historyTimeline): void
     {
         $remoteRing = $this->createRingFromRequest($syncRequest);
-        dump($remoteRing);
-        dump($this->ringFinder->getLocalRing());
+        $localRing = $this->ringFinder->getLocalRing();
 
-        dd($this->ringFinder->getLocalRing()->merge($remoteRing, $historyTimeline));
+        $localRing->merge($remoteRing, $historyTimeline);
+
+        $this->ringUpdater->saveRing($localRing);
     }
 
     private function createTimelineFromRequest(SyncRequest $syncRequest): History

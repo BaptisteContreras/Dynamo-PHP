@@ -41,12 +41,18 @@ final readonly class VirtualNodeRequest
     )]
     private \DateTimeImmutable $createdAt;
 
-    public function __construct(string $id, string $label, int $slot, \DateTimeImmutable $createdAt)
+    #[OA\Property(
+        title: 'Is this virtual node active',
+    )]
+    private bool $active;
+
+    public function __construct(string $id, string $label, int $slot, \DateTimeImmutable $createdAt, bool $active)
     {
         $this->id = $id;
         $this->label = $label;
         $this->slot = $slot;
         $this->createdAt = $createdAt;
+        $this->active = $active;
     }
 
     public function getId(): string
@@ -69,6 +75,11 @@ final readonly class VirtualNodeRequest
         return $this->createdAt;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     public function asDto(Node $node): VirtualNode
     {
         return new VirtualNode(
@@ -76,7 +87,8 @@ final readonly class VirtualNodeRequest
             $this->label,
             $this->slot,
             $this->createdAt,
-            $node
+            $node,
+            $this->active
         );
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240609120808 extends AbstractMigration
+final class Version20240609130508 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,7 +31,7 @@ final class Version20240609120808 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN node.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN node.joined_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN node.updated_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE virtual_node (id UUID NOT NULL, node_id UUID NOT NULL, sub_label VARCHAR(255) NOT NULL, slot INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE virtual_node (id UUID NOT NULL, node_id UUID NOT NULL, sub_label VARCHAR(255) NOT NULL, slot INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, active BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_6CF7F57D460D9FD7 ON virtual_node (node_id)');
         $this->addSql('COMMENT ON COLUMN virtual_node.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN virtual_node.node_id IS \'(DC2Type:uuid)\'');

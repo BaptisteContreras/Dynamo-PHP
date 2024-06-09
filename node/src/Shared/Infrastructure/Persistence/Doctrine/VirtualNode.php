@@ -19,6 +19,7 @@ class VirtualNode
         #[Column(type: Types::INTEGER)] private int $slot,
         #[ManyToOne(targetEntity: Node::class, inversedBy: 'virtualNodes')] #[JoinColumn(nullable: false)] private Node $node,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $createdAt,
+        #[Column(type: Types::BOOLEAN)] private bool $active,
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
     ) {
     }
@@ -43,8 +44,20 @@ class VirtualNode
         return $this->createdAt;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
     public function getId(): UuidV7
     {
         return $this->id;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
     }
 }
