@@ -4,14 +4,15 @@ namespace App\Background\Domain\Model\Aggregate\Ring;
 
 use Symfony\Component\Uid\UuidV7;
 
-final readonly class VirtualNode
+final class VirtualNode
 {
     public function __construct(
-        private UuidV7 $id,
-        private string $label,
-        private int $slot,
-        private \DateTimeImmutable $createdAt,
-        private Node $node
+        private readonly UuidV7 $id,
+        private readonly string $label,
+        private readonly int $slot,
+        private readonly \DateTimeImmutable $createdAt,
+        private readonly Node $node,
+        private bool $active = true // TODO change this
     ) {
     }
 
@@ -40,8 +41,25 @@ final readonly class VirtualNode
         return $this->node;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function disable(): self
+    {
+        $this->active = false;
+
+        return $this;
+    }
+
     public function isNewerThan(self $otherVirtualNode): bool
     {
         return $this->createdAt >= $otherVirtualNode->getCreatedAt();
+    }
+
+    public function shouldBeDisabled(): bool
+    {
+        return $this->node->isLeavingRing();
     }
 }

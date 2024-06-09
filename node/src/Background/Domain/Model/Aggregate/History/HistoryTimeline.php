@@ -7,11 +7,14 @@ use App\Background\Domain\Model\Aggregate\History\Collection\RoHistoryEventColle
 use App\Shared\Domain\Const\HistoryEventType;
 use Symfony\Component\Uid\UuidV7;
 
-final readonly class HistoryTimeline
+final class HistoryTimeline
 {
+    private HistoryEventCollection $newEventsCollection;
+
     public function __construct(
-        private HistoryEventCollection $events = new HistoryEventCollection()
+        private readonly HistoryEventCollection $events = new HistoryEventCollection()
     ) {
+        $this->newEventsCollection = HistoryEventCollection::createEmpty();
     }
 
     public static function createEmpty(): self
@@ -22,6 +25,7 @@ final readonly class HistoryTimeline
     public function addEvent(HistoryEvent $event): self
     {
         if (!$this->events->exists($event)) {
+            $this->newEventsCollection->add($event);
             $this->events->add($event);
         }
 
@@ -48,7 +52,7 @@ final readonly class HistoryTimeline
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->events->add(HistoryEvent::localEvent($node, HistoryEventType::JOIN));
+        $this->addEvent(HistoryEvent::localEvent($node, HistoryEventType::JOIN));
 
         return $this;
     }
@@ -57,7 +61,7 @@ final readonly class HistoryTimeline
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->events->add(HistoryEvent::localEvent($node, HistoryEventType::LEAVE));
+        $this->addEvent(HistoryEvent::localEvent($node, HistoryEventType::LEAVE));
 
         return $this;
     }
@@ -65,7 +69,7 @@ final readonly class HistoryTimeline
     public function merge(self $otherTimeline): self
     {
         foreach ($otherTimeline->getEvents() as $otherEvent) {
-            $this->addEvent($otherEvent);
+            $this->addEvent(clone $otherEvent);
         }
 
         return $this;
@@ -74,5 +78,13 @@ final readonly class HistoryTimeline
     public function getEvents(): RoHistoryEventCollection
     {
         return $this->events;
+    }
+
+    public function getNewEvents(): RoHistoryEventCollection
+    {
+        $currentCollection = $this->newEventsCollection;
+        $this->newEventsCollection = HistoryEventCollection::createEmpty();
+
+        return $currentCollection;
     }
 }

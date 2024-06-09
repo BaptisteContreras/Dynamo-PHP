@@ -2,31 +2,38 @@
 
 namespace App\Background\Domain\Model\Aggregate\Ring;
 
+use App\Background\Domain\Model\Aggregate\History\HistoryEvent;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
+use App\Shared\Domain\Const\HistoryEventType;
 use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
-final readonly class Node
+final class Node
 {
     public function __construct(
-        private UuidV7 $id,
+        private readonly UuidV7 $id,
         private string $host,
         private int $networkPort,
         private NodeState $state,
-        private \DateTimeImmutable $joinedAt,
+        private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private bool $seed,
         private \DateTimeImmutable $updatedAt,
-        private string $label,
+        private readonly string $label,
         private VirtualNodeCollection $virtualNodeCollection = new VirtualNodeCollection(),
-        private bool $local = false,
+        private readonly bool $local = false,
     ) {
     }
 
     public function getId(): UuidV7
     {
         return $this->id;
+    }
+
+    public function getStringId(): string
+    {
+        return $this->id->toRfc4122();
     }
 
     public function getHost(): string
@@ -77,5 +84,25 @@ final readonly class Node
     public function isLocal(): bool
     {
         return $this->local;
+    }
+
+    public function isFresherThan(self $otherNode): bool
+    {
+        return $this->updatedAt >= $otherNode->getUpdatedAt();
+    }
+
+    public function isLeavingRing(): bool
+    {
+        return NodeState::LEAVING === $this->state;
+    }
+
+    public function applyEvent(HistoryEvent $event): self
+    {
+        match ($event->getType()) {
+            HistoryEventType::JOIN => $this->state = NodeState::JOINING,
+            HistoryEventType::LEAVE => $this->state = NodeState::LEAVING,
+        };
+
+        return $this;
     }
 }
