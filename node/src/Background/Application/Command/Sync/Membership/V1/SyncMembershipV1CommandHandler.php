@@ -28,10 +28,9 @@ final readonly class SyncMembershipV1CommandHandler
     {
         $localHistory = $this->syncHistory($syncRequest);
 
-        $this->syncNodes($syncRequest, $localHistory);
+        $this->syncRing($syncRequest, $localHistory);
 
-        // update nodes
-        // update virtual nodes
+        // update preference list
 
         $syncMembershipPresenter->present(SyncMembershipV1Response::success());
     }
@@ -46,7 +45,7 @@ final readonly class SyncMembershipV1CommandHandler
         return $localHistory;
     }
 
-    private function syncNodes(SyncRequest $syncRequest, History $historyTimeline): void
+    private function syncRing(SyncRequest $syncRequest, History $historyTimeline): void
     {
         $remoteRing = $this->createRingFromRequest($syncRequest);
         $localRing = $this->ringFinder->getLocalRing();
