@@ -4,6 +4,7 @@ namespace App\Background\Application\Command\Sync\Membership\V1\Request;
 
 use App\Shared\Domain\Const\HistoryEventType;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Uuid;
 
 final readonly class HistoryEventRequest
@@ -29,14 +30,15 @@ final readonly class HistoryEventRequest
     #[OA\Property(
         title: 'Data of the event',
     )]
-    private ?string $data;
+    #[NotBlank]
+    private string $data;
 
     #[OA\Property(
         title: 'Timestamp of the event',
     )]
     private \DateTimeImmutable $eventTime;
 
-    public function __construct(string $id, string $node, HistoryEventType $type, ?string $data, \DateTimeImmutable $eventTime)
+    public function __construct(string $id, string $node, HistoryEventType $type, string $data, \DateTimeImmutable $eventTime)
     {
         $this->id = $id;
         $this->node = $node;
@@ -60,7 +62,7 @@ final readonly class HistoryEventRequest
         return $this->type;
     }
 
-    public function getData(): ?string
+    public function getData(): string
     {
         return $this->data;
     }

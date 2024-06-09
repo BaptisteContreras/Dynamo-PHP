@@ -4,7 +4,9 @@ namespace App\Background\Domain\Model\Aggregate\History;
 
 use App\Background\Domain\Model\Aggregate\History\Collection\HistoryEventCollection;
 use App\Background\Domain\Model\Aggregate\History\Collection\RoHistoryEventCollection;
+use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Shared\Domain\Const\HistoryEventType;
+use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
 final class History
@@ -32,7 +34,7 @@ final class History
         return $this;
     }
 
-    public function addRemoteEvent(UuidV7|string $id, UuidV7|string $node, HistoryEventType $type, \DateTimeImmutable $eventTime, UuidV7|string $sourceNode, ?string $data): self
+    public function addRemoteEvent(UuidV7|string $id, UuidV7|string $node, HistoryEventType $type, \DateTimeImmutable $eventTime, UuidV7|string $sourceNode, string $data): self
     {
         $id = $id instanceof UuidV7 ? $id : UuidV7::fromString($id);
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
@@ -53,7 +55,7 @@ final class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::JOIN, null));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) NodeState::JOINING->value));
 
         return $this;
     }
@@ -62,7 +64,7 @@ final class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::LEAVE, null));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) NodeState::LEAVING->value));
 
         return $this;
     }
@@ -87,5 +89,25 @@ final class History
         $this->newEventsCollection = HistoryEventCollection::createEmpty();
 
         return $currentCollection;
+    }
+
+    public function applyEventsForNode(Node $node): void
+    {
+        $nodeEvents = $this->events->filter(fn (Event $event) => $node->hasSameId($event->getNode()));
+
+        /** @var array<string, Event> $mostRecentEventByType */
+        $mostRecentEventByType = [];
+
+        foreach ($nodeEvents as $event) {
+            $currentMostRecentEvent = $mostRecentEventByType[$event->getType()->name] ?? null;
+
+            if (!$currentMostRecentEvent || $event->isNewerThan($currentMostRecentEvent)) {
+                $mostRecentEventByType[$event->getType()->name] = $event;
+            }
+        }
+
+        foreach ($mostRecentEventByType as $eventToApply) {
+            $node->applyEvent($eventToApply);
+        }
     }
 }

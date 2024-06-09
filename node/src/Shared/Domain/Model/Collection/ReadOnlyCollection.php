@@ -79,4 +79,11 @@ abstract class ReadOnlyCollection implements ReadOnlyCollectionInterface
     {
         return count($this->internal);
     }
+
+    public function filter(callable $filterCallable): static
+    {
+        return new static(
+            array_filter($this->internal, $filterCallable)
+        );
+    }
 }

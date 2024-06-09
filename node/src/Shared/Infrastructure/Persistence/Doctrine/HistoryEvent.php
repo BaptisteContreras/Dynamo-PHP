@@ -18,7 +18,7 @@ class HistoryEvent
         #[Column(type: UuidType::NAME)] private UuidV7 $node,
         #[Column(type: Types::INTEGER, enumType: HistoryEventType::class)] private HistoryEventType $type,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $eventTime,
-        #[Column(type: Types::TEXT, nullable: true)] private ?string $data,
+        #[Column(type: Types::TEXT)] private string $data,
         #[Column(type: UuidType::NAME, nullable: true)] private ?UuidV7 $sourceNode,
         #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)] private ?\DateTimeImmutable $receivedAt
     ) {
@@ -49,7 +49,7 @@ class HistoryEvent
         return $this->eventTime;
     }
 
-    public function getData(): ?string
+    public function getData(): string
     {
         return $this->data;
     }

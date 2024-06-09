@@ -12,13 +12,13 @@ final readonly class Event
         private UuidV7 $node,
         private HistoryEventType $type,
         private \DateTimeImmutable $eventTime,
-        private ?string $data,
+        private string $data,
         private ?UuidV7 $sourceNode,
         private ?\DateTimeImmutable $receivedAt
     ) {
     }
 
-    public static function localEvent(UuidV7 $node, HistoryEventType $type, ?string $data): self
+    public static function localEvent(UuidV7 $node, HistoryEventType $type, string $data): self
     {
         return new self(
             new UuidV7(),
@@ -46,7 +46,7 @@ final readonly class Event
         return $this->type;
     }
 
-    public function getData(): ?string
+    public function getData(): string
     {
         return $this->data;
     }
@@ -64,5 +64,10 @@ final readonly class Event
     public function getSourceNode(): ?UuidV7
     {
         return $this->sourceNode;
+    }
+
+    public function isNewerThan(self $otherEvent): bool
+    {
+        return $this->eventTime >= $otherEvent->getEventTime();
     }
 }

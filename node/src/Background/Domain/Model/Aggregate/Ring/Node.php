@@ -98,11 +98,27 @@ final class Node
 
     public function applyEvent(Event $event): self
     {
+        $data = $event->getData();
+
         match ($event->getType()) {
-            HistoryEventType::JOIN => $this->state = NodeState::JOINING,
-            HistoryEventType::LEAVE => $this->state = NodeState::LEAVING,
+            HistoryEventType::CHANGE_MEMBERSHIP => $this->state = NodeState::from((int) $data),
+            HistoryEventType::CHANGE_HOST => $this->host = $data,
+            HistoryEventType::CHANGE_NETWORK_PORT => $this->networkPort = (int) $data,
+            HistoryEventType::CHANGE_WEIGHT => $this->weight = (int) $data,
+            HistoryEventType::CHANGE_SEED => $this->seed = 'true' === $data,
         };
 
         return $this;
+    }
+
+    public function hasSameId(UuidV7|self|string $other): bool
+    {
+        if ($other instanceof self) {
+            $other = $other->getId();
+        } elseif (is_string($other)) {
+            $other = UuidV7::fromString($other);
+        }
+
+        return $this->id->equals($other);
     }
 }

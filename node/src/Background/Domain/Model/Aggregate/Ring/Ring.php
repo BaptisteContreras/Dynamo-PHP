@@ -52,7 +52,7 @@ final class Ring
 
         foreach ($this->nodeCollection as $currentNode) {
             if ($currentNode->isLocal() || !$otherRing->hasNode($currentNode->getId())) {
-                // The local node always have the freshest information about itself
+                // the local node always have the freshest information about itself
 
                 $newNodeCollection->add(clone $currentNode);
 
@@ -106,10 +106,13 @@ final class Ring
         return true === $localNodeVersion?->isFresherThan($node);
     }
 
-    private function updateNodesWithHistory(History $historyTimeline): void
+    private function updateNodesWithHistory(History $history): void
     {
-        foreach ($historyTimeline->getNewEvents() as $newEvent) {
-            $this->getNode($newEvent->getNode())->applyEvent($newEvent);
+        foreach ($this->nodeCollection as $node) {
+            if (!$node->isLocal()) {
+                // local node should not be updated as it is always considered fresh
+                $history->applyEventsForNode($node);
+            }
         }
     }
 

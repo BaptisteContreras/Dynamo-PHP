@@ -30,4 +30,9 @@ interface ReadOnlyCollectionInterface extends \IteratorAggregate, \Countable
      * @return \Traversable<T>
      */
     public function getIterator(): \Traversable;
+
+    /**
+     * @param \Closure(T): bool $filterCallable
+     */
+    public function filter(callable $filterCallable): static;
 }
