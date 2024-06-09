@@ -2,7 +2,7 @@
 
 namespace App\Background\Domain\Model\Aggregate\Ring;
 
-use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
+use App\Background\Domain\Model\Aggregate\History\History;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\NodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\RoNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollection;
@@ -46,7 +46,7 @@ final class Ring
         return $this->internalRing;
     }
 
-    public function merge(Ring $otherRing, HistoryTimeline $historyTimeline): self
+    public function merge(Ring $otherRing, History $historyTimeline): self
     {
         $newNodeCollection = NodeCollection::createEmpty();
 
@@ -106,7 +106,7 @@ final class Ring
         return true === $localNodeVersion?->isFresherThan($node);
     }
 
-    private function updateNodesWithHistory(HistoryTimeline $historyTimeline): void
+    private function updateNodesWithHistory(History $historyTimeline): void
     {
         foreach ($historyTimeline->getNewEvents() as $newEvent) {
             $this->getNode($newEvent->getNode())->applyEvent($newEvent);

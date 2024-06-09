@@ -6,7 +6,7 @@ use App\Background\Application\Command\Sync\Membership\V1\Presenter\SyncMembersh
 use App\Background\Application\Command\Sync\Membership\V1\Request\NodeRequest;
 use App\Background\Application\Command\Sync\Membership\V1\Request\SyncRequest;
 use App\Background\Application\Command\Sync\Membership\V1\Response\SyncMembershipV1Response;
-use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
+use App\Background\Domain\Model\Aggregate\History\History;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\NodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Background\Domain\Out\History\FinderInterface as HistoryFinderInterface;
@@ -28,7 +28,7 @@ final readonly class SyncMembershipV1CommandHandler
     {
         $localHistory = $this->syncHistory($syncRequest);
 
-        $this->syncNodes($syncRequest);
+        $this->syncNodes($syncRequest, $localHistory);
 
         // update nodes
         // update virtual nodes
@@ -36,7 +36,7 @@ final readonly class SyncMembershipV1CommandHandler
         $syncMembershipPresenter->present(SyncMembershipV1Response::success());
     }
 
-    private function syncHistory(SyncRequest $syncRequest): HistoryTimeline
+    private function syncHistory(SyncRequest $syncRequest): History
     {
         $localHistory = $this->historyFinder->getLocalHistoryTimeline();
         $remoteHistory = $this->createTimelineFromRequest($syncRequest);
@@ -46,16 +46,18 @@ final readonly class SyncMembershipV1CommandHandler
         return $localHistory;
     }
 
-    private function syncNodes(SyncRequest $syncRequest): void
+    private function syncNodes(SyncRequest $syncRequest, History $historyTimeline): void
     {
         $remoteRing = $this->createRingFromRequest($syncRequest);
         dump($remoteRing);
-        dd($this->ringFinder->getLocalRing());
+        dump($this->ringFinder->getLocalRing());
+
+        dd($this->ringFinder->getLocalRing()->merge($remoteRing, $historyTimeline));
     }
 
-    private function createTimelineFromRequest(SyncRequest $syncRequest): HistoryTimeline
+    private function createTimelineFromRequest(SyncRequest $syncRequest): History
     {
-        $timeline = HistoryTimeline::createEmpty();
+        $timeline = History::createEmpty();
 
         foreach ($syncRequest->getHistoryEvents() as $event) {
             $timeline->addRemoteEvent(
@@ -63,7 +65,8 @@ final readonly class SyncMembershipV1CommandHandler
                 $event->getNode(),
                 $event->getType(),
                 $event->getEventTime(),
-                $syncRequest->getSourceNode()
+                $syncRequest->getSourceNode(),
+                $event->getData()
             );
         }
 

@@ -7,7 +7,7 @@ use App\Background\Domain\Model\Aggregate\History\Collection\RoHistoryEventColle
 use App\Shared\Domain\Const\HistoryEventType;
 use Symfony\Component\Uid\UuidV7;
 
-final class HistoryTimeline
+final class History
 {
     private HistoryEventCollection $newEventsCollection;
 
@@ -22,7 +22,7 @@ final class HistoryTimeline
         return new self();
     }
 
-    public function addEvent(HistoryEvent $event): self
+    public function addEvent(Event $event): self
     {
         if (!$this->events->exists($event)) {
             $this->newEventsCollection->add($event);
@@ -32,17 +32,18 @@ final class HistoryTimeline
         return $this;
     }
 
-    public function addRemoteEvent(UuidV7|string $id, UuidV7|string $node, HistoryEventType $type, \DateTimeImmutable $eventTime, UuidV7|string $sourceNode): self
+    public function addRemoteEvent(UuidV7|string $id, UuidV7|string $node, HistoryEventType $type, \DateTimeImmutable $eventTime, UuidV7|string $sourceNode, ?string $data): self
     {
         $id = $id instanceof UuidV7 ? $id : UuidV7::fromString($id);
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
         $sourceNode = $sourceNode instanceof UuidV7 ? $sourceNode : UuidV7::fromString($sourceNode);
 
-        return $this->addEvent(new HistoryEvent(
+        return $this->addEvent(new Event(
             $id,
             $node,
             $type,
             $eventTime,
+            $data,
             $sourceNode,
             new \DateTimeImmutable()
         ));
@@ -52,7 +53,7 @@ final class HistoryTimeline
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(HistoryEvent::localEvent($node, HistoryEventType::JOIN));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::JOIN, null));
 
         return $this;
     }
@@ -61,7 +62,7 @@ final class HistoryTimeline
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(HistoryEvent::localEvent($node, HistoryEventType::LEAVE));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::LEAVE, null));
 
         return $this;
     }

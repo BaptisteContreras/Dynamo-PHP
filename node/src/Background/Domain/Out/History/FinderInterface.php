@@ -2,9 +2,9 @@
 
 namespace App\Background\Domain\Out\History;
 
-use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
+use App\Background\Domain\Model\Aggregate\History\History;
 
 interface FinderInterface
 {
-    public function getLocalHistoryTimeline(): HistoryTimeline;
+    public function getLocalHistoryTimeline(): History;
 }

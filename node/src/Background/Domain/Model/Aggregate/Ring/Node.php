@@ -2,7 +2,7 @@
 
 namespace App\Background\Domain\Model\Aggregate\Ring;
 
-use App\Background\Domain\Model\Aggregate\History\HistoryEvent;
+use App\Background\Domain\Model\Aggregate\History\Event;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Shared\Domain\Const\HistoryEventType;
@@ -96,7 +96,7 @@ final class Node
         return NodeState::LEAVING === $this->state;
     }
 
-    public function applyEvent(HistoryEvent $event): self
+    public function applyEvent(Event $event): self
     {
         match ($event->getType()) {
             HistoryEventType::JOIN => $this->state = NodeState::JOINING,

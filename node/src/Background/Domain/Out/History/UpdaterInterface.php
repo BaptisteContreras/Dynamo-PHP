@@ -2,9 +2,9 @@
 
 namespace App\Background\Domain\Out\History;
 
-use App\Background\Domain\Model\Aggregate\History\HistoryTimeline;
+use App\Background\Domain\Model\Aggregate\History\History;
 
 interface UpdaterInterface
 {
-    public function saveHistoryTimeline(HistoryTimeline $historyTimeline): void;
+    public function saveHistoryTimeline(History $historyTimeline): void;
 }

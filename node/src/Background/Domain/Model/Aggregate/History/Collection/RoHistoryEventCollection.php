@@ -2,11 +2,11 @@
 
 namespace App\Background\Domain\Model\Aggregate\History\Collection;
 
-use App\Background\Domain\Model\Aggregate\History\HistoryEvent;
+use App\Background\Domain\Model\Aggregate\History\Event;
 use App\Shared\Domain\Model\Collection\ReadOnlyCollection;
 
 /**
- * @extends ReadOnlyCollection<HistoryEvent>
+ * @extends ReadOnlyCollection<Event>
  */
 class RoHistoryEventCollection extends ReadOnlyCollection
 {
