@@ -3,6 +3,7 @@ parameters:
 	paths:
 		- config
 		- src
+		- tests
 	reportUnmatchedIgnoredErrors: false
 	doctrine:
 		objectManagerLoader: tests/object-manager.php

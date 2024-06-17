@@ -46,6 +46,11 @@ final class Ring
         return $this->internalRing;
     }
 
+    public function getDisabledVirtualNodes(): RoVirtualNodeCollection
+    {
+        return $this->disabledVirtualNodeCollection;
+    }
+
     public function merge(Ring $otherRing, History $historyTimeline): self
     {
         $newNodeCollection = NodeCollection::createEmpty();
@@ -67,6 +72,7 @@ final class Ring
 
         foreach ($otherRing->getNodes() as $otherNode) {
             if (!$this->hasNode($otherNode->getId())) {
+                // TODO implement clone method in Node
                 $newNodeCollection->add(clone $otherNode);
             }
         }
