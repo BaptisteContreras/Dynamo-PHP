@@ -1,9 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class App\\\\Background\\\\Infrastructure\\\\Persistence\\\\Repository\\\\NodeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
-			count: 1
-			path: src/Background/Infrastructure/Persistence/Repository/NodeRepository.php
+			message: "#^Parameter \\#1 \\$value of method App\\\\Background\\\\Domain\\\\Model\\\\Aggregate\\\\Ring\\\\Collection\\\\NodeCollection\\:\\:add\\(\\) expects App\\\\Background\\\\Domain\\\\Model\\\\Aggregate\\\\Ring\\\\Node, mixed given\\.$#"
+			count: 2
+			path: src/Background/Domain/Model/Aggregate/Ring/Ring.php
 
 		-
 			message: "#^Method App\\\\Manager\\\\Application\\\\Command\\\\Join\\\\Request\\\\NodeRequest\\:\\:getNetworkPort\\(\\) should return int\\<1, max\\> but returns int\\.$#"

@@ -9,9 +9,11 @@ use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollectio
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use Symfony\Component\Uid\UuidV7;
 
+use function DeepCopy\deep_copy;
+
 final class Ring
 {
-    private readonly VirtualNodeCollection $virtualNodeCollection;
+    private VirtualNodeCollection $virtualNodeCollection;
     private VirtualNodeCollection $internalRing;
     private VirtualNodeCollection $disabledVirtualNodeCollection;
 
@@ -51,15 +53,35 @@ final class Ring
         return $this->disabledVirtualNodeCollection;
     }
 
+    /**
+     * When merging two rings we have to distinguish the "local ring" and the "remote ring".
+     * The local ring is the current ring of the node.
+     * The remote ring is the received ring.
+     *
+     * The process of merging two rings involves 3 steps :
+     * - 1) Create a new node collection
+     * - 2) Update all nodes of the new collection with the received history
+     * - 3) Update status of virtual nodes and put them in the appropriate collection (ring or unused)
+     *
+     * During the first step, nodes in the local ring take precedence over their counterpart in the remote ring.
+     * This means that values of nodes in the local ring are used even if they are older. (They are updated later with the history in step 2)
+     *
+     * When a node exists in both rings, its virtual nodes are merged in a new collection.
+     * Values of the virtual node in the local ring the precedence over the remote one except for the "active" field.
+     * As virtual node cannot be reactivated once disabled, "active" => false take precedence, even over the local virtual node value.
+     *
+     * There is one exception for node marked as "local". (note that only node in local ring can be marked as local)
+     * $node->isLocal() === true means that this is the information of the node executing this algorithm.
+     * We consider that nodes always have the more exact values about themselves and never update their values.
+     * -> local node are never updated nor their virtual nodes
+     */
     public function merge(Ring $otherRing, History $historyTimeline): self
     {
         $newNodeCollection = NodeCollection::createEmpty();
 
         foreach ($this->nodeCollection as $currentNode) {
             if ($currentNode->isLocal() || !$otherRing->hasNode($currentNode->getId())) {
-                // the local node always have the freshest information about itself
-
-                $newNodeCollection->add(clone $currentNode);
+                $newNodeCollection->add(deep_copy($currentNode));
 
                 continue;
             }
@@ -72,8 +94,7 @@ final class Ring
 
         foreach ($otherRing->getNodes() as $otherNode) {
             if (!$this->hasNode($otherNode->getId())) {
-                // TODO implement clone method in Node
-                $newNodeCollection->add(clone $otherNode);
+                $newNodeCollection->add(deep_copy($otherNode));
             }
         }
 
@@ -122,32 +143,46 @@ final class Ring
         }
     }
 
-    private function mergeNodes(Node $node, Node $otherNode): Node
+    private function mergeNodes(Node $localNode, Node $otherNode): Node
     {
         $mergedVirtualNodeCollection = VirtualNodeCollection::createEmpty();
 
         $mergedNode = new Node(
-            $node->getId(),
-            $node->getHost(),
-            $node->getNetworkPort(),
-            $node->getState(),
-            $node->getJoinedAt(),
-            $node->getWeight(),
-            $node->isSeed(),
+            $localNode->getId(),
+            $localNode->getHost(),
+            $localNode->getNetworkPort(),
+            $localNode->getState(),
+            $localNode->getJoinedAt(),
+            $localNode->getWeight(),
+            $localNode->isSeed(),
             new \DateTimeImmutable(),
-            $node->getLabel(),
+            $localNode->getLabel(),
             $mergedVirtualNodeCollection
         );
 
-        $mergedVirtualNodeCollection
-            ->merge($node->getVirtualNodes())
-            ->merge($otherNode->getVirtualNodes());
+        foreach ($localNode->getVirtualNodes() as $virtualNode) {
+            $mergedVirtualNodeCollection->add(VirtualNode::copyWithNewNode($virtualNode, $mergedNode));
+        }
+
+        foreach ($otherNode->getVirtualNodes() as $otherVirtualNode) {
+            $alreadyMergedVirtualNode = $mergedVirtualNodeCollection->get($otherVirtualNode->getStringId());
+
+            if (!$localNode->isLocal() && $alreadyMergedVirtualNode && !$otherVirtualNode->isActive()) {
+                $alreadyMergedVirtualNode->disable();
+            }
+
+            if (!$alreadyMergedVirtualNode) {
+                $mergedVirtualNodeCollection->add(VirtualNode::copyWithNewNode($otherVirtualNode, $mergedNode));
+            }
+        }
 
         return $mergedNode;
     }
 
     private function updateVirtualNodeCollection(): void
     {
+        $this->virtualNodeCollection = VirtualNodeCollection::createEmpty();
+
         foreach ($this->nodeCollection as $node) {
             $this->virtualNodeCollection->merge($node->getVirtualNodes());
         }

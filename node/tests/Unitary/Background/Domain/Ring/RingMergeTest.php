@@ -15,12 +15,18 @@ use Symfony\Component\Uid\UuidV7;
 
 class RingMergeTest extends TestCase
 {
+    private const NODE_1 = '01900395-93bc-72a6-bf1b-0b66e93311ca';
+    private const NODE_2 = '01901353-ceb7-71ba-a89c-794a45e538ce';
+
+    private const VIRTUAL_NODE_1 = '01901352-03dc-7cdf-8bae-46478df51aeb';
+    private const VIRTUAL_NODE_2 = '01901352-03dc-7cdf-8bae-46478df51aec';
+
     public static function getData(): \Generator
     {
         yield 'simple merge' => [
             [
-                [
-                    'id' => UuidV7::fromString('01900395-93bc-72a6-bf1b-0b66e93311ca'),
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
                     'state' => NodeState::JOINING,
@@ -32,7 +38,7 @@ class RingMergeTest extends TestCase
                     'local' => false,
                     'virtualNodes' => [
                         [
-                            'id' => UuidV7::fromString('01901352-03dc-7cdf-8bae-46478df51aeb'),
+                            'id' => self::VIRTUAL_NODE_1,
                             'label' => 'A1',
                             'slot' => 200,
                             'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
@@ -42,8 +48,8 @@ class RingMergeTest extends TestCase
                 ],
             ],
             [
-                [
-                    'id' => UuidV7::fromString('01901353-ceb7-71ba-a89c-794a45e538ce'),
+                self::NODE_2 => [
+                    'id' => self::NODE_2,
                     'host' => 'localhost',
                     'networkPort' => 8080,
                     'state' => NodeState::JOINING,
@@ -55,7 +61,7 @@ class RingMergeTest extends TestCase
                     'local' => false,
                     'virtualNodes' => [
                         [
-                            'id' => UuidV7::fromString('01901353-de44-7d5a-a0bd-1dadfee1fc05'),
+                            'id' => self::VIRTUAL_NODE_2,
                             'label' => 'B1',
                             'slot' => 50,
                             'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-12 21:28:00'),
@@ -65,10 +71,63 @@ class RingMergeTest extends TestCase
                 ],
             ],
             [
-                '01901352-03dc-7cdf-8bae-46478df51aeb',
-                '01901353-de44-7d5a-a0bd-1dadfee1fc05',
+                self::VIRTUAL_NODE_1,
+                self::VIRTUAL_NODE_2,
             ],
             [
+            ],
+        ];
+        yield 'merge same node' => [
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => '127.0.0.1',
+                    'networkPort' => 80,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'weight' => 1,
+                    'seed' => true,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
+                    'label' => 'A',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'A1',
+                            'slot' => 200,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                            'active' => true,
+                        ],
+                    ],
+                ],
+            ],
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => '127.0.0.1',
+                    'networkPort' => 80,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'weight' => 1,
+                    'seed' => true,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
+                    'label' => 'A',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'A1',
+                            'slot' => 200,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                            'active' => false,
+                        ],
+                    ],
+                ],
+            ],
+            [
+            ],
+            [
+                self::VIRTUAL_NODE_1,
             ],
         ];
     }
@@ -82,20 +141,20 @@ class RingMergeTest extends TestCase
         array $internalRing,
         array $disabledVirtualNodes
     ): void {
-        $localRing = new Ring(new NodeCollection(
-            array_map(fn (array $nodeData) => $this->dataArrayToNode($nodeData), $localRingNodes)
-        ));
-
-        $remoteRing = new Ring(new NodeCollection(
-            array_map(fn (array $nodeData) => $this->dataArrayToNode($nodeData), $remoteRingNodes)
-        ));
+        $localRing = $this->createRingFromDataProvider($localRingNodes);
+        $remoteRing = $this->createRingFromDataProvider($remoteRingNodes);
 
         $localRing->merge($remoteRing, History::createEmpty());
 
+        $localNodes = $localRing->getNodes();
         $localVirtualNodes = $localRing->getVirtualNodes();
         $localDisabledVirtualNodes = $localRing->getDisabledVirtualNodes();
 
+        $expectedNodesId = array_unique(array_merge(array_keys($localRingNodes), array_keys($remoteRingNodes)));
+
+        self::assertCount(count($expectedNodesId), $localNodes);
         self::assertCount(count($internalRing), $localVirtualNodes);
+        self::assertCount(count($disabledVirtualNodes), $localDisabledVirtualNodes);
         self::assertCount(count($disabledVirtualNodes), $localDisabledVirtualNodes);
 
         foreach ($internalRing as $expectActiveVirtualNodeId) {
@@ -105,6 +164,22 @@ class RingMergeTest extends TestCase
         foreach ($disabledVirtualNodes as $expectDisabledVirtualNodeId) {
             self::assertTrue($localDisabledVirtualNodes->keyExists($expectDisabledVirtualNodeId));
         }
+
+        foreach ($localNodes as $node) {
+            $expectedNodeValues = $localRingNodes[$node->getStringId()] ?? $remoteRingNodes[$node->getStringId()];
+
+            $this->assertNodeIsAsExpected(
+                $expectedNodeValues,
+                $node
+            );
+        }
+    }
+
+    private function createRingFromDataProvider(array $nodesData): Ring
+    {
+        return new Ring(new NodeCollection(
+            array_map(fn (array $nodeData) => $this->dataArrayToNode($nodeData), $nodesData)
+        ));
     }
 
     private function dataArrayToNode(array $nodeData): Node
@@ -112,7 +187,7 @@ class RingMergeTest extends TestCase
         $virtualNodes = VirtualNodeCollection::createEmpty();
 
         $node = new Node(
-            $nodeData['id'],
+            UuidV7::fromString($nodeData['id']),
             $nodeData['host'],
             $nodeData['networkPort'],
             $nodeData['state'],
@@ -137,12 +212,26 @@ class RingMergeTest extends TestCase
     private function dataArrayToVirtualNode(array $virtualNodeData, Node $node): VirtualNode
     {
         return new VirtualNode(
-            $virtualNodeData['id'],
+            UuidV7::fromString($virtualNodeData['id']),
             $virtualNodeData['label'],
             $virtualNodeData['slot'],
             $virtualNodeData['createdAt'],
             $node,
             $virtualNodeData['active']
         );
+    }
+
+    private function assertNodeIsAsExpected(array $expectedValues, Node $node): void
+    {
+        self::assertEquals($expectedValues['id'], $node->getStringId());
+        self::assertEquals($expectedValues['host'], $node->getHost());
+        self::assertEquals($expectedValues['networkPort'], $node->getNetworkPort());
+        self::assertEquals($expectedValues['state'], $node->getState());
+        self::assertEquals($expectedValues['joinedAt'], $node->getJoinedAt());
+        self::assertEquals($expectedValues['weight'], $node->getWeight());
+        self::assertEquals($expectedValues['seed'], $node->isSeed());
+        //        self::assertEquals($expectedValues['updatedAt'], $node->getUpdatedAt());
+        self::assertEquals($expectedValues['label'], $node->getLabel());
+        self::assertEquals($expectedValues['local'], $node->isLocal());
     }
 }

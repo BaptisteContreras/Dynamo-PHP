@@ -16,6 +16,18 @@ final class VirtualNode
     ) {
     }
 
+    public static function copyWithNewNode(self $virtualNodeToCopy, Node $newNode): self
+    {
+        return new self(
+            $virtualNodeToCopy->getId(),
+            $virtualNodeToCopy->getLabel(),
+            $virtualNodeToCopy->getSlot(),
+            $virtualNodeToCopy->getCreatedAt(),
+            $newNode,
+            $virtualNodeToCopy->isActive(),
+        );
+    }
+
     public function getId(): UuidV7
     {
         return $this->id;
@@ -61,5 +73,10 @@ final class VirtualNode
     public function shouldBeDisabled(): bool
     {
         return $this->node->isLeavingRing();
+    }
+
+    public function getStringId(): string
+    {
+        return $this->id->toRfc4122();
     }
 }
