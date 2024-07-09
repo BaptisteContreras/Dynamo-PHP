@@ -9,7 +9,6 @@ use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Background\Domain\Model\Aggregate\Ring\VirtualNode;
 use App\Shared\Domain\Const\NodeState;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\UuidV7;
 
@@ -20,10 +19,19 @@ class RingMergeTest extends TestCase
 
     private const VIRTUAL_NODE_1 = '01901352-03dc-7cdf-8bae-46478df51aeb';
     private const VIRTUAL_NODE_2 = '01901352-03dc-7cdf-8bae-46478df51aec';
+    private const VIRTUAL_NODE_3 = '01909912-05b9-76c9-953a-0b0bbb5d858d';
+    private const VIRTUAL_NODE_4 = '01909912-e139-72da-98d5-c39667a6f652';
+    private const VIRTUAL_NODE_5 = '01909912-f8b0-7c9b-bced-c3bb64b00e0f';
 
-    public static function getData(): \Generator
+    public static function getSimpleTestCases(): \Generator
     {
-        yield 'simple merge' => [
+        yield '[Simple] merge two empty ring' => [
+            [],
+            [],
+            [],
+            [],
+        ];
+        yield '[Simple] merge two different node' => [
             [
                 self::NODE_1 => [
                     'id' => self::NODE_1,
@@ -77,7 +85,11 @@ class RingMergeTest extends TestCase
             [
             ],
         ];
-        yield 'merge same node' => [
+    }
+
+    public static function getLocalRingPrecedenceTestCases(): \Generator
+    {
+        yield '[LocalRingPrecedence] merge same node and remote virtual node is not active' => [
             [
                 self::NODE_1 => [
                     'id' => self::NODE_1,
@@ -96,7 +108,7 @@ class RingMergeTest extends TestCase
                             'label' => 'A1',
                             'slot' => 200,
                             'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
-                            'active' => true,
+                            'active' => true, // <- local is active
                         ],
                     ],
                 ],
@@ -107,10 +119,10 @@ class RingMergeTest extends TestCase
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
                     'state' => NodeState::JOINING,
-                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
-                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
                     'virtualNodes' => [
@@ -118,8 +130,8 @@ class RingMergeTest extends TestCase
                             'id' => self::VIRTUAL_NODE_1,
                             'label' => 'A1',
                             'slot' => 200,
-                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
-                            'active' => false,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
+                            'active' => false, // <- local is not
                         ],
                     ],
                 ],
@@ -130,10 +142,153 @@ class RingMergeTest extends TestCase
                 self::VIRTUAL_NODE_1,
             ],
         ];
+        yield '[LocalRingPrecedence] merge same node and local virtual node is not active' => [
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => '127.0.0.1',
+                    'networkPort' => 80,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'weight' => 1,
+                    'seed' => true,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-11 21:28:00'),
+                    'label' => 'A',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'A1',
+                            'slot' => 200,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
+                            'active' => false, // <- local is not active
+                        ],
+                    ],
+                ],
+            ],
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => '127.0.0.1',
+                    'networkPort' => 80,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'weight' => 1,
+                    'seed' => true,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
+                    'label' => 'A',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'A1',
+                            'slot' => 200,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                            'active' => true, // <- remote is active
+                        ],
+                    ],
+                ],
+            ],
+            [
+            ],
+            [
+                self::VIRTUAL_NODE_1,
+            ],
+        ];
+        yield '[LocalRingPrecedence] merge same node and remote node has been updated more recently' => [
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => '127.0.0.1',
+                    'networkPort' => 80,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
+                    'weight' => 1,
+                    'seed' => true,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-11 21:28:00'),
+                    'label' => 'A',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'A1',
+                            'slot' => 200,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
+                            'active' => false, // <- local is not active
+                        ],
+                        [
+                            'id' => self::VIRTUAL_NODE_3,
+                            'label' => 'A2',
+                            'slot' => 300,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-11 21:28:00'),
+                            'active' => false, // <- local is not active
+                        ],
+                        [
+                            'id' => self::VIRTUAL_NODE_4,
+                            'label' => 'A3',
+                            'slot' => 400,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-04-11 21:28:00'),
+                            'active' => true, // <- local is active
+                        ],
+                    ],
+                ],
+            ],
+            [
+                self::NODE_1 => [
+                    'id' => self::NODE_1,
+                    'host' => 'localhost',
+                    'networkPort' => 8080,
+                    'state' => NodeState::JOINING,
+                    'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                    'weight' => 99,
+                    'seed' => false,
+                    'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
+                    'label' => 'B',
+                    'local' => false,
+                    'virtualNodes' => [
+                        [
+                            'id' => self::VIRTUAL_NODE_1,
+                            'label' => 'B1',
+                            'slot' => 99,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
+                            'active' => true, // <- remote is active
+                        ],
+                        [
+                            'id' => self::VIRTUAL_NODE_2,
+                            'label' => 'B2',
+                            'slot' => 9999,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-07-10 21:28:00'),
+                            'active' => true, // <- remote is active
+                        ],
+                        [
+                            'id' => self::VIRTUAL_NODE_5,
+                            'label' => 'B3',
+                            'slot' => 3333,
+                            'createdAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-08-10 21:28:00'),
+                            'active' => true, // <- remote is active
+                        ],
+                    ],
+                ],
+            ],
+            [
+                self::VIRTUAL_NODE_2,
+                self::VIRTUAL_NODE_4,
+                self::VIRTUAL_NODE_5,
+            ],
+            [
+                self::VIRTUAL_NODE_1,
+                self::VIRTUAL_NODE_3,
+            ],
+        ];
+    }
+
+    public static function getLocalNodeTestCases(): \Generator
+    {
     }
 
     /**
-     * @dataProvider getData
+     * @dataProvider getSimpleTestCases
+     * @dataProvider getLocalRingPrecedenceTestCases
      */
     public function testSuccessful(
         array $localRingNodes,
@@ -152,17 +307,16 @@ class RingMergeTest extends TestCase
 
         $expectedNodesId = array_unique(array_merge(array_keys($localRingNodes), array_keys($remoteRingNodes)));
 
-        self::assertCount(count($expectedNodesId), $localNodes);
-        self::assertCount(count($internalRing), $localVirtualNodes);
-        self::assertCount(count($disabledVirtualNodes), $localDisabledVirtualNodes);
-        self::assertCount(count($disabledVirtualNodes), $localDisabledVirtualNodes);
+        self::assertCount(count($expectedNodesId), $localNodes, 'expected total nodes mismatch');
+        self::assertCount(count($internalRing), $localVirtualNodes, 'expected internal ring mismatch');
+        self::assertCount(count($disabledVirtualNodes), $localDisabledVirtualNodes, 'expected disabled virtual nodes mismatch');
 
         foreach ($internalRing as $expectActiveVirtualNodeId) {
-            self::assertTrue($localVirtualNodes->keyExists($expectActiveVirtualNodeId));
+            self::assertTrue($localVirtualNodes->keyExists($expectActiveVirtualNodeId), 'expected virtual node is not in the ring');
         }
 
         foreach ($disabledVirtualNodes as $expectDisabledVirtualNodeId) {
-            self::assertTrue($localDisabledVirtualNodes->keyExists($expectDisabledVirtualNodeId));
+            self::assertTrue($localDisabledVirtualNodes->keyExists($expectDisabledVirtualNodeId), 'expected virtual node is not disabled');
         }
 
         foreach ($localNodes as $node) {
