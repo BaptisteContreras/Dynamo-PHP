@@ -14,12 +14,16 @@ abstract class RingMergeTestCase extends TestCase
 {
     protected const NODE_1 = '01900395-93bc-72a6-bf1b-0b66e93311ca';
     protected const NODE_2 = '01901353-ceb7-71ba-a89c-794a45e538ce';
+    protected const NODE_3 = '01909e05-33dc-7c3e-a131-32a829453bd4';
 
     protected const VIRTUAL_NODE_1 = '01901352-03dc-7cdf-8bae-46478df51aeb';
     protected const VIRTUAL_NODE_2 = '01901352-03dc-7cdf-8bae-46478df51aec';
     protected const VIRTUAL_NODE_3 = '01909912-05b9-76c9-953a-0b0bbb5d858d';
     protected const VIRTUAL_NODE_4 = '01909912-e139-72da-98d5-c39667a6f652';
     protected const VIRTUAL_NODE_5 = '01909912-f8b0-7c9b-bced-c3bb64b00e0f';
+    protected const VIRTUAL_NODE_6 = '01909e0f-3899-779f-8093-0473397e8ea0';
+    protected const VIRTUAL_NODE_7 = '01909e1d-ffa3-7405-ae38-20bc09a31247';
+    protected const VIRTUAL_NODE_8 = '01909e1e-7c18-76e5-b50a-ccc873b9ccef';
 
     protected function createRingFromDataProvider(array $nodesData): Ring
     {
