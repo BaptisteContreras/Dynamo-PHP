@@ -9,7 +9,7 @@ use App\Shared\Domain\Const\HistoryEventType;
 use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
-final class History
+class History
 {
     private HistoryEventCollection $newEventsCollection;
 
