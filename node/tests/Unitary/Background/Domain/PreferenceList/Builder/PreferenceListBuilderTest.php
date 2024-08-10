@@ -2,7 +2,10 @@
 
 namespace App\Tests\Unitary\Background\Domain\PreferenceList\Builder;
 
+use App\Background\Domain\Exception\CannotBuildPreferenceListException;
+use App\Background\Domain\Model\Aggregate\PreferenceList\PreferenceEntry;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
+use App\Background\Domain\Service\PreferenceList\PreferenceListBuilder;
 use App\Shared\Domain\Const\NodeState;
 use App\Tests\Unitary\Background\RingBuilder;
 use App\Tests\Unitary\Background\VirtualNodeBuilder;
@@ -305,12 +308,10 @@ class PreferenceListBuilderTest extends TestCase
     public static function getErrorTestCases(): \Generator
     {
         yield 'Empty ring' => [
-            self::N_3,
             RingBuilder::createRing()
                 ->getRing(),
         ];
         yield 'No virtual node active' => [
-            self::N_3,
             RingBuilder::createRing()
                 ->addActiveNode(
                     self::NODE_1,
@@ -331,22 +332,60 @@ class PreferenceListBuilderTest extends TestCase
      *
      * with index 0 containing all expected coordinator nodes and index 1 all others nodes
      *
-     * @param array<string, array{"0": array<string>, "1": array<string>}> $expectedPreferenceList
+     * @param array<string, array{"0": array<string>, "1": array<string>}> $expectedResult
      */
     public function testSuccessful(
         int $N,
         Ring $ring,
-        array $expectedPreferenceList,
+        array $expectedResult,
     ): void {
+        $preferenceListBuilder = new PreferenceListBuilder();
+        $preferenceList = $preferenceListBuilder->buildFromRing($ring);
+
+        $entries = $preferenceList->getEntries();
+        foreach ($expectedResult as $slotRange => $expectedNodes) {
+            $rangeSplit = explode('-', $slotRange);
+            $startRange = (int) $rangeSplit[0];
+            $endRange = (int) $rangeSplit[1];
+
+            for ($currentSlot = $startRange; $currentSlot <= $endRange; ++$currentSlot) {
+                /** @var ?PreferenceEntry $currentEntry */
+                $currentEntry = $entries->get((string) $currentSlot);
+
+                self::assertNotNull($currentEntry);
+
+                $expectedCoordinators = $expectedNodes[0];
+                $expectedOthersNodes = $expectedNodes[1];
+
+                // count($expectedCoordinators) - 1 because the owner node id is not stored in the coordinators array
+                self::assertCount(count($expectedCoordinators) - 1, $currentEntry->getCoordinatorsIds());
+                self::assertCount(count($expectedOthersNodes), $currentEntry->getOthersNodesIds());
+
+                foreach ($expectedCoordinators as $index => $expectedCoordinatorId) {
+                    if (0 === $index) {
+                        self::assertEquals($expectedCoordinatorId, $currentEntry->getOwnerId()->toRfc4122());
+
+                        continue;
+                    }
+
+                    self::assertEquals($expectedCoordinatorId, $currentEntry->getCoordinatorsIds()[$index - 1]);
+                }
+
+                foreach ($expectedOthersNodes as $index => $expectedOthersNode) {
+                    self::assertEquals($expectedOthersNode, $currentEntry->getOthersNodesIds()[$index]);
+                }
+            }
+        }
     }
 
     /**
      * @dataProvider getErrorTestCases
      */
-    public function testError(
-        int $N,
-        Ring $ring,
-        array $expectedPreferenceList,
-    ): void {
+    public function testError(Ring $ring): void
+    {
+        $this->expectException(CannotBuildPreferenceListException::class);
+
+        $preferenceListBuilder = new PreferenceListBuilder();
+        $preferenceListBuilder->buildFromRing($ring);
     }
 }
