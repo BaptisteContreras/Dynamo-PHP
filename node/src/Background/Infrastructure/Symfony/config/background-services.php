@@ -1,7 +1,10 @@
 <?php
 
+use App\Background\Domain\Service\PreferenceList\PreferenceListBuilder;
 use App\Shared\Domain\Event\EventHandlerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services()
@@ -18,4 +21,9 @@ return function (ContainerConfigurator $container): void {
     $services
         ->load('App\\Background\\Infrastructure\\', '../../')
         ->exclude('config');
+
+    $services
+        ->get(PreferenceListBuilder::class)
+        ->arg('$n', env('int:RING_CONFIG_N'))
+    ;
 };

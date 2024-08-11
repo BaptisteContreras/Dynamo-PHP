@@ -11,7 +11,7 @@ use App\Shared\Domain\Const\RingInformations;
 
 class PreferenceListBuilder
 {
-    public function __construct(private readonly int $n = 3)
+    public function __construct(private readonly int $n)
     {
     }
 
