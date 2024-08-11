@@ -3,6 +3,8 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            ordered_uuidv7_json_array: App\Shared\Infrastructure\Persistence\Type\OrderedUuidV7JsonArray
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -18,6 +20,7 @@ doctrine:
                 prefix: App\Shared\Infrastructure\Persistence\Doctrine
         controller_resolver:
             auto_mapping: true
+
 
 when@test:
     doctrine:

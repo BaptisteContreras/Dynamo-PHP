@@ -11,6 +11,7 @@ use App\Background\Domain\Model\Aggregate\Ring\Collection\NodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Background\Domain\Out\History\FinderInterface as HistoryFinderInterface;
 use App\Background\Domain\Out\History\UpdaterInterface as HistoryUpdaterInterface;
+use App\Background\Domain\Out\PreferenceList\UpdaterInterface as PreferenceListUpdaterInterface;
 use App\Background\Domain\Out\Ring\FinderInterface as RingFinderInterface;
 use App\Background\Domain\Out\Ring\UpdaterInterface as RingUpdaterInterface;
 use App\Background\Domain\Service\PreferenceList\PreferenceListBuilder;
@@ -22,7 +23,8 @@ final readonly class SyncMembershipV1CommandHandler
         private HistoryUpdaterInterface $historyCreator,
         private RingFinderInterface $ringFinder,
         private RingUpdaterInterface $ringUpdater,
-        private PreferenceListBuilder $preferenceListBuilder
+        private PreferenceListBuilder $preferenceListBuilder,
+        private PreferenceListUpdaterInterface $preferenceListUpdater,
     ) {
     }
 
@@ -32,8 +34,7 @@ final readonly class SyncMembershipV1CommandHandler
 
         $ring = $this->syncRing($syncRequest, $localHistory);
 
-        // update preference list
-        $this->preferenceListBuilder->buildFromRing($ring);
+        $this->updatePreferenceList($ring);
 
         $syncMembershipPresenter->present(SyncMembershipV1Response::success());
     }
@@ -58,6 +59,13 @@ final readonly class SyncMembershipV1CommandHandler
         $this->ringUpdater->saveRing($localRing);
 
         return $localRing;
+    }
+
+    private function updatePreferenceList(Ring $ring): void
+    {
+        $preferenceList = $this->preferenceListBuilder->buildFromRing($ring);
+
+        $this->preferenceListUpdater->savePreferenceList($preferenceList);
     }
 
     private function createTimelineFromRequest(SyncRequest $syncRequest): History

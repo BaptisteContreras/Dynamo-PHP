@@ -14,4 +14,11 @@ class PreferenceEntryCollection extends RoPreferenceEntryCollection implements M
      * @use MutableCollection<PreferenceEntry>
      */
     use MutableCollection;
+
+    public function sortBySlot(): void
+    {
+        uasort($this->internal, function (PreferenceEntry $a, PreferenceEntry $b) {
+            return $a->getSlot() > $b->getSlot() ? 1 : -1;
+        });
+    }
 }
