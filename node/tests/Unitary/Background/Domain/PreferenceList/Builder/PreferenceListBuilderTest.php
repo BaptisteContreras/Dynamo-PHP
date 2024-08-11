@@ -151,7 +151,7 @@ class PreferenceListBuilderTest extends TestCase
             [
                 '1-149' => [[self::NODE_1, self::NODE_2], [self::NODE_3, self::NODE_4]],
                 '150-179' => [[self::NODE_2, self::NODE_3], [self::NODE_4, self::NODE_1]],
-                '180-184' => [[self::NODE_3, self::NODE_4], [self::NODE_1, self::NODE_2]],
+                '180-184' => [[self::NODE_3, self::NODE_4], [self::NODE_2, self::NODE_1]],
                 '185-189' => [[self::NODE_4, self::NODE_2], [self::NODE_1, self::NODE_3]],
                 '190-0' => [[self::NODE_2, self::NODE_1], [self::NODE_3, self::NODE_4]],
             ],
@@ -262,11 +262,11 @@ class PreferenceListBuilderTest extends TestCase
                 )
                 ->getRing(),
             [
-                '1-199' => [[self::NODE_1, self::NODE_3], []],
-                '200-0' => [[self::NODE_3, self::NODE_1], []],
+                '75-199' => [[self::NODE_1, self::NODE_3], []],
+                '200-74' => [[self::NODE_3, self::NODE_1], []],
             ],
         ];
-        yield 'Node state does not matters' => [
+        yield 'Node state does not matters (except LEAVING && JOINING_ERROR)' => [
             self::N_2,
             RingBuilder::createRing()
                 ->addNode(
@@ -296,11 +296,9 @@ class PreferenceListBuilderTest extends TestCase
                 )
                 ->getRing(),
             [
-                '1-149' => [[self::NODE_1, self::NODE_2], [self::NODE_3, self::NODE_4, self::NODE_5]],
-                '150-179' => [[self::NODE_2, self::NODE_3], [self::NODE_4, self::NODE_5, self::NODE_1]],
-                '180-184' => [[self::NODE_3, self::NODE_4], [self::NODE_5, self::NODE_1, self::NODE_2]],
-                '185-189' => [[self::NODE_4, self::NODE_5], [self::NODE_1, self::NODE_2, self::NODE_3]],
-                '190-0' => [[self::NODE_5, self::NODE_1], [self::NODE_2, self::NODE_3, self::NODE_4]],
+                '1-149' => [[self::NODE_1, self::NODE_2], [self::NODE_3]],
+                '150-179' => [[self::NODE_2, self::NODE_3], [self::NODE_1]],
+                '180-0' => [[self::NODE_3, self::NODE_1], [self::NODE_2]],
             ],
         ];
     }
@@ -339,7 +337,7 @@ class PreferenceListBuilderTest extends TestCase
         Ring $ring,
         array $expectedResult,
     ): void {
-        $preferenceListBuilder = new PreferenceListBuilder();
+        $preferenceListBuilder = new PreferenceListBuilder($N);
         $preferenceList = $preferenceListBuilder->buildFromRing($ring);
 
         $entries = $preferenceList->getEntries();
@@ -358,21 +356,21 @@ class PreferenceListBuilderTest extends TestCase
                 $expectedOthersNodes = $expectedNodes[1];
 
                 // count($expectedCoordinators) - 1 because the owner node id is not stored in the coordinators array
-                self::assertCount(count($expectedCoordinators) - 1, $currentEntry->getCoordinatorsIds());
-                self::assertCount(count($expectedOthersNodes), $currentEntry->getOthersNodesIds());
+                self::assertCount(count($expectedCoordinators) - 1, $currentEntry->getCoordinatorsIds(), sprintf('wrong coordinator count for slot entry %s', $currentEntry->getSlot()));
+                self::assertCount(count($expectedOthersNodes), $currentEntry->getOthersNodesIds(), sprintf('wrong others nodes count for slot entry %s', $currentEntry->getSlot()));
 
                 foreach ($expectedCoordinators as $index => $expectedCoordinatorId) {
                     if (0 === $index) {
-                        self::assertEquals($expectedCoordinatorId, $currentEntry->getOwnerId()->toRfc4122());
+                        self::assertEquals($expectedCoordinatorId, $currentEntry->getOwnerId()->toRfc4122(), sprintf('wrong owner for slot entry %s', $currentEntry->getSlot()));
 
                         continue;
                     }
 
-                    self::assertEquals($expectedCoordinatorId, $currentEntry->getCoordinatorsIds()[$index - 1]);
+                    self::assertEquals($expectedCoordinatorId, $currentEntry->getCoordinatorsIds()[$index - 1]->toRfc4122(), sprintf('wrong coordinator for slot entry %s', $currentEntry->getSlot()));
                 }
 
                 foreach ($expectedOthersNodes as $index => $expectedOthersNode) {
-                    self::assertEquals($expectedOthersNode, $currentEntry->getOthersNodesIds()[$index]);
+                    self::assertEquals($expectedOthersNode, $currentEntry->getOthersNodesIds()[$index]->toRfc4122(), sprintf('wrong other node for slot entry %s', $currentEntry->getSlot()));
                 }
             }
         }
@@ -385,7 +383,7 @@ class PreferenceListBuilderTest extends TestCase
     {
         $this->expectException(CannotBuildPreferenceListException::class);
 
-        $preferenceListBuilder = new PreferenceListBuilder();
+        $preferenceListBuilder = new PreferenceListBuilder(self::N_2);
         $preferenceListBuilder->buildFromRing($ring);
     }
 }

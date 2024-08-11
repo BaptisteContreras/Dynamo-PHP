@@ -80,6 +80,25 @@ abstract class ReadOnlyCollection implements ReadOnlyCollectionInterface
         return count($this->internal);
     }
 
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
+    }
+
+    public function first(): mixed
+    {
+        $value = reset($this->internal);
+
+        return false !== $value ? $value : null;
+    }
+
+    public function last(): mixed
+    {
+        $value = end($this->internal);
+
+        return false !== $value ? $value : null;
+    }
+
     public function filter(callable $filterCallable): static
     {
         return new static(

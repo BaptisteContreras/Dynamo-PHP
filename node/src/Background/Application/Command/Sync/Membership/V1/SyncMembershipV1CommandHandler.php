@@ -13,6 +13,7 @@ use App\Background\Domain\Out\History\FinderInterface as HistoryFinderInterface;
 use App\Background\Domain\Out\History\UpdaterInterface as HistoryUpdaterInterface;
 use App\Background\Domain\Out\Ring\FinderInterface as RingFinderInterface;
 use App\Background\Domain\Out\Ring\UpdaterInterface as RingUpdaterInterface;
+use App\Background\Domain\Service\PreferenceList\PreferenceListBuilder;
 
 final readonly class SyncMembershipV1CommandHandler
 {
@@ -20,7 +21,8 @@ final readonly class SyncMembershipV1CommandHandler
         private HistoryFinderInterface $historyFinder,
         private HistoryUpdaterInterface $historyCreator,
         private RingFinderInterface $ringFinder,
-        private RingUpdaterInterface $ringUpdater
+        private RingUpdaterInterface $ringUpdater,
+        private PreferenceListBuilder $preferenceListBuilder
     ) {
     }
 
@@ -28,9 +30,10 @@ final readonly class SyncMembershipV1CommandHandler
     {
         $localHistory = $this->syncHistory($syncRequest);
 
-        $this->syncRing($syncRequest, $localHistory);
+        $ring = $this->syncRing($syncRequest, $localHistory);
 
         // update preference list
+        $this->preferenceListBuilder->buildFromRing($ring);
 
         $syncMembershipPresenter->present(SyncMembershipV1Response::success());
     }
@@ -45,7 +48,7 @@ final readonly class SyncMembershipV1CommandHandler
         return $localHistory;
     }
 
-    private function syncRing(SyncRequest $syncRequest, History $historyTimeline): void
+    private function syncRing(SyncRequest $syncRequest, History $historyTimeline): Ring
     {
         $remoteRing = $this->createRingFromRequest($syncRequest);
         $localRing = $this->ringFinder->getLocalRing();
@@ -53,6 +56,8 @@ final readonly class SyncMembershipV1CommandHandler
         $localRing->merge($remoteRing, $historyTimeline);
 
         $this->ringUpdater->saveRing($localRing);
+
+        return $localRing;
     }
 
     private function createTimelineFromRequest(SyncRequest $syncRequest): History

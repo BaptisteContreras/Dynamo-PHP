@@ -26,6 +26,18 @@ interface ReadOnlyCollectionInterface extends \IteratorAggregate, \Countable
 
     public function keyExists(string $key): bool;
 
+    public function isEmpty(): bool;
+
+    /**
+     * @return T|null
+     */
+    public function first(): mixed;
+
+    /**
+     * @return T|null
+     */
+    public function last(): mixed;
+
     /**
      * @return \Traversable<T>
      */

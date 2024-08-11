@@ -11,7 +11,7 @@ class RoPreferenceEntryCollection extends ReadOnlyCollection
 {
     protected function getKeyFromElement(mixed $element): string
     {
-        return $element->getId()->toRfc4122();
+        return (string) $element->getSlot();
     }
 
     public function asReadOnly(): static

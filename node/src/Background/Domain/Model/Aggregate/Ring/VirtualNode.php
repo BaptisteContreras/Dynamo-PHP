@@ -53,6 +53,11 @@ final class VirtualNode
         return $this->node;
     }
 
+    public function getNodeId(): UuidV7
+    {
+        return $this->node->getId();
+    }
+
     public function isActive(): bool
     {
         return $this->active;
@@ -72,7 +77,7 @@ final class VirtualNode
 
     public function shouldBeDisabled(): bool
     {
-        return $this->node->isLeavingRing();
+        return $this->node->isLeavingRing() || $this->node->isJoiningError();
     }
 
     public function getStringId(): string

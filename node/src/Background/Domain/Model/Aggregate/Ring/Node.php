@@ -96,6 +96,11 @@ final class Node
         return NodeState::LEAVING === $this->state;
     }
 
+    public function isJoiningError(): bool
+    {
+        return NodeState::JOINING_ERROR === $this->state;
+    }
+
     public function applyEvent(Event $event): self
     {
         $data = $event->getData();

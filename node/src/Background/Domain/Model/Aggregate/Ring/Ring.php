@@ -125,6 +125,44 @@ final class Ring
         return $this->nodeCollection->get($nodeId) ?: throw new \LogicException('Node not found');
     }
 
+    /**
+     * @return array<NodeRange>
+     */
+    public function getNodeSlotRanges(): array
+    {
+        if ($this->internalRing->isEmpty()) {
+            return [];
+        }
+
+        $result = [];
+
+        /** @var VirtualNode $firstVirtualNode */
+        $firstVirtualNode = $this->internalRing->first();
+        $currentStartRange = $firstVirtualNode->getSlot();
+        $currentNode = $firstVirtualNode->getNode();
+
+        foreach ($this->internalRing as $virtualNode) {
+            if (!$virtualNode->getNodeId()->equals($currentNode->getId())) {
+                $result[] = new NodeRange(
+                    $currentStartRange,
+                    $virtualNode->getSlot() - 1,
+                    $currentNode
+                );
+
+                $currentStartRange = $virtualNode->getSlot();
+                $currentNode = $virtualNode->getNode();
+            }
+        }
+
+        $result[] = new NodeRange(
+            $currentStartRange,
+            $firstVirtualNode->getSlot() - 1,
+            $currentNode
+        );
+
+        return $result;
+    }
+
     public function hasFresherNodeVersion(Node $node): bool
     {
         /** @var ?Node $localNodeVersion */
@@ -226,5 +264,7 @@ final class Ring
             $this->internalRing->add($virtualNode);
             $slotMap[$virtualNode->getSlot()] = $virtualNode;
         }
+
+        $this->internalRing->sortBySlot();
     }
 }
