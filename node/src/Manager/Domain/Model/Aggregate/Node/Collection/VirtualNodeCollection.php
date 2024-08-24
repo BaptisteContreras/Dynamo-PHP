@@ -15,4 +15,11 @@ class VirtualNodeCollection extends RoVirtualNodeCollection implements MutableCo
      * @use MutableCollection<VirtualNode>
      */
     use MutableCollection;
+
+    public function sortBySlot(): void
+    {
+        uasort($this->internal, function (VirtualNode $a, VirtualNode $b) {
+            return $a->getSlot() > $b->getSlot() ? 1 : -1;
+        });
+    }
 }

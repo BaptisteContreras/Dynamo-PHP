@@ -9,7 +9,7 @@ interface FinderInterface
     /**
      * @return array<Node>
      */
-    public function findAll(): array;
+    public function getAll(): array;
 
     public function findSelfEntry(): ?Node;
 }

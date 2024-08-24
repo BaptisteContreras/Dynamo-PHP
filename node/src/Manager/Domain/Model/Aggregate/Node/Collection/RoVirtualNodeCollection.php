@@ -19,4 +19,9 @@ class RoVirtualNodeCollection extends ReadOnlyCollection
     {
         return $this;
     }
+
+    public function getActives(): static
+    {
+        return $this->filter(fn (VirtualNode $virtualNode) => $virtualNode->isActive());
+    }
 }

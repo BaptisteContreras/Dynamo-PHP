@@ -3,8 +3,10 @@
 namespace App\Manager\Infrastructure\Persistence\Repository;
 
 use App\Manager\Domain\Model\Aggregate\Node\Node;
+use App\Manager\Domain\Model\Aggregate\Ring\Ring;
 use App\Manager\Domain\Out\Node\CreatorInterface;
-use App\Manager\Domain\Out\Node\FinderInterface;
+use App\Manager\Domain\Out\Node\FinderInterface as NodeFinderInterface;
+use App\Manager\Domain\Out\Ring\FinderInterface as RingFinderInterface;
 use App\Manager\Infrastructure\Persistence\Mapper\NodeMapper;
 use App\Shared\Domain\Const\NodeState;
 use App\Shared\Infrastructure\Persistence\Doctrine\Node as NodeEntity;
@@ -17,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<NodeEntity>
  */
-class NodeRepository extends ServiceEntityRepository implements FinderInterface, CreatorInterface
+class NodeRepository extends ServiceEntityRepository implements NodeFinderInterface, RingFinderInterface, CreatorInterface
 {
     public function __construct(private readonly VirtualNodeRepository $virtualNodeRepository, ManagerRegistry $registry)
     {
@@ -60,7 +62,7 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         $em->flush();
     }
 
-    public function findAll(): array
+    public function getAll(): array
     {
         /** @var array<NodeEntity> $entityArray */
         $entityArray = parent::findAll();
@@ -112,5 +114,10 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface,
         foreach ($node->getRemovedVirtualNodes() as $removedVirtualNode) {
             $this->virtualNodeRepository->remove($removedVirtualNode);
         }
+    }
+
+    public function getLocalRing(): Ring
+    {
+        return new Ring($this->getAll());
     }
 }
