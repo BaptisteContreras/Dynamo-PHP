@@ -7,7 +7,7 @@ use App\Shared\Application\ResponsePresenter;
 
 abstract class RingPresenter extends ResponsePresenter
 {
-    abstract public function present(RingResponse $joinResponse): void;
+    abstract public function present(RingResponse $ringResponse): void;
 
     public static function json(): self
     {

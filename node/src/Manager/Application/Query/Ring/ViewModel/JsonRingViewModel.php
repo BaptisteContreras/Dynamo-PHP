@@ -2,16 +2,16 @@
 
 namespace App\Manager\Application\Query\Ring\ViewModel;
 
-use App\Manager\Domain\Model\Aggregate\Node\Node;
+use App\Manager\Domain\Model\Aggregate\Ring\Ring;
 use App\Shared\Application\JsonViewModelInterface;
 use App\Shared\Application\ViewModel;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 abstract class JsonRingViewModel extends ViewModel implements JsonViewModelInterface
 {
-    public static function success(Node $node): self
+    public static function success(Ring $ring): self
     {
-        return new JsonSuccessViewModel($node);
+        return new JsonSuccessViewModel($ring);
     }
 
     #[Ignore]

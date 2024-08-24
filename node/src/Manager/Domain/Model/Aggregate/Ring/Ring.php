@@ -32,7 +32,6 @@ final class Ring
      */
     public function getSlots(): array
     {
-
         if ($this->virtualNodes->isEmpty()) {
             return [];
         }
@@ -65,6 +64,10 @@ final class Ring
             $currentSlot = ($startSlot + $i) % RingInformations::RING_SIZE;
             $slots[$currentSlot] = new Slot($currentSlot, $currentRangeVirtualNode);
         }
+
+        uasort($slots, function (Slot $a, Slot $b) {
+            return $a->getSlot() > $b->getSlot() ? 1 : -1;
+        });
 
         return $slots;
     }

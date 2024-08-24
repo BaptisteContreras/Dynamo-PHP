@@ -2,27 +2,38 @@
 
 namespace App\Manager\Application\Query\Ring\ViewModel;
 
-use App\Manager\Domain\Model\Aggregate\Node\Node;
+use App\Manager\Domain\Model\Aggregate\Ring\Ring;
+use Manager\Application\Query\Ring\ViewModel\Dto\JsonSlot;
+use Manager\Domain\Model\Aggregate\Ring\Slot;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[OA\Schema(
-    title: 'NodeJoinSuccessResponse',
+    title: 'RingSuccessResponse',
 )]
 class JsonSuccessViewModel extends JsonRingViewModel
 {
-    public function __construct(#[Ignore] private readonly Node $node)
+    public function __construct(private readonly Ring $ring)
     {
-        parent::__construct(Response::HTTP_CREATED);
+        parent::__construct(Response::HTTP_OK);
     }
 
+    /**
+     * @return array<JsonSlot>
+     */
     #[OA\Property(
-        description: 'The unique UID of this node in the ring',
-        example: '018f3554-c788-7a58-a441-89421daba28b'
+        description: 'For each ring slot, its virtual node',
     )]
-    public function getId(): string
+    public function getRing(): array
     {
-        return $this->node->getId()->toRfc4122();
+        return array_map(fn (Slot $slot) => $this->convertSlotForResponse($slot), $this->ring->getSlots());
+    }
+
+    private function convertSlotForResponse(Slot $slot): JsonSlot
+    {
+        return new JsonSlot(
+            $slot->getSlot(),
+            $slot->getVirtualNode()->getId()
+        );
     }
 }
