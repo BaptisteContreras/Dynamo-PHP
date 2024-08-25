@@ -5,7 +5,7 @@ namespace Manager\Application\Query\Ring\ViewModel\Dto;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    title: 'RingSlot',
+    title: 'RingSlotResponse',
 )]
 final readonly class JsonSlot
 {

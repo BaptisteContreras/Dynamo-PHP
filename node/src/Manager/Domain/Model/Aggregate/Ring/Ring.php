@@ -2,6 +2,7 @@
 
 namespace App\Manager\Domain\Model\Aggregate\Ring;
 
+use App\Manager\Domain\Model\Aggregate\Node\Collection\RoVirtualNodeCollection;
 use App\Manager\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Manager\Domain\Model\Aggregate\Node\Node;
 use App\Manager\Domain\Model\Aggregate\Node\VirtualNode;
@@ -70,6 +71,11 @@ final class Ring
         });
 
         return $slots;
+    }
+
+    public function getVirtualNodes(): RoVirtualNodeCollection
+    {
+        return $this->virtualNodes;
     }
 
     private function computeRangeDistance(int $startSlot, int $endSlot): int

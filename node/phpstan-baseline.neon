@@ -16,14 +16,9 @@ parameters:
 			path: src/Manager/Application/Command/Join/Request/SelfNodeRequest.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\NodeRepository\\:\\:findAll\\(\\) should return array\\<int, App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\> but returns array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Aggregate\\\\Node\\\\Node\\>\\.$#"
+			message: "#^Method App\\\\Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\JsonSuccessViewModel\\:\\:getVirtualNodeList\\(\\) should return array\\<Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\Dto\\\\JsonVirtualNode\\> but returns array\\<int, mixed\\>\\.$#"
 			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/NodeRepository.php
-
-		-
-			message: "#^Return type \\(array\\<int, App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\>\\) of method App\\\\Manager\\\\Infrastructure\\\\Persistence\\\\Repository\\\\NodeRepository\\:\\:findAll\\(\\) should be compatible with return type \\(array\\<App\\\\Manager\\\\Domain\\\\Model\\\\Aggregate\\\\Node\\\\Node\\>\\) of method App\\\\Manager\\\\Domain\\\\Out\\\\Node\\\\FinderInterface\\:\\:findAll\\(\\)$#"
-			count: 1
-			path: src/Manager/Infrastructure/Persistence/Repository/NodeRepository.php
+			path: src/Manager/Application/Query/Ring/ViewModel/JsonSuccessViewModel.php
 
 		-
 			message: "#^Method App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\:\\:getNetworkPort\\(\\) should return int\\<1, max\\> but returns int\\.$#"

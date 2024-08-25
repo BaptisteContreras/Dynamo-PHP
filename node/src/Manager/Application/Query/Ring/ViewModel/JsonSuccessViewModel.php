@@ -2,8 +2,10 @@
 
 namespace App\Manager\Application\Query\Ring\ViewModel;
 
+use App\Manager\Domain\Model\Aggregate\Node\VirtualNode;
 use App\Manager\Domain\Model\Aggregate\Ring\Ring;
 use Manager\Application\Query\Ring\ViewModel\Dto\JsonSlot;
+use Manager\Application\Query\Ring\ViewModel\Dto\JsonVirtualNode;
 use Manager\Domain\Model\Aggregate\Ring\Slot;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +28,18 @@ class JsonSuccessViewModel extends JsonRingViewModel
     )]
     public function getRing(): array
     {
-        return array_map(fn (Slot $slot) => $this->convertSlotForResponse($slot), $this->ring->getSlots());
+        return array_values(array_map(fn (Slot $slot) => $this->convertSlotForResponse($slot), $this->ring->getSlots()));
+    }
+
+    /**
+     * @return array<JsonVirtualNode>
+     */
+    #[OA\Property(
+        description: 'A list of all virtual nodes and their node',
+    )]
+    public function getVirtualNodeList(): array
+    {
+        return array_values($this->ring->getVirtualNodes()->map($this->convertVirtualNodeForResponse(...)));
     }
 
     private function convertSlotForResponse(Slot $slot): JsonSlot
@@ -35,5 +48,10 @@ class JsonSuccessViewModel extends JsonRingViewModel
             $slot->getSlot(),
             $slot->getVirtualNode()->getId()
         );
+    }
+
+    private function convertVirtualNodeForResponse(VirtualNode $virtualNode): JsonVirtualNode
+    {
+        return new JsonVirtualNode($virtualNode->getStringId(), $virtualNode->getNodeStringId());
     }
 }

@@ -45,4 +45,19 @@ final class VirtualNode
     {
         return $this->active;
     }
+
+    public function getStringId(): string
+    {
+        return $this->id->toRfc4122();
+    }
+
+    public function getNodeId(): UuidV7
+    {
+        return $this->node->getId();
+    }
+
+    public function getNodeStringId(): UuidV7
+    {
+        return $this->node->getId();
+    }
 }

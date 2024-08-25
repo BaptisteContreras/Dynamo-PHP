@@ -105,4 +105,9 @@ abstract class ReadOnlyCollection implements ReadOnlyCollectionInterface
             array_filter($this->internal, $filterCallable)
         );
     }
+
+    public function map(callable $mapCallable): array
+    {
+        return array_map($mapCallable, $this->internal);
+    }
 }

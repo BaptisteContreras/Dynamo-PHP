@@ -47,4 +47,11 @@ interface ReadOnlyCollectionInterface extends \IteratorAggregate, \Countable
      * @param \Closure(T): bool $filterCallable
      */
     public function filter(callable $filterCallable): static;
+
+    /**
+     * @param \Closure(T): mixed $mapCallable
+     *
+     * @return array<mixed>
+     */
+    public function map(callable $mapCallable): array;
 }

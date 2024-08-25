@@ -117,4 +117,9 @@ final class Node
     {
         return $this->virtualNodes->getRemovedElements();
     }
+
+    public function getStringId(): string
+    {
+        return $this->id->toRfc4122();
+    }
 }
