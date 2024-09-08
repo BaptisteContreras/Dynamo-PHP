@@ -16,11 +16,18 @@ return function (ContainerConfigurator $container): void {
     $services->instanceof(EventHandlerInterface::class)
         ->tag('messenger.message_handler', ['bus' => 'event.bus']);
 
-    $services->load('App\\Background\\Application\\', '../../../Application');
-    $services->load('App\\Background\\Domain\\', '../../../Domain');
+    $services->load('App\\Background\\Application\\', '../../../Application/**/*Handler.php');
+
+    $services
+        ->load('App\\Background\\Domain\\', '../../../Domain')
+        ->exclude([
+            '../../../Domain/Exception',
+            '../../../Domain/Model',
+        ]);
+
     $services
         ->load('App\\Background\\Infrastructure\\', '../../')
-        ->exclude('config');
+        ->exclude(['../../config', '../../Persistence/**/*Mapper.php']);
 
     $services
         ->get(PreferenceListBuilder::class)

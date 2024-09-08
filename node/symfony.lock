@@ -38,6 +38,9 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "liip/test-fixtures-bundle": {
+        "version": "2.9.1"
+    },
     "nelmio/api-doc-bundle": {
         "version": "4.26",
         "recipe": {

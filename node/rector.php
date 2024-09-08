@@ -8,10 +8,10 @@ use Rector\ValueObject\PhpVersion;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/config',
-        __DIR__ . '/public',
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
+        __DIR__.'/config',
+        __DIR__.'/public',
+        __DIR__.'/src',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(php83: true)
     ->withPreparedSets(
@@ -24,7 +24,7 @@ return RectorConfig::configure()
     )
     ->withAttributesSets(symfony: true, doctrine: true)
     ->withPhpVersion(PhpVersion::PHP_83)
-    ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_Shared_Infrastructure_Symfony_KernelDevDebugContainer.xml')
+    ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/App_Shared_Infrastructure_Symfony_KernelDevDebugContainer.xml')
     ->withSets([
         SymfonySetList::SYMFONY_71,
         SymfonySetList::SYMFONY_CODE_QUALITY,

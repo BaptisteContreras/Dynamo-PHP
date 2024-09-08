@@ -15,7 +15,16 @@ return function (ContainerConfigurator $container): void {
 
     $services
         ->load('App\\Shared\\', '../src/Shared')
-        ->exclude('../src/Shared/Infrastructure/Symfony/Kernel.php');
+        ->exclude([
+            '../src/Shared/Domain/Model',
+            '../src/Shared/Domain/Const',
+            '../src/Shared/Domain/Exception',
+            '../src/Shared/Domain/Event',
+            '../src/Shared/Domain/Const',
+            '../src/Shared/Infrastructure/Persistence/Doctrine',
+            '../src/Shared/Infrastructure/Symfony/Kernel.php',
+        ])
+    ;
 
     $container->import('../src/Manager/Infrastructure/Symfony/config/manager-services.php');
     $container->import('../src/Background/Infrastructure/Symfony/config/background-services.php');

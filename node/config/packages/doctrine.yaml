@@ -25,6 +25,9 @@ doctrine:
 when@test:
     doctrine:
         dbal:
+            driver: pdo_sqlite
+            path: "%kernel.cache_dir%/test.db"
+            url: null
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
 
 when@prod:

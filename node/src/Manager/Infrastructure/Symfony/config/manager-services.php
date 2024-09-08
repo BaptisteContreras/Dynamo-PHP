@@ -20,11 +20,17 @@ return function (ContainerConfigurator $container): void {
     $services->instanceof(RingSlotSelectionStrategyInterface::class)
         ->tag('app.manager.ring_slot_selection_strategy');
 
-    $services->load('App\\Manager\\Application\\', '../../../Application');
-    $services->load('App\\Manager\\Domain\\', '../../../Domain');
+    $services->load('App\\Manager\\Application\\', '../../../Application/**/*Handler.php');
+
+    $services
+        ->load('App\\Manager\\Domain\\', '../../../Domain')
+        ->exclude(['../../../Domain/Model', '../../../Domain/Exception'])
+    ;
+
     $services
         ->load('App\\Manager\\Infrastructure\\', '../../')
-        ->exclude('config');
+        ->exclude(['../../config', '../../Oa', '../../Persistence/**/*Mapper.php'])
+    ;
 
     $services->set(VirtualNodeAttributor::class)
         ->arg('$ringSlotSelectionStrategies', tagged_iterator('app.manager.ring_slot_selection_strategy'));
