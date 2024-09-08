@@ -72,6 +72,11 @@ docker exec -it docker-phpfpm-node-1 vendor/friendsofphp/php-cs-fixer/php-cs-fix
 ```
 docker exec -it docker-phpfpm-node-1 vendor/bin/phpstan analyse src -c phpstan.dist.neon
 ```
+#### Rector
+
+```
+docker exec -it docker-phpfpm-node-1 vendor/bin/rector process --config rector.php
+```
 
 #### Extra
 On windows, create a volume
