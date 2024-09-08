@@ -7,7 +7,6 @@ use App\Manager\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Manager\Domain\Model\Aggregate\Node\Node;
 use App\Manager\Domain\Model\Aggregate\Node\VirtualNode;
 use App\Shared\Domain\Const\RingInformations;
-use Manager\Domain\Model\Aggregate\Ring\Slot;
 
 final class Ring
 {

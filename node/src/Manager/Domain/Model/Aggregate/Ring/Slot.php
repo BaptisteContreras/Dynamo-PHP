@@ -1,6 +1,6 @@
 <?php
 
-namespace Manager\Domain\Model\Aggregate\Ring;
+namespace App\Manager\Domain\Model\Aggregate\Ring;
 
 use App\Manager\Domain\Model\Aggregate\Node\VirtualNode;
 

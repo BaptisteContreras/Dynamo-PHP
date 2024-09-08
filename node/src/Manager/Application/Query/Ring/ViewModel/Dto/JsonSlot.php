@@ -1,6 +1,6 @@
 <?php
 
-namespace Manager\Application\Query\Ring\ViewModel\Dto;
+namespace App\Manager\Application\Query\Ring\ViewModel\Dto;
 
 use OpenApi\Attributes as OA;
 

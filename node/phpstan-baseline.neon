@@ -16,7 +16,17 @@ parameters:
 			path: src/Manager/Application/Command/Join/Request/SelfNodeRequest.php
 
 		-
-			message: "#^Method App\\\\Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\JsonSuccessViewModel\\:\\:getVirtualNodeList\\(\\) should return array\\<Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\Dto\\\\JsonVirtualNode\\> but returns array\\<int, mixed\\>\\.$#"
+			message: "#^In method \"App\\\\Manager\\\\Application\\\\Query\\\\NodeList\\\\NodeListQueryHandler\\:\\:__invoke\", caught \"Throwable\" must be rethrown\\. Either catch a more specific exception or add a \"throw\" clause in the \"catch\" block to propagate the exception\\. More info\\: http\\://bit\\.ly/failloud$#"
+			count: 1
+			path: src/Manager/Application/Query/NodeList/NodeListQueryHandler.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Query\\\\NodeList\\\\ViewModel\\\\Dto\\\\JsonNodeResponse\\:\\:getVirtualNodes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Manager/Application/Query/NodeList/ViewModel/Dto/JsonNodeResponse.php
+
+		-
+			message: "#^Method App\\\\Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\JsonSuccessViewModel\\:\\:getVirtualNodeList\\(\\) should return array\\<App\\\\Manager\\\\Application\\\\Query\\\\Ring\\\\ViewModel\\\\Dto\\\\JsonVirtualNode\\> but returns array\\<int, mixed\\>\\.$#"
 			count: 1
 			path: src/Manager/Application/Query/Ring/ViewModel/JsonSuccessViewModel.php
 

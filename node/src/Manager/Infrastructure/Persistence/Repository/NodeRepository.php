@@ -78,6 +78,28 @@ class NodeRepository extends ServiceEntityRepository implements NodeFinderInterf
         return $selfNode ? NodeMapper::entityToDto($selfNode) : null;
     }
 
+    public function getLocalRing(): Ring
+    {
+        return new Ring($this->getAll());
+    }
+
+    public function searchBy(?bool $seed = null, ?array $states = null): array
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        if (null !== $seed) {
+            $qb->where('n.seed = :seed')->setParameter('seed', $seed);
+        }
+
+        if (null !== $states) {
+            $qb->andWhere('n.state IN (:states)')->setParameter('states', $states);
+        }
+
+        $entityArray = $qb->getQuery()->getResult();
+
+        return array_map(fn (NodeEntity $nodeEntity) => NodeMapper::entityToDto($nodeEntity), $entityArray);
+    }
+
     private function createOrUpdate(Node $node): NodeEntity
     {
         $nodeEntity = $this->find($node->getId());
@@ -114,10 +136,5 @@ class NodeRepository extends ServiceEntityRepository implements NodeFinderInterf
         foreach ($node->getRemovedVirtualNodes() as $removedVirtualNode) {
             $this->virtualNodeRepository->remove($removedVirtualNode);
         }
-    }
-
-    public function getLocalRing(): Ring
-    {
-        return new Ring($this->getAll());
     }
 }

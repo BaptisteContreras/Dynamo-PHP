@@ -2,18 +2,18 @@
 
 namespace App\Manager\Application\Query\Ring\ViewModel;
 
+use App\Manager\Application\Query\Ring\ViewModel\Dto\JsonSlot;
+use App\Manager\Application\Query\Ring\ViewModel\Dto\JsonVirtualNode;
 use App\Manager\Domain\Model\Aggregate\Node\VirtualNode;
 use App\Manager\Domain\Model\Aggregate\Ring\Ring;
-use Manager\Application\Query\Ring\ViewModel\Dto\JsonSlot;
-use Manager\Application\Query\Ring\ViewModel\Dto\JsonVirtualNode;
-use Manager\Domain\Model\Aggregate\Ring\Slot;
+use App\Manager\Domain\Model\Aggregate\Ring\Slot;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 #[OA\Schema(
     title: 'RingSuccessResponse',
 )]
-class JsonSuccessViewModel extends JsonRingViewModel
+final class JsonSuccessViewModel extends JsonRingViewModel
 {
     public function __construct(private readonly Ring $ring)
     {
