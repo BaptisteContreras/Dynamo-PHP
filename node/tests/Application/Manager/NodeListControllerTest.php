@@ -15,7 +15,6 @@ class NodeListControllerTest extends AppTestCase
             VirtualNodeFixtures::class,
         ]);
 
-        $this->client->followRedirects();
         $this->client->request('GET', 'manager/nodes');
 
         self::assertResponseIsSuccessful();
@@ -29,7 +28,6 @@ class NodeListControllerTest extends AppTestCase
             VirtualNodeFixtures::class,
         ]);
 
-        $this->client->followRedirects();
         $this->client->request('GET', 'manager/nodes?seed=true');
 
         self::assertResponseIsSuccessful();

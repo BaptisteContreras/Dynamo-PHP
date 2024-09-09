@@ -15,7 +15,6 @@ class RingControllerTest extends AppTestCase
             VirtualNodeFixtures::class,
         ]);
 
-        $this->client->followRedirects();
         $this->client->request('GET', 'manager/ring');
 
         self::assertResponseIsSuccessful();
