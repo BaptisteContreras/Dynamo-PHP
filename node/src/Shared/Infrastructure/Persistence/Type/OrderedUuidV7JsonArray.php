@@ -19,12 +19,12 @@ class OrderedUuidV7JsonArray extends Type
     private const STORAGE_STRUCT_INDEX_KEY = 'index';
     private const STORAGE_STRUCT_UUID_KEY = 'uuidv7';
 
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         $arrayOfUuidToConvert = $value;
 
@@ -56,7 +56,7 @@ class OrderedUuidV7JsonArray extends Type
         return json_encode($dataToSerialize, JSON_THROW_ON_ERROR);
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
         $rawStringValue = $value;
 
@@ -80,7 +80,7 @@ class OrderedUuidV7JsonArray extends Type
         return $arrayDecoded;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::TYPE;
     }

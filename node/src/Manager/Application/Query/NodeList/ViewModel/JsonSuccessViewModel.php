@@ -45,7 +45,7 @@ final class JsonSuccessViewModel extends JsonNodeListViewModel
             $node->getWeight(),
             $node->isSeed(),
             $node->getLabel(),
-            $virtualNodeResponseList
+            array_values($virtualNodeResponseList)
         );
     }
 
