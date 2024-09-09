@@ -2,9 +2,9 @@
 
 namespace App\Manager\Infrastructure\Symfony\Controller;
 
-use App\Manager\Application\Query\Ring\Presenter\RingPresenter;
-use App\Manager\Application\Query\Ring\RingQueryHandler;
-use App\Manager\Application\Query\Ring\ViewModel\JsonSuccessViewModel;
+use App\Manager\Application\Query\PreferenceList\PreferenceListQueryHandler;
+use App\Manager\Application\Query\PreferenceList\Presenter\PreferenceListPresenter;
+use App\Manager\Application\Query\PreferenceList\ViewModel\JsonSuccessViewModel;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Response(
     response: Response::HTTP_OK,
-    description: 'Current state of the ring',
+    description: 'Current state of the preference list',
     content: new Model(
         type: JsonSuccessViewModel::class
     )
@@ -25,14 +25,14 @@ use Symfony\Component\Routing\Attribute\Route;
         ref: '#/components/schemas/TechnicalError'
     )
 )]
-#[Route(path: '/ring', name: 'ring', methods: ['GET'])]
-class RingController extends AbstractApiController
+#[Route(path: '/preference-list', name: 'preference_list', methods: ['GET'])]
+class PreferenceListController extends AbstractApiController
 {
-    public function __invoke(RingQueryHandler $ringQueryHandler): Response
+    public function __invoke(PreferenceListQueryHandler $preferenceListQueryHandler): Response
     {
-        $presenter = RingPresenter::json();
+        $presenter = PreferenceListPresenter::json();
 
-        $ringQueryHandler($presenter);
+        $preferenceListQueryHandler($presenter);
 
         return $this->buildJsonResponse($presenter);
     }

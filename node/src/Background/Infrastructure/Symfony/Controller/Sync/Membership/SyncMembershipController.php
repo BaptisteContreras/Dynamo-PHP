@@ -5,8 +5,7 @@ namespace App\Background\Infrastructure\Symfony\Controller\Sync\Membership;
 use App\Background\Application\Command\Sync\Membership\V1\Presenter\SyncMembershipPresenter;
 use App\Background\Application\Command\Sync\Membership\V1\Request\SyncRequest;
 use App\Background\Application\Command\Sync\Membership\V1\SyncMembershipV1CommandHandler;
-use App\Manager\Application\Command\Join\Request\JoinRequest;
-use App\Manager\Application\Command\Join\ViewModel\JsonSuccessViewModel;
+use App\Background\Application\Command\Sync\Membership\V1\ViewModel\JsonSuccessViewModel;
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -17,12 +16,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[OA\RequestBody(
     description: 'The payload with all informations needed to join the ring',
     content: new Model(
-        type: JoinRequest::class
+        type: SyncRequest::class
     )
 )]
 #[OA\Response(
     response: Response::HTTP_CREATED,
-    description: 'The node successfully joined the ring',
+    description: 'Successfully sync membership',
     content: new Model(
         type: JsonSuccessViewModel::class
     )

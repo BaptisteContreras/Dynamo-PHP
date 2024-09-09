@@ -1,0 +1,33 @@
+{
+  "entries": [
+    {
+      "slot": 40,
+      "ownerId": "0191d76a-4888-7db6-accc-7d8fdc8d3cf8",
+      "coordinatorsIds": [
+        "0191d76a-f1ec-7981-a2c6-82d5e66c128d",
+        "0191d76b-21a5-7298-ae1d-47884cfaaf2b"
+      ],
+      "othersNodesIds": []
+    },
+    {
+      "slot": 80,
+      "ownerId": "0191d76b-76e2-7c43-ad1d-a79c36b8e6ea",
+      "coordinatorsIds": [],
+      "othersNodesIds": [
+        "0191d76b-21a5-7298-ae1d-47884cfaaf2b"
+      ]
+    },
+    {
+      "slot": 163,
+      "ownerId": "0191d76b-e577-7a70-9e99-7e81ab8a1251",
+      "coordinatorsIds": [
+        "0191d76c-50c1-75a6-a55f-223e2eae59c0",
+        "0191d76c-608a-7d87-a2ea-7b04815255ab"
+      ],
+      "othersNodesIds": [
+        "0191d76c-0fc4-75bd-bd88-a45d7aee1efd",
+        "0191d76c-2fc8-7305-b159-e485c5bdb59b"
+      ]
+    }
+  ]
+}
