@@ -20,6 +20,9 @@
         <testsuite name="Unitary">
             <directory>tests/Unitary</directory>
         </testsuite>
+        <testsuite name="Application">
+            <directory>tests/Application</directory>
+        </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
