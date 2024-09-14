@@ -6,10 +6,5 @@ This project is a try to implement the Amazon Dynamo paper (see docs/amazon-dyna
 This application only support single object transaction with no isolation level, but you are assured that all your writes will succeed.
 
 
-WIP 
-
-## Master Node
-This service is temporary and its main purpose is to assign slots to workers and to register them
-
-
-## Worker
+## Node
+PHP application that is part of the Ring

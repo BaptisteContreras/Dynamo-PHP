@@ -1,3 +1,0 @@
-parameters:
-  OaWorkerNode:
-    description: "Represent a worker node participating in the ring"
