@@ -15,7 +15,7 @@ final class NodeMapper
         return new NodeEntity(
             $dto->getHost(),
             $dto->getNetworkPort(),
-            $dto->getState(),
+            $dto->getMembershipState(),
             $dto->getJoinedAt(),
             $dto->getWeight(),
             $dto->isSelfEntry(),
@@ -38,7 +38,7 @@ final class NodeMapper
             $id,
             $entity->getHost(),
             $entity->getNetworkPort(),
-            $entity->getState(),
+            $entity->getMembershipState(),
             $entity->getJoinedAt(),
             $entity->getWeight(),
             $entity->isSelfEntry(),
@@ -58,7 +58,7 @@ final class NodeMapper
     public static function mergeDtoInEntity(Node $dto, NodeEntity $entity): void
     {
         $entity
-            ->setState($dto->getState())
+            ->setMembershipState($dto->getMembershipState())
             ->update()
         ;
     }

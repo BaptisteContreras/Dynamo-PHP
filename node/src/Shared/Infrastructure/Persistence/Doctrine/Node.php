@@ -22,7 +22,7 @@ class Node
     public function __construct(
         #[Column(type: Types::STRING, length: 255)] private string $host,
         #[Column(type: Types::INTEGER)] private int $networkPort,
-        #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $state,
+        #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $membershipState,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $joinedAt,
         #[Column(type: Types::SMALLINT)] private int $weight,
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
@@ -52,14 +52,14 @@ class Node
         return $this->networkPort;
     }
 
-    public function getState(): NodeState
+    public function getMembershipState(): NodeState
     {
-        return $this->state;
+        return $this->membershipState;
     }
 
-    public function setState(NodeState $state): static
+    public function setMembershipState(NodeState $membershipState): static
     {
-        $this->state = $state;
+        $this->membershipState = $membershipState;
 
         return $this;
     }

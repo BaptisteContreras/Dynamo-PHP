@@ -40,7 +40,7 @@ abstract class RingMergeTestCase extends TestCase
             UuidV7::fromString($nodeData['id']),
             $nodeData['host'],
             $nodeData['networkPort'],
-            $nodeData['state'],
+            $nodeData['membershipState'],
             $nodeData['joinedAt'],
             $nodeData['weight'],
             $nodeData['seed'],
@@ -76,7 +76,7 @@ abstract class RingMergeTestCase extends TestCase
         self::assertEquals($expectedValues['id'], $node->getStringId());
         self::assertEquals($expectedValues['host'], $node->getHost());
         self::assertEquals($expectedValues['networkPort'], $node->getNetworkPort());
-        self::assertEquals($expectedValues['state'], $node->getState());
+        self::assertEquals($expectedValues['membershipState'], $node->getMembershipState());
         self::assertEquals($expectedValues['joinedAt'], $node->getJoinedAt());
         self::assertEquals($expectedValues['weight'], $node->getWeight());
         self::assertEquals($expectedValues['seed'], $node->isSeed());

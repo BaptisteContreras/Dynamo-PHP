@@ -189,7 +189,7 @@ final class Ring
             $localNode->getId(),
             $localNode->getHost(),
             $localNode->getNetworkPort(),
-            $localNode->getState(),
+            $localNode->getMembershipState(),
             $localNode->getJoinedAt(),
             $localNode->getWeight(),
             $localNode->isSeed(),

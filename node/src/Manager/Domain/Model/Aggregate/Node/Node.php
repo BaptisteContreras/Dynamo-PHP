@@ -16,7 +16,7 @@ final class Node
         private readonly UuidV7 $id,
         private readonly string $host,
         private readonly int $networkPort,
-        private NodeState $state,
+        private NodeState $membershipState,
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private readonly bool $selfEntry,
@@ -41,9 +41,9 @@ final class Node
         return $this->networkPort;
     }
 
-    public function getState(): NodeState
+    public function getMembershipState(): NodeState
     {
-        return $this->state;
+        return $this->membershipState;
     }
 
     public function getJoinedAt(): \DateTimeImmutable
@@ -82,9 +82,9 @@ final class Node
         return $this->label;
     }
 
-    public function setState(NodeState $state): void
+    public function setMembershipState(NodeState $membershipState): void
     {
-        $this->state = $state;
+        $this->membershipState = $membershipState;
     }
 
     public function getVirtualNodes(): RoVirtualNodeCollection

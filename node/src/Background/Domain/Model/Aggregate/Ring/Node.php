@@ -15,7 +15,7 @@ final class Node
         private readonly UuidV7 $id,
         private string $host,
         private int $networkPort,
-        private NodeState $state,
+        private NodeState $membershipState,
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private bool $seed,
@@ -46,9 +46,9 @@ final class Node
         return $this->networkPort;
     }
 
-    public function getState(): NodeState
+    public function getMembershipState(): NodeState
     {
-        return $this->state;
+        return $this->membershipState;
     }
 
     public function getJoinedAt(): \DateTimeImmutable
@@ -93,12 +93,12 @@ final class Node
 
     public function isLeavingRing(): bool
     {
-        return NodeState::LEAVING === $this->state;
+        return NodeState::LEAVING === $this->membershipState;
     }
 
     public function isJoiningError(): bool
     {
-        return NodeState::JOINING_ERROR === $this->state;
+        return NodeState::JOINING_ERROR === $this->membershipState;
     }
 
     public function applyEvent(Event $event): self
@@ -106,7 +106,7 @@ final class Node
         $data = $event->getData();
 
         match ($event->getType()) {
-            HistoryEventType::CHANGE_MEMBERSHIP => $this->state = NodeState::from((int) $data),
+            HistoryEventType::CHANGE_MEMBERSHIP => $this->membershipState = NodeState::from((int) $data),
             HistoryEventType::CHANGE_HOST => $this->host = $data,
             HistoryEventType::CHANGE_NETWORK_PORT => $this->networkPort = (int) $data,
             HistoryEventType::CHANGE_WEIGHT => $this->weight = (int) $data,

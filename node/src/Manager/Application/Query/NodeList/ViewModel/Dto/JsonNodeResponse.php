@@ -14,7 +14,7 @@ final readonly class JsonNodeResponse
         private string $id,
         private string $host,
         private int $networkPort,
-        private NodeState $state,
+        private NodeState $membershipState,
         private \DateTimeImmutable $joinedAt,
         private int $weight,
         private bool $seed,
@@ -47,9 +47,9 @@ final readonly class JsonNodeResponse
         return $this->networkPort;
     }
 
-    public function getState(): NodeState
+    public function getMembershipState(): NodeState
     {
-        return $this->state;
+        return $this->membershipState;
     }
 
     public function getJoinedAt(): \DateTimeImmutable

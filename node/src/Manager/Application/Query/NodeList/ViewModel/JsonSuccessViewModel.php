@@ -40,7 +40,7 @@ final class JsonSuccessViewModel extends JsonNodeListViewModel
             $node->getStringId(),
             $node->getHost(),
             $node->getNetworkPort(),
-            $node->getState(),
+            $node->getMembershipState(),
             $node->getJoinedAt(),
             $node->getWeight(),
             $node->isSeed(),

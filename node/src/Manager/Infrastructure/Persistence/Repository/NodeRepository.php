@@ -92,7 +92,7 @@ class NodeRepository extends ServiceEntityRepository implements NodeFinderInterf
         }
 
         if (null !== $states) {
-            $qb->andWhere('n.state IN (:states)')->setParameter('states', $states);
+            $qb->andWhere('n.membershipState IN (:states)')->setParameter('states', $states);
         }
 
         $entityArray = $qb->getQuery()->getResult();

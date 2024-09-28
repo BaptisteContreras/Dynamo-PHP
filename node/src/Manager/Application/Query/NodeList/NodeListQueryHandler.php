@@ -26,7 +26,7 @@ final readonly class NodeListQueryHandler
 
         try {
             $seedFilter = $nodeListRequest->getSeed();
-            $stateFilter = $nodeListRequest->getState();
+            $stateFilter = $nodeListRequest->getState(); // TODO add membership state filter
         } catch (\Throwable) {
             $presenter->present(NodeListResponse::errorBadFilters());
 
