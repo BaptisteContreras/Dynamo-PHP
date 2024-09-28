@@ -6,7 +6,7 @@ use App\Background\Domain\Model\Aggregate\History\Collection\HistoryEventCollect
 use App\Background\Domain\Model\Aggregate\History\Collection\RoHistoryEventCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Shared\Domain\Const\HistoryEventType;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use Symfony\Component\Uid\UuidV7;
 
 class History
@@ -55,7 +55,7 @@ class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) NodeState::JOINING->value));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::JOINING->value));
 
         return $this;
     }
@@ -64,7 +64,7 @@ class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) NodeState::LEAVING->value));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::LEAVING->value));
 
         return $this;
     }

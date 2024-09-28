@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Query\NodeList\ViewModel\Dto;
 
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use OpenApi\Attributes as OA;
 
 final readonly class JsonNodeResponse
@@ -14,7 +14,7 @@ final readonly class JsonNodeResponse
         private string $id,
         private string $host,
         private int $networkPort,
-        private NodeState $membershipState,
+        private MembershipState $membershipState,
         private \DateTimeImmutable $joinedAt,
         private int $weight,
         private bool $seed,
@@ -47,7 +47,7 @@ final readonly class JsonNodeResponse
         return $this->networkPort;
     }
 
-    public function getMembershipState(): NodeState
+    public function getMembershipState(): MembershipState
     {
         return $this->membershipState;
     }

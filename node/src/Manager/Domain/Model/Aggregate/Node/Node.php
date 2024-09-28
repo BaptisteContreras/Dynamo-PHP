@@ -4,7 +4,7 @@ namespace App\Manager\Domain\Model\Aggregate\Node;
 
 use App\Manager\Domain\Model\Aggregate\Node\Collection\RoVirtualNodeCollection;
 use App\Manager\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use Symfony\Component\Uid\UuidV7;
 
 final class Node
@@ -16,7 +16,7 @@ final class Node
         private readonly UuidV7 $id,
         private readonly string $host,
         private readonly int $networkPort,
-        private NodeState $membershipState,
+        private MembershipState $membershipState,
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private readonly bool $selfEntry,
@@ -41,7 +41,7 @@ final class Node
         return $this->networkPort;
     }
 
-    public function getMembershipState(): NodeState
+    public function getMembershipState(): MembershipState
     {
         return $this->membershipState;
     }
@@ -82,7 +82,7 @@ final class Node
         return $this->label;
     }
 
-    public function setMembershipState(NodeState $membershipState): void
+    public function setMembershipState(MembershipState $membershipState): void
     {
         $this->membershipState = $membershipState;
     }

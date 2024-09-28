@@ -5,7 +5,7 @@ namespace App\Tests\Unitary\Background;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use Symfony\Component\Uid\UuidV7;
 
 final class RingBuilder
@@ -24,10 +24,10 @@ final class RingBuilder
 
     public function addActiveNode(string $nodeId, VirtualNodeBuilder ...$virtualNodes): self
     {
-        return $this->addNode($nodeId, NodeState::UP, ...$virtualNodes);
+        return $this->addNode($nodeId, MembershipState::UP, ...$virtualNodes);
     }
 
-    public function addNode(string $nodeId, NodeState $nodeState, VirtualNodeBuilder ...$virtualNodes): self
+    public function addNode(string $nodeId, MembershipState $nodeState, VirtualNodeBuilder ...$virtualNodes): self
     {
         $virtualNodesCollection = VirtualNodeCollection::createEmpty();
 

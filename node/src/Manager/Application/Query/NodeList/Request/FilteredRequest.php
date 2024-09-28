@@ -2,7 +2,7 @@
 
 namespace App\Manager\Application\Query\NodeList\Request;
 
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 
 class FilteredRequest extends NodeListRequest
 {
@@ -21,12 +21,12 @@ class FilteredRequest extends NodeListRequest
     }
 
     /**
-     * @return array<NodeState>|null
+     * @return array<MembershipState>|null
      *
      * @throws \ValueError
      */
     public function getState(): ?array
     {
-        return $this->state ? array_map(fn (int $rawState) => NodeState::from($rawState), $this->state) : null;
+        return $this->state ? array_map(fn (int $rawState) => MembershipState::from($rawState), $this->state) : null;
     }
 }

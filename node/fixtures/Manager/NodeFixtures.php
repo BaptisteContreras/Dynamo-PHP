@@ -2,7 +2,7 @@
 
 namespace DataFixtures\Manager;
 
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use App\Shared\Infrastructure\Persistence\Doctrine\Node;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +19,7 @@ class NodeFixtures extends Fixture
         $node1 = new Node(
             '127.0.0.1',
             8000,
-            NodeState::JOINING,
+            MembershipState::JOINING,
             new \DateTimeImmutable('2024-09-09 14:46:00'),
             5,
             true,
@@ -35,7 +35,7 @@ class NodeFixtures extends Fixture
         $node2 = new Node(
             'localhost',
             9999,
-            NodeState::UP,
+            MembershipState::UP,
             new \DateTimeImmutable('2024-09-10 14:46:00'),
             2,
             false,

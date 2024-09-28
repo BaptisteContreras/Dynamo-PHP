@@ -6,7 +6,7 @@ use App\Background\Domain\Model\Aggregate\History\Event;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Shared\Domain\Const\HistoryEventType;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use Symfony\Component\Uid\UuidV7;
 
 final class Node
@@ -15,7 +15,7 @@ final class Node
         private readonly UuidV7 $id,
         private string $host,
         private int $networkPort,
-        private NodeState $membershipState,
+        private MembershipState $membershipState,
         private readonly \DateTimeImmutable $joinedAt,
         private int $weight,
         private bool $seed,
@@ -46,7 +46,7 @@ final class Node
         return $this->networkPort;
     }
 
-    public function getMembershipState(): NodeState
+    public function getMembershipState(): MembershipState
     {
         return $this->membershipState;
     }
@@ -93,12 +93,12 @@ final class Node
 
     public function isLeavingRing(): bool
     {
-        return NodeState::LEAVING === $this->membershipState;
+        return MembershipState::LEAVING === $this->membershipState;
     }
 
     public function isJoiningError(): bool
     {
-        return NodeState::JOINING_ERROR === $this->membershipState;
+        return MembershipState::JOINING_ERROR === $this->membershipState;
     }
 
     public function applyEvent(Event $event): self
@@ -106,7 +106,7 @@ final class Node
         $data = $event->getData();
 
         match ($event->getType()) {
-            HistoryEventType::CHANGE_MEMBERSHIP => $this->membershipState = NodeState::from((int) $data),
+            HistoryEventType::CHANGE_MEMBERSHIP => $this->membershipState = MembershipState::from((int) $data),
             HistoryEventType::CHANGE_HOST => $this->host = $data,
             HistoryEventType::CHANGE_NETWORK_PORT => $this->networkPort = (int) $data,
             HistoryEventType::CHANGE_WEIGHT => $this->weight = (int) $data,

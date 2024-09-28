@@ -4,7 +4,7 @@ namespace App\Background\Application\Command\Sync\Membership\V1\Request;
 
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Node;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use App\Shared\Domain\Const\RingInformations;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Uid\UuidV7;
@@ -56,7 +56,7 @@ final readonly class NodeRequest
     #[OA\Property(
         title: 'State of the node',
     )]
-    private NodeState $state;
+    private MembershipState $state;
 
     #[OA\Property(
         title: 'When the node joined the ring',
@@ -107,7 +107,7 @@ final readonly class NodeRequest
      * @param array<VirtualNodeRequest> $virtualNodes
      * @param positive-int              $networkPort
      */
-    public function __construct(string $id, string $host, int $networkPort, NodeState $state, \DateTimeImmutable $joinedAt, int $weight, bool $seed, \DateTimeImmutable $updatedAt, string $label, array $virtualNodes)
+    public function __construct(string $id, string $host, int $networkPort, MembershipState $state, \DateTimeImmutable $joinedAt, int $weight, bool $seed, \DateTimeImmutable $updatedAt, string $label, array $virtualNodes)
     {
         $this->id = $id;
         $this->host = $host;
@@ -139,7 +139,7 @@ final readonly class NodeRequest
         return $this->id;
     }
 
-    public function getState(): NodeState
+    public function getState(): MembershipState
     {
         return $this->state;
     }

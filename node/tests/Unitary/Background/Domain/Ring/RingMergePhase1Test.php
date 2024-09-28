@@ -3,7 +3,7 @@
 namespace App\Tests\Unitary\Background\Domain\Ring;
 
 use App\Background\Domain\Model\Aggregate\History\History;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 
 class RingMergePhase1Test extends RingMergeTestCase
 {
@@ -21,7 +21,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -44,7 +44,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_2,
                     'host' => 'localhost',
                     'networkPort' => 8080,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-12 21:28:00'),
                     'weight' => 9,
                     'seed' => false,
@@ -79,7 +79,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -102,7 +102,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -132,7 +132,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -155,7 +155,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -185,7 +185,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -222,7 +222,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => 'localhost',
                     'networkPort' => 8080,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 99,
                     'seed' => false,
@@ -274,7 +274,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => '127.0.0.1',
                     'networkPort' => 80,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2020-06-10 21:28:00'),
                     'weight' => 1,
                     'seed' => true,
@@ -318,7 +318,7 @@ class RingMergePhase1Test extends RingMergeTestCase
                     'id' => self::NODE_1,
                     'host' => 'localhost',
                     'networkPort' => 8080,
-                    'membershipState' => NodeState::JOINING,
+                    'membershipState' => MembershipState::JOINING,
                     'joinedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-10 21:28:00'),
                     'weight' => 99,
                     'seed' => false,

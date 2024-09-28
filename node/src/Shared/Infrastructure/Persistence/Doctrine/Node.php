@@ -2,7 +2,7 @@
 
 namespace App\Shared\Infrastructure\Persistence\Doctrine;
 
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,7 +22,7 @@ class Node
     public function __construct(
         #[Column(type: Types::STRING, length: 255)] private string $host,
         #[Column(type: Types::INTEGER)] private int $networkPort,
-        #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $membershipState,
+        #[Column(type: Types::SMALLINT, enumType: MembershipState::class)] private MembershipState $membershipState,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $joinedAt,
         #[Column(type: Types::SMALLINT)] private int $weight,
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
@@ -52,12 +52,12 @@ class Node
         return $this->networkPort;
     }
 
-    public function getMembershipState(): NodeState
+    public function getMembershipState(): MembershipState
     {
         return $this->membershipState;
     }
 
-    public function setMembershipState(NodeState $membershipState): static
+    public function setMembershipState(MembershipState $membershipState): static
     {
         $this->membershipState = $membershipState;
 

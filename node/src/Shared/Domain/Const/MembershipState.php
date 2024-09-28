@@ -2,7 +2,7 @@
 
 namespace App\Shared\Domain\Const;
 
-enum NodeState: int
+enum MembershipState: int
 {
     case JOINING = 0;
     case UP = 1;

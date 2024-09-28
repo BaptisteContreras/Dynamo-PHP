@@ -6,7 +6,7 @@ use App\Background\Domain\Exception\CannotBuildPreferenceListException;
 use App\Background\Domain\Model\Aggregate\PreferenceList\PreferenceEntry;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Background\Domain\Service\PreferenceList\PreferenceListBuilder;
-use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Const\MembershipState;
 use App\Tests\Unitary\Background\RingBuilder;
 use App\Tests\Unitary\Background\VirtualNodeBuilder;
 use PHPUnit\Framework\TestCase;
@@ -271,27 +271,27 @@ class PreferenceListBuilderTest extends TestCase
             RingBuilder::createRing()
                 ->addNode(
                     self::NODE_1,
-                    NodeState::JOINING,
+                    MembershipState::JOINING,
                     VirtualNodeBuilder::createVirtualNode(1),
                 )
                 ->addNode(
                     self::NODE_2,
-                    NodeState::ERROR,
+                    MembershipState::ERROR,
                     VirtualNodeBuilder::createVirtualNode(150),
                 )
                 ->addNode(
                     self::NODE_3,
-                    NodeState::RECOVERING,
+                    MembershipState::RECOVERING,
                     VirtualNodeBuilder::createVirtualNode(180),
                 )
                 ->addNode(
                     self::NODE_4,
-                    NodeState::LEAVING,
+                    MembershipState::LEAVING,
                     VirtualNodeBuilder::createVirtualNode(185),
                 )
                 ->addNode(
                     self::NODE_5,
-                    NodeState::JOINING_ERROR, // should not be possible
+                    MembershipState::JOINING_ERROR, // should not be possible
                     VirtualNodeBuilder::createVirtualNode(190),
                 )
                 ->getRing(),
