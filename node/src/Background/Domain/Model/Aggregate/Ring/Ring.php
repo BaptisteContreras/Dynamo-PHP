@@ -195,6 +195,7 @@ final class Ring
             $localNode->isSeed(),
             new \DateTimeImmutable(),
             $localNode->getLabel(),
+            $localNode->getLocalNodeState(),
             $mergedVirtualNodeCollection
         );
 

@@ -7,6 +7,7 @@ use App\Background\Domain\Model\Aggregate\Ring\Collection\RoVirtualNodeCollectio
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Shared\Domain\Const\HistoryEventType;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
 final class Node
@@ -21,6 +22,7 @@ final class Node
         private bool $seed,
         private \DateTimeImmutable $updatedAt,
         private readonly string $label,
+        private NodeState $localNodeState,
         private VirtualNodeCollection $virtualNodeCollection = new VirtualNodeCollection(),
         private readonly bool $local = false,
     ) {
@@ -125,5 +127,10 @@ final class Node
         }
 
         return $this->id->equals($other);
+    }
+
+    public function getLocalNodeState(): NodeState
+    {
+        return $this->localNodeState;
     }
 }

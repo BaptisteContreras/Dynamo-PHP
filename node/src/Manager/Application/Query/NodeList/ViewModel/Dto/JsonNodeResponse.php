@@ -3,6 +3,7 @@
 namespace App\Manager\Application\Query\NodeList\ViewModel\Dto;
 
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use OpenApi\Attributes as OA;
 
 final readonly class JsonNodeResponse
@@ -19,6 +20,7 @@ final readonly class JsonNodeResponse
         private int $weight,
         private bool $seed,
         private string $label,
+        private NodeState $localNodeState,
         private array $virtualNodes
     ) {
     }
@@ -81,5 +83,10 @@ final readonly class JsonNodeResponse
     public function getVirtualNodes(): array
     {
         return $this->virtualNodes;
+    }
+
+    public function getLocalNodeState(): NodeState
+    {
+        return $this->localNodeState;
     }
 }

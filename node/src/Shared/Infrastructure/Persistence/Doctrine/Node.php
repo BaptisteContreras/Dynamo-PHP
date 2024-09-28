@@ -3,6 +3,7 @@
 namespace App\Shared\Infrastructure\Persistence\Doctrine;
 
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -28,6 +29,7 @@ class Node
         #[Column(type: Types::BOOLEAN)] private bool $selfEntry,
         #[Column(type: Types::BOOLEAN)] private bool $seed,
         #[Column(type: Types::STRING, length: 10, unique: true)] private string $label,
+        #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $localNodeState,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $updatedAt,
         #[OneToMany(targetEntity: VirtualNode::class, mappedBy: 'node')] private Collection $virtualNodes = new ArrayCollection(),
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
@@ -146,5 +148,10 @@ class Node
         $this->seed = $seed;
 
         return $this;
+    }
+
+    public function getLocalNodeState(): NodeState
+    {
+        return $this->localNodeState;
     }
 }

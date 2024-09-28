@@ -5,6 +5,7 @@ namespace App\Manager\Domain\Model\Aggregate\Node;
 use App\Manager\Domain\Model\Aggregate\Node\Collection\RoVirtualNodeCollection;
 use App\Manager\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
 final class Node
@@ -22,6 +23,7 @@ final class Node
         private readonly bool $selfEntry,
         private readonly bool $seed,
         private readonly string $label,
+        private NodeState $localNodeState,
         private VirtualNodeCollection $virtualNodes
     ) {
     }
@@ -121,5 +123,10 @@ final class Node
     public function getStringId(): string
     {
         return $this->id->toRfc4122();
+    }
+
+    public function getLocalNodeState(): NodeState
+    {
+        return $this->localNodeState;
     }
 }

@@ -9,6 +9,7 @@ use App\Manager\Domain\Out\Node\FinderInterface as NodeFinderInterface;
 use App\Manager\Domain\Out\Ring\FinderInterface as RingFinderInterface;
 use App\Manager\Infrastructure\Persistence\Mapper\NodeMapper;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use App\Shared\Infrastructure\Persistence\Doctrine\Node as NodeEntity;
 use App\Shared\Infrastructure\Persistence\Doctrine\VirtualNode as VirtualNodeEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -37,6 +38,7 @@ class NodeRepository extends ServiceEntityRepository implements NodeFinderInterf
             true,
             $isSeed,
             $label,
+            NodeState::UP,
             new \DateTimeImmutable()
         );
 

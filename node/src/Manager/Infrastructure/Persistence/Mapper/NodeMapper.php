@@ -21,6 +21,7 @@ final class NodeMapper
             $dto->isSelfEntry(),
             $dto->isSeed(),
             $dto->getLabel(),
+            $dto->getLocalNodeState(),
             new \DateTimeImmutable(),
             new ArrayCollection(),
             $dto->getId()
@@ -44,6 +45,7 @@ final class NodeMapper
             $entity->isSelfEntry(),
             $entity->isSeed(),
             $entity->getLabel(),
+            $entity->getLocalNodeState(),
             $virtualNodeCollection
         );
 

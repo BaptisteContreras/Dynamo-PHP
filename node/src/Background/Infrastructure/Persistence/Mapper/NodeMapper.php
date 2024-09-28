@@ -22,6 +22,7 @@ final class NodeMapper
             $dto->isLocal(),
             $dto->isSeed(),
             $dto->getLabel(),
+            $dto->getLocalNodeState(),
             $dto->getUpdatedAt(),
             new ArrayCollection(),
             $dto->getId()
@@ -44,6 +45,7 @@ final class NodeMapper
             $entity->isSeed(),
             $entity->getUpdatedAt(),
             $entity->getLabel(),
+            $entity->getLocalNodeState(),
             $virtualNodeCollection,
             $entity->isSelfEntry()
         );

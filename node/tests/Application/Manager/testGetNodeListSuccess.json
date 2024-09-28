@@ -9,6 +9,7 @@
       "weight": 5,
       "seed": false,
       "label": "D",
+      "localNodeState": 1,
       "virtualNodes": [
         {
           "id": "0191d6db-733f-7d51-839c-954f6243f4c0",
@@ -24,6 +25,7 @@
       "host": "localhost",
       "networkPort": 9999,
       "membershipState": 0,
+      "localNodeState": 1,
       "joinedAt": "2024-09-10T14:46:00+00:00",
       "weight": 2,
       "seed": true,

@@ -5,6 +5,7 @@ namespace App\Background\Application\Command\Sync\Membership\V1\Request;
 use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use App\Shared\Domain\Const\RingInformations;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Uid\UuidV7;
@@ -191,6 +192,7 @@ final readonly class NodeRequest
             $this->seed,
             $this->updatedAt,
             $this->label,
+            NodeState::UP,
             $virtualNodeCollection
         );
 

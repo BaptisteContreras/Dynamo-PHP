@@ -3,6 +3,7 @@
 namespace DataFixtures\Manager;
 
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use App\Shared\Infrastructure\Persistence\Doctrine\Node;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,6 +26,7 @@ class NodeFixtures extends Fixture
             true,
             false,
             'D',
+            NodeState::UP,
             new \DateTimeImmutable('2024-09-09 14:50:00'),
             new ArrayCollection(),
             UuidV7::fromString('0191d6db-ada6-7632-b6d4-56f5094b0a86')
@@ -41,6 +43,7 @@ class NodeFixtures extends Fixture
             false,
             true,
             'E',
+            NodeState::UP,
             new \DateTimeImmutable('2024-09-10 14:50:00'),
             new ArrayCollection(),
             UuidV7::fromString('0191d6db-bbd5-77d2-a8e2-93668b695553')

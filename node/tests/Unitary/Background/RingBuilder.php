@@ -6,6 +6,7 @@ use App\Background\Domain\Model\Aggregate\Ring\Collection\VirtualNodeCollection;
 use App\Background\Domain\Model\Aggregate\Ring\Node;
 use App\Background\Domain\Model\Aggregate\Ring\Ring;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 use Symfony\Component\Uid\UuidV7;
 
 final class RingBuilder
@@ -41,6 +42,7 @@ final class RingBuilder
             false,
             new \DateTimeImmutable(),
             sprintf('LABEL_%s', rand()),
+            NodeState::UP,
             $virtualNodesCollection,
             false
         );

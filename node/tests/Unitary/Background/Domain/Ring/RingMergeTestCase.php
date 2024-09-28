@@ -46,6 +46,7 @@ abstract class RingMergeTestCase extends TestCase
             $nodeData['seed'],
             $nodeData['updatedAt'],
             $nodeData['label'],
+            $nodeData['localNodeState'],
             $virtualNodes,
             $nodeData['local']
         );
@@ -80,6 +81,7 @@ abstract class RingMergeTestCase extends TestCase
         self::assertEquals($expectedValues['joinedAt'], $node->getJoinedAt());
         self::assertEquals($expectedValues['weight'], $node->getWeight());
         self::assertEquals($expectedValues['seed'], $node->isSeed());
+        self::assertEquals($expectedValues['localNodeState'], $node->getLocalNodeState());
         //        self::assertEquals($expectedValues['updatedAt'], $node->getUpdatedAt());
         self::assertEquals($expectedValues['label'], $node->getLabel());
         self::assertEquals($expectedValues['local'], $node->isLocal());

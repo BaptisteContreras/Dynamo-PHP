@@ -4,6 +4,7 @@ namespace App\Tests\Unitary\Background\Domain\Ring;
 
 use App\Background\Domain\Model\Aggregate\History\History;
 use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 
 class RingMergePhase3Test extends RingMergeTestCase
 {
@@ -22,6 +23,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -43,6 +45,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2025-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => true,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_4,
@@ -66,6 +69,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -106,6 +110,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -127,6 +132,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -155,6 +161,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2025-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => true,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_4,
@@ -194,6 +201,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -231,6 +239,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -280,6 +289,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => true,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -317,6 +327,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -366,6 +377,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -403,6 +415,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -452,6 +465,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => true,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -489,6 +503,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -542,6 +557,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2044-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => true,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -577,6 +593,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2034-06-11 21:28:00'),
                     'label' => 'C',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_8,
@@ -607,6 +624,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
@@ -662,6 +680,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2024-06-11 21:28:00'),
                     'label' => 'A',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_1,
@@ -699,6 +718,7 @@ class RingMergePhase3Test extends RingMergeTestCase
                     'updatedAt' => \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2030-06-12 21:28:00'),
                     'label' => 'B',
                     'local' => false,
+                    'localNodeState' => NodeState::UP,
                     'virtualNodes' => [
                         [
                             'id' => self::VIRTUAL_NODE_2,
