@@ -3,7 +3,7 @@
 namespace App\Manager\Domain\Out\Node;
 
 use App\Manager\Domain\Model\Aggregate\Node\Node;
-use App\Shared\Domain\Const\MembershipState;
+use App\Shared\Domain\Const\NodeState;
 
 interface FinderInterface
 {
@@ -15,7 +15,7 @@ interface FinderInterface
     public function findSelfEntry(): ?Node;
 
     /**
-     * @param array<MembershipState>|null $states
+     * @param array<NodeState>|null $states
      *
      * @return array<Node>
      */

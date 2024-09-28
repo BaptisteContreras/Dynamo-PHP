@@ -33,4 +33,17 @@ class NodeListControllerTest extends AppTestCase
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonFile(sprintf('%s/%s.json', __DIR__, __FUNCTION__), $this->client->getResponse()->getContent());
     }
+
+    public function testGetNodeListWithFilterSuccess2(): void
+    {
+        $this->databaseTool->loadFixtures([
+            NodeFixtures::class,
+            VirtualNodeFixtures::class,
+        ]);
+
+        $this->client->request('GET', 'manager/nodes?states[]=1');
+
+        self::assertResponseIsSuccessful();
+        self::assertJsonStringEqualsJsonFile(sprintf('%s/%s.json', __DIR__, __FUNCTION__), $this->client->getResponse()->getContent());
+    }
 }

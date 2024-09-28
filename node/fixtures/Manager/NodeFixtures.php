@@ -43,7 +43,7 @@ class NodeFixtures extends Fixture
             false,
             true,
             'E',
-            NodeState::UP,
+            NodeState::ERROR,
             new \DateTimeImmutable('2024-09-10 14:50:00'),
             new ArrayCollection(),
             UuidV7::fromString('0191d6db-bbd5-77d2-a8e2-93668b695553')

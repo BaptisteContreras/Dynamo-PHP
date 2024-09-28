@@ -19,26 +19,6 @@
           "createdAt": "2024-09-09T14:55:00+00:00"
         }
       ]
-    },
-    {
-      "id": "0191d6db-bbd5-77d2-a8e2-93668b695553",
-      "host": "localhost",
-      "networkPort": 9999,
-      "membershipState": 0,
-      "localNodeState": 0,
-      "joinedAt": "2024-09-10T14:46:00+00:00",
-      "weight": 2,
-      "seed": true,
-      "label": "E",
-      "virtualNodes": [
-        {
-          "id": "0191d6db-8fea-7415-bdf4-228c7184d221",
-          "subLabel": "E_1",
-          "slot": 180,
-          "active": true,
-          "createdAt": "2024-09-10T14:55:00+00:00"
-        }
-      ]
     }
   ]
 }

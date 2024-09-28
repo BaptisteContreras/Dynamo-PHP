@@ -5,7 +5,7 @@
       "host": "localhost",
       "networkPort": 9999,
       "membershipState": 0,
-      "localNodeState": 1,
+      "localNodeState": 0,
       "joinedAt": "2024-09-10T14:46:00+00:00",
       "weight": 2,
       "seed": true,
