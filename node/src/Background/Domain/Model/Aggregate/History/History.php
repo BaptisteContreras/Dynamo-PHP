@@ -55,7 +55,7 @@ class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::JOINING->value));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::JOINED->value));
 
         return $this;
     }
@@ -64,7 +64,7 @@ class History
     {
         $node = $node instanceof UuidV7 ? $node : UuidV7::fromString($node);
 
-        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::LEAVING->value));
+        $this->addEvent(Event::localEvent($node, HistoryEventType::CHANGE_MEMBERSHIP, (string) MembershipState::LEFT->value));
 
         return $this;
     }

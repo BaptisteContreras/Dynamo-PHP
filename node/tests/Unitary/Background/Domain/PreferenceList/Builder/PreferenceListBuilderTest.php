@@ -266,32 +266,32 @@ class PreferenceListBuilderTest extends TestCase
                 '200-74' => [[self::NODE_3, self::NODE_1], []],
             ],
         ];
-        yield 'Node state does not matters (except LEAVING && JOINING_ERROR)' => [
+        yield 'Node membership state does not matters (except LEFT)' => [
             self::N_2,
             RingBuilder::createRing()
                 ->addNode(
                     self::NODE_1,
-                    MembershipState::JOINING,
+                    MembershipState::JOINED,
                     VirtualNodeBuilder::createVirtualNode(1),
                 )
                 ->addNode(
                     self::NODE_2,
-                    MembershipState::ERROR,
+                    MembershipState::JOINED,
                     VirtualNodeBuilder::createVirtualNode(150),
                 )
                 ->addNode(
                     self::NODE_3,
-                    MembershipState::RECOVERING,
+                    MembershipState::JOINED,
                     VirtualNodeBuilder::createVirtualNode(180),
                 )
                 ->addNode(
                     self::NODE_4,
-                    MembershipState::LEAVING,
+                    MembershipState::LEFT,
                     VirtualNodeBuilder::createVirtualNode(185),
                 )
                 ->addNode(
                     self::NODE_5,
-                    MembershipState::JOINING_ERROR, // should not be possible
+                    MembershipState::LEFT,
                     VirtualNodeBuilder::createVirtualNode(190),
                 )
                 ->getRing(),

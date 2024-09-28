@@ -24,7 +24,7 @@ final class RingBuilder
 
     public function addActiveNode(string $nodeId, VirtualNodeBuilder ...$virtualNodes): self
     {
-        return $this->addNode($nodeId, MembershipState::UP, ...$virtualNodes);
+        return $this->addNode($nodeId, MembershipState::JOINED, ...$virtualNodes);
     }
 
     public function addNode(string $nodeId, MembershipState $nodeState, VirtualNodeBuilder ...$virtualNodes): self

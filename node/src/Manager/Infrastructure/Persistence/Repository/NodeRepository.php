@@ -31,7 +31,7 @@ class NodeRepository extends ServiceEntityRepository implements NodeFinderInterf
         $selfNode = new NodeEntity(
             $networkAddress,
             $networkPort,
-            MembershipState::JOINING,
+            MembershipState::JOINED,
             $joinedAt,
             $weight,
             true,

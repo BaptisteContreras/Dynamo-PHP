@@ -91,14 +91,14 @@ final class Node
         return $this->updatedAt >= $otherNode->getUpdatedAt();
     }
 
-    public function isLeavingRing(): bool
+    public function hasLeftRing(): bool
     {
-        return MembershipState::LEAVING === $this->membershipState;
+        return MembershipState::LEFT === $this->membershipState;
     }
 
-    public function isJoiningError(): bool
+    public function hasJoinedRing(): bool
     {
-        return MembershipState::JOINING_ERROR === $this->membershipState;
+        return MembershipState::JOINED === $this->membershipState;
     }
 
     public function applyEvent(Event $event): self

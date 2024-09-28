@@ -77,7 +77,7 @@ final class VirtualNode
 
     public function shouldBeDisabled(): bool
     {
-        return $this->node->isLeavingRing() || $this->node->isJoiningError();
+        return $this->node->hasLeftRing();
     }
 
     public function getStringId(): string
