@@ -1,0 +1,4 @@
+manager_controllers:
+  resource: ../../src/Foreground/Infrastructure/Symfony/Controller/
+  prefix: /foreground
+  type: attribute

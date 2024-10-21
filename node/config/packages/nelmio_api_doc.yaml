@@ -1,5 +1,5 @@
 imports:
-    - { resource: ../../src/Manager/Infrastructure/Symfony/config/manager-nelmio_api_doc.yaml }
+    - { resource: ../../src/Shared/Infrastructure/Oa/Model/common.yaml }
 
 nelmio_api_doc:
     documentation:
@@ -9,7 +9,6 @@ nelmio_api_doc:
             version: 1.0.0
         components:
             schemas:
-                LabelSlot: '%OaLabelSlot%'
                 ValidationErrorList: '%OaValidationErrorList%'
                 ValidationError: '%OaValidationError%'
                 BusinessError: '%OaBusinessError%'
@@ -23,3 +22,5 @@ nelmio_api_doc:
             path_patterns: [ ^/background ]
         manager:
             path_patterns: [ ^/manager ]
+        foreground:
+            path_patterns: [ ^/foreground ]

@@ -29,6 +29,7 @@ return function (ContainerConfigurator $container): void {
 
     $services->load('DataFixtures\\', '../fixtures');
 
+    $container->import('../src/Foreground/Infrastructure/Symfony/config/foreground-services.php');
     $container->import('../src/Manager/Infrastructure/Symfony/config/manager-services.php');
     $container->import('../src/Background/Infrastructure/Symfony/config/background-services.php');
 };

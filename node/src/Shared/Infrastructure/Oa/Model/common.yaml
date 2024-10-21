@@ -8,7 +8,6 @@ parameters:
         items:
           $ref: '#/components/schemas/ValidationError'
 
-
   OaValidationError:
     description: 'Represents an invalid value for a property of a payload'
     type: object
