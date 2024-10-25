@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.1",
+        "dynamophp/hash-bundle": "^1.1",
         "dynamophp/vector-clock": "^1.0",
         "myclabs/deep-copy": "^1.12",
         "nelmio/api-doc-bundle": "^4.26",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e307dd5e4ed8f07bb025137be19eacd",
+    "content-hash": "c79ed9c4d359473d32059ac453bbd630",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1227,6 +1227,99 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.4.0"
             },
             "time": "2024-05-08T08:12:09+00:00"
+        },
+        {
+            "name": "dynamophp/hash",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash.git",
+                "reference": "c582eb54bd6c7546fe71fe043fea122c85a366ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BaptisteContreras/Dynamo-PHP-Hash/zipball/c582eb54bd6c7546fe71fe043fea122c85a366ec",
+                "reference": "c582eb54bd6c7546fe71fe043fea122c85a366ec",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.13",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.9",
+                "phpstan/phpstan-beberlei-assert": "^1.0",
+                "phpstan/phpstan-symfony": "^1.2",
+                "phpunit/phpunit": "^9",
+                "spaze/phpstan-disallowed-calls": "^2.10",
+                "thecodingmachine/phpstan-strict-rules": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dynamophp\\Hash\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Baptiste CONTRERAS"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash/issues",
+                "source": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash/tree/1.0.0"
+            },
+            "time": "2022-12-24T11:35:52+00:00"
+        },
+        {
+            "name": "dynamophp/hash-bundle",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash-Bundle.git",
+                "reference": "1f0452fbbd40c5fac8a58ddc0065a5ca2304e203"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BaptisteContreras/Dynamo-PHP-Hash-Bundle/zipball/1f0452fbbd40c5fac8a58ddc0065a5ca2304e203",
+                "reference": "1f0452fbbd40c5fac8a58ddc0065a5ca2304e203",
+                "shasum": ""
+            },
+            "require": {
+                "dynamophp/hash": "^1.0",
+                "php": ">=8.1",
+                "symfony/config": "^6.0 || ^7.0",
+                "symfony/dependency-injection": "^6.0 || ^7.0",
+                "symfony/http-kernel": "^6.0 || ^7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "v3.12.0",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.9",
+                "phpstan/phpstan-beberlei-assert": "^1.0",
+                "phpstan/phpstan-symfony": "^1.2",
+                "spaze/phpstan-disallowed-calls": "^2.10",
+                "thecodingmachine/phpstan-strict-rules": "^1.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Dynamophp\\HashBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Symfony bundle to use the dynamophp/hash library",
+            "support": {
+                "issues": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash-Bundle/issues",
+                "source": "https://github.com/BaptisteContreras/Dynamo-PHP-Hash-Bundle/tree/1.1.0"
+            },
+            "time": "2024-10-25T14:40:07+00:00"
         },
         {
             "name": "dynamophp/vector-clock",
