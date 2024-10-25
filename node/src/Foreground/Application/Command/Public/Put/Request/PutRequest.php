@@ -4,23 +4,15 @@ namespace App\Foreground\Application\Command\Public\Put\Request;
 
 final readonly class PutRequest
 {
-    private string $key;
+    private PutItem $item;
 
-    private PutData $data;
-
-    public function __construct(string $key, PutData $data)
+    public function __construct(PutItem $item)
     {
-        $this->key = $key;
-        $this->data = $data;
+        $this->item = $item;
     }
 
-    public function getKey(): string
+    public function getItem(): PutItem
     {
-        return $this->key;
-    }
-
-    public function getData(): PutData
-    {
-        return $this->data;
+        return $this->item;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b301112bd5cb67c5e812ea481d4ea82",
+    "content-hash": "6e307dd5e4ed8f07bb025137be19eacd",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1227,6 +1227,52 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.4.0"
             },
             "time": "2024-05-08T08:12:09+00:00"
+        },
+        {
+            "name": "dynamophp/vector-clock",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BaptisteContreras/vector-clock.git",
+                "reference": "acbc5b5d0e5a44205d05249d8aededb4244ac9a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BaptisteContreras/vector-clock/zipball/acbc5b5d0e5a44205d05249d8aededb4244ac9a5",
+                "reference": "acbc5b5d0e5a44205d05249d8aededb4244ac9a5",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.13",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-beberlei-assert": "^1.0",
+                "phpstan/phpstan-symfony": "^1.2",
+                "phpunit/phpunit": "^10",
+                "spaze/phpstan-disallowed-calls": "^2.10",
+                "thecodingmachine/phpstan-strict-rules": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dynamophp\\VectorClock\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Baptiste CONTRERAS"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/BaptisteContreras/vector-clock/issues",
+                "source": "https://github.com/BaptisteContreras/vector-clock/tree/1.0.0"
+            },
+            "time": "2023-05-14T17:29:05+00:00"
         },
         {
             "name": "monolog/monolog",
