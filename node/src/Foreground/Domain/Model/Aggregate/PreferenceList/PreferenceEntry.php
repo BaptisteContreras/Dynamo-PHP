@@ -49,4 +49,12 @@ final readonly class PreferenceEntry
     {
         return $this->id;
     }
+
+    /**
+     * @return array<UuidV7>
+     */
+    public function getCoordinatorsPriorityList(): array
+    {
+        return [$this->ownerId, ...$this->coordinatorsIds, ...$this->othersNodesIds];
+    }
 }

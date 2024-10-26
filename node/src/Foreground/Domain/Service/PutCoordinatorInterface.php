@@ -2,9 +2,11 @@
 
 namespace App\Foreground\Domain\Service;
 
+use App\Foreground\Domain\Model\Aggregate\Put\Item;
+
 interface PutCoordinatorInterface
 {
-    public function isLocalNodeOwnerOf(int $ringKey): bool;
+    public function isLocalNodeOwnerOf(Item $item): bool;
 
-    public function forwardWrite();
+    public function forwardWrite(Item $item): void;
 }
