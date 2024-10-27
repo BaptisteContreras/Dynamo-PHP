@@ -61,4 +61,14 @@ final readonly class Node
     {
         return $this->virtualNodes;
     }
+
+    public function canParticipateInRingOperation(): bool
+    {
+        return MembershipState::JOINED === $this->membershipState && NodeState::UP === $this->localNodeState;
+    }
+
+    public function getStringId(): string
+    {
+        return $this->id->toRfc4122();
+    }
 }

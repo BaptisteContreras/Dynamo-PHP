@@ -26,4 +26,21 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface
 
         return NodeMapper::entityToDto($selfNode);
     }
+
+    public function findByIds(array $ids): array
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->where('n.id IN (:ids)')
+            ->setParameter('ids', $ids);
+
+        /** @var array<NodeEntity> $dbRows */
+        $dbRows = $qb->getQuery()->execute();
+
+        return array_reduce($dbRows, function (array $carry, NodeEntity $node) {
+            $dto = NodeMapper::entityToDto($node);
+            $carry[$dto->getStringId()] = $dto;
+
+            return $carry;
+        }, []);
+    }
 }
