@@ -20,15 +20,8 @@ final readonly class PutDataCommandHandler
     {
         $item = $this->convertRequestToDto($request);
 
-        if (!$this->putCoordinator->isLocalNodeOwnerOf($item)) {
-            $this->putCoordinator->forwardWrite($item);
-
-            dd('forward write');
-
-            return;
-        }
-
-        dd('should handle write');
+        $nodeHandler = $this->putCoordinator->handleWrite($item);
+        dd($nodeHandler);
         // check if current node support the keys
         // if not, forward it to preference list, until a node handle it
 

@@ -2,9 +2,7 @@
 
 namespace App\Foreground\Domain\Exception;
 
-use App\Shared\Domain\Exception\DomainException;
-
-class CannotForwardWriteException extends DomainException
+class CannotForwardWriteException extends CannotHandleWriteException
 {
     public function __construct()
     {

@@ -2,21 +2,19 @@
 
 namespace App\Tests\Unitary\Foreground\Domain\Service;
 
-use App\Foreground\Domain\Exception\CannotForwardWriteException;
 use App\Foreground\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceEntry;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceList;
 use App\Foreground\Domain\Model\Aggregate\Put\Item;
 use App\Foreground\Domain\Model\Aggregate\Put\Metadata;
-use App\Foreground\Domain\Model\Const\ForwardResult;
 use App\Foreground\Domain\Out\Node\FinderInterface as NodeFinder;
 use App\Foreground\Domain\Out\PreferenceList\FinderInterface as PreferenceListFinder;
 use App\Foreground\Domain\Service\Coordinator;
-use App\Foreground\Domain\Service\Forward\ForwardStrategyInterface;
+use App\Foreground\Domain\Service\Forward\Forwarder;
+use App\Foreground\Domain\Service\Local\LocalCoordinator;
 use App\Shared\Domain\Const\MembershipState;
 use App\Shared\Domain\Const\NodeState;
-use App\Shared\Domain\Event\EventBusInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\UuidV7;
 
@@ -38,187 +36,103 @@ class PutCoordinatorTest extends TestCase
 
     private NodeFinder $nodeFinder;
 
-    private ForwardStrategyInterface $forwardStrategy;
+    private Forwarder $forwarder;
 
-    private EventBusInterface $eventBus;
+    private LocalCoordinator $localCoordinator;
 
     protected function setUp(): void
     {
         $this->preferenceListFinder = $this->createMock(PreferenceListFinder::class);
         $this->nodeFinder = $this->createMock(NodeFinder::class);
-        $this->forwardStrategy = $this->createMock(ForwardStrategyInterface::class);
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->forwarder = $this->createMock(Forwarder::class);
+        $this->localCoordinator = $this->createMock(LocalCoordinator::class);
 
         $this->coordinator = new Coordinator(
             $this->preferenceListFinder,
             $this->nodeFinder,
-            $this->forwardStrategy,
-            $this->eventBus
+            $this->localCoordinator,
+            $this->forwarder
         );
     }
 
-    public function getSuccessCases(): \Generator
+    public function getForwardCases(): \Generator
     {
-        yield 'Success but skip first 3 nodes because of edge cases' => [
+        yield 'Forward success and local node has left the ring' => [
             new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
-            [
-                // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
-                self::NODE_2 => $this->createNode(self::NODE_2, MembershipState::LEFT), // second edge case : NODE_2 has left the ring (i.e cannot participate to ring operation)
-                self::NODE_3 => $this->createNode(self::NODE_3, nodeState: NodeState::ERROR), // third edge case : NODE_3 is locally in an error state (i.e cannot participate to ring operation)
-                self::NODE_4 => $this->createNode(self::NODE_4), // is OK
-            ],
+            $this->createNode(self::NODE_2, MembershipState::LEFT, selfEntry: true),
             self::NODE_4,
-            [self::NODE_4 => ForwardResult::SUCCESS],
         ];
-        yield 'Success but skip first 2 nodes because of forward failure' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
-            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
-            [
-                self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT
-                self::NODE_2 => $this->createNode(self::NODE_2), // will trigger ForwardResult::TECHNICAL_ERROR
-                self::NODE_3 => $this->createNode(self::NODE_3), // is OK
-            ],
-            self::NODE_3,
-            [
-                self::NODE_1 => ForwardResult::TIMEOUT,
-                self::NODE_2 => ForwardResult::TECHNICAL_ERROR,
-                self::NODE_3 => ForwardResult::SUCCESS,
-            ],
-        ];
-        yield 'Success but skip first 3 nodes because of edge (variant with self entry)' => [
+        yield 'Forward success and local node is OK' => [
             new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
-            [
-                // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
-                self::NODE_2 => $this->createNode(self::NODE_2, MembershipState::LEFT, selfEntry: true), // second edge case : NODE_2 has left the ring (i.e cannot participate to ring operation)
-                self::NODE_3 => $this->createNode(self::NODE_3, nodeState: NodeState::ERROR, selfEntry: true), // third edge case : NODE_3 is locally in an error state (i.e cannot participate to ring operation)
-                self::NODE_4 => $this->createNode(self::NODE_4), // is OK
-            ],
+            $this->createNode(self::NODE_2, selfEntry: true),
             self::NODE_4,
-            [self::NODE_4 => ForwardResult::SUCCESS],
         ];
-        //        yield 'Success but skip first 3 nodes because of edge cases and write is handled by "self node"' => [
-        //            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
-        //            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
-        //            [
-        //                // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
-        //                self::NODE_2 => $this->createNode(self::NODE_2, MembershipState::LEFT), // second edge case : NODE_2 has left the ring (i.e cannot participate to ring operation)
-        //                self::NODE_3 => $this->createNode(self::NODE_3, nodeState: NodeState::ERROR), // third edge case : NODE_3 is locally in an error state (i.e cannot participate to ring operation)
-        //                self::NODE_4 => $this->createNode(self::NODE_4, selfEntry: true), // is OK
-        //            ],
-        //            self::NODE_4,
-        //            [self::NODE_4 => ForwardResult::SUCCESS]
-        //        ];
-        //        yield 'Success but skip first 2 nodes because of forward failure and write is handled by "self node"' => [
-        //            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
-        //            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
-        //            [
-        //                self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT
-        //                self::NODE_2 => $this->createNode(self::NODE_2), // will trigger ForwardResult::TECHNICAL_ERROR
-        //                self::NODE_3 => $this->createNode(self::NODE_3, selfEntry: true), // is OK
-        //            ],
-        //            self::NODE_3,
-        //            [
-        //                self::NODE_1 => ForwardResult::TIMEOUT,
-        //                self::NODE_2 => ForwardResult::TECHNICAL_ERROR,
-        //                self::NODE_3 => ForwardResult::SUCCESS,
-        //            ]
-        //        ];
+        yield 'Forward success and local node is in error state' => [
+            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
+            $this->createNode(self::NODE_2, nodeState: NodeState::ERROR, selfEntry: true),
+            self::NODE_4,
+        ];
     }
 
-    public function getFailureCases(): \Generator
+    public function getLocalCases(): \Generator
     {
-        yield 'Failure and skip first 3 nodes because of edge cases' => [
+        yield 'Forward success and local node has left the ring' => [
             new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
-            [
-                // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
-                self::NODE_2 => $this->createNode(self::NODE_2, MembershipState::LEFT), // second edge case : NODE_2 has left the ring (i.e cannot participate to ring operation)
-                self::NODE_3 => $this->createNode(self::NODE_3, nodeState: NodeState::ERROR), // third edge case : NODE_3 is locally in an error state (i.e cannot participate to ring operation)
-            ],
-            [],
+            $this->createNode(self::NODE_1, MembershipState::LEFT, selfEntry: true),
+            self::NODE_1,
         ];
-        yield 'Failure and skip first 3 nodes because of forward failure' => [
+        yield 'Forward success and local node is OK' => [
             new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
-            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
-            [
-                self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT
-                self::NODE_2 => $this->createNode(self::NODE_2), // will trigger ForwardResult::TECHNICAL_ERROR
-                self::NODE_3 => $this->createNode(self::NODE_3), // will trigger ForwardResult::TIMEOUT
-            ],
-            [
-                self::NODE_1 => ForwardResult::TIMEOUT,
-                self::NODE_2 => ForwardResult::TECHNICAL_ERROR,
-                self::NODE_3 => ForwardResult::TIMEOUT,
-            ],
+            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
+            $this->createNode(self::NODE_1, selfEntry: true),
+            self::NODE_1,
+        ];
+        yield 'Forward success and local node is in error state' => [
+            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
+            $this->createNode(self::NODE_1, nodeState: NodeState::ERROR, selfEntry: true),
+            self::NODE_1,
         ];
     }
 
     /**
-     * @dataProvider getSuccessCases
-     *
-     * @param array<string, Node>          $nodes
-     * @param array<string, ForwardResult> $forwardCalls
+     * @dataProvider getForwardCases
      */
-    public function testForwardSuccess(Item $item, PreferenceEntry $preferenceEntry, array $nodes, string $expectedSlotCoordinatorId, array $forwardCalls): void
+    public function testForwardSuccess(Item $item, PreferenceEntry $preferenceEntry, Node $localNode, string $expectedSlotCoordinatorId): void
     {
         $preferenceList = new PreferenceList([$preferenceEntry]);
 
-        $failedForwardCalls = array_filter($forwardCalls, fn (ForwardResult $result) => ForwardResult::SUCCESS !== $result);
-
         $this->preferenceListFinder->expects(self::once())->method('getPreferenceList')->willReturn($preferenceList);
-        $this->nodeFinder->expects(self::once())->method('findByIds')->with($preferenceEntry->getCoordinatorsPriorityList())->willReturn($nodes);
-        $this->eventBus->expects(self::exactly(count($failedForwardCalls)))->method('publish');
+        $this->nodeFinder->expects(self::once())->method('getLocalEntry')->willReturn($localNode);
 
-        $this->forwardStrategy
-            ->expects($this->exactly(count($forwardCalls)))
-            ->method('forwardItemWriteTo')
-            ->willReturnCallback(function (Node $nodeUsed, Item $itemUsed) use ($forwardCalls, $item) {
-                static $i = 0;
-                $this->assertEquals($item, $itemUsed);
-                $currentCall = array_keys($forwardCalls)[$i++];
-                $this->assertEquals($currentCall, $nodeUsed->getStringId());
+        $this->forwarder->expects(self::once())->method('forwardWrite')->with($item)->willReturn($this->createNode($expectedSlotCoordinatorId));
+        $this->localCoordinator->expects(self::never())->method('handleWriteLocally');
 
-                return $forwardCalls[$currentCall];
-            });
-
-        $slotCoordinator = $this->coordinator->forwardWrite($item);
+        $slotCoordinator = $this->coordinator->handleWrite($item);
 
         self::assertEquals($expectedSlotCoordinatorId, $slotCoordinator->getStringId());
     }
 
     /**
-     * @dataProvider getFailureCases
-     *
-     * @param array<string, Node>          $nodes
-     * @param array<string, ForwardResult> $forwardCalls
+     * @dataProvider getLocalCases
      */
-    public function testForwardFailure(Item $item, PreferenceEntry $preferenceEntry, array $nodes, array $forwardCalls): void
+    public function testLocalForwardSuccess(Item $item, PreferenceEntry $preferenceEntry, Node $localNode, string $expectedSlotCoordinatorId): void
     {
         $preferenceList = new PreferenceList([$preferenceEntry]);
 
-        $failedForwardCalls = array_filter($forwardCalls, fn (ForwardResult $result) => ForwardResult::SUCCESS !== $result);
-
         $this->preferenceListFinder->expects(self::once())->method('getPreferenceList')->willReturn($preferenceList);
-        $this->nodeFinder->expects(self::once())->method('findByIds')->with($preferenceEntry->getCoordinatorsPriorityList())->willReturn($nodes);
-        $this->eventBus->expects(self::exactly(count($failedForwardCalls)))->method('publish');
+        $this->nodeFinder->expects(self::once())->method('getLocalEntry')->willReturn($localNode);
 
-        $this->forwardStrategy
-            ->expects($this->exactly(count($forwardCalls)))
-            ->method('forwardItemWriteTo')
-            ->willReturnCallback(function (Node $nodeUsed, Item $itemUsed) use ($forwardCalls, $item) {
-                static $i = 0;
-                $this->assertEquals($item, $itemUsed);
-                $currentCall = array_keys($forwardCalls)[$i++];
-                $this->assertEquals($currentCall, $nodeUsed->getStringId());
+        $this->forwarder->expects(self::never())->method('forwardWrite');
+        $this->localCoordinator->expects(self::once())->method('handleWriteLocally')->with($item)->willReturn($this->createNode($expectedSlotCoordinatorId));
 
-                return $forwardCalls[$currentCall];
-            });
+        $slotCoordinator = $this->coordinator->handleWrite($item);
 
-        $this->expectException(CannotForwardWriteException::class);
-
-        $this->coordinator->forwardWrite($item);
+        self::assertEquals($expectedSlotCoordinatorId, $slotCoordinator->getStringId());
     }
 
     private function createNode(string $nodeId, MembershipState $membershipState = MembershipState::JOINED, NodeState $nodeState = NodeState::UP, bool $selfEntry = false): Node
