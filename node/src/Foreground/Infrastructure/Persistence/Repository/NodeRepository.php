@@ -36,6 +36,8 @@ class NodeRepository extends ServiceEntityRepository implements FinderInterface
         /** @var array<NodeEntity> $dbRows */
         $dbRows = $qb->getQuery()->execute();
 
+        // TODO throw exception if array result is smaller than $ids ?
+
         return array_reduce($dbRows, function (array $carry, NodeEntity $node) {
             $dto = NodeMapper::entityToDto($node);
             $carry[$dto->getStringId()] = $dto;
