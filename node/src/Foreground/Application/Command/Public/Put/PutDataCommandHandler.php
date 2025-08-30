@@ -6,13 +6,15 @@ use App\Foreground\Application\Command\Public\Put\Presenter\PutDataPresenter;
 use App\Foreground\Application\Command\Public\Put\Request\PutRequest;
 use App\Foreground\Domain\Model\Aggregate\Put\Item;
 use App\Foreground\Domain\Service\PutCoordinatorInterface;
+use App\Foreground\Domain\Service\Version\VersionMarshaller;
 use App\Shared\Domain\Out\RingKeyHasherInterface;
 
 final readonly class PutDataCommandHandler
 {
     public function __construct(
         private RingKeyHasherInterface $ringKeyHasher,
-        private PutCoordinatorInterface $putCoordinator
+        private PutCoordinatorInterface $putCoordinator,
+        private VersionMarshaller $versionMarshaller,
     ) {
     }
 
@@ -22,18 +24,12 @@ final readonly class PutDataCommandHandler
 
         $nodeHandler = $this->putCoordinator->handleWrite($item);
         dd($nodeHandler);
-        // check if current node support the keys
-        // if not, forward it to preference list, until a node handle it
-
-        // If current node can handle it :
-        // - check the version
-        // - handle local write
-        // - propagate write to W replicas
     }
 
     private function convertRequestToDto(PutRequest $putRequest): Item
     {
         $requestItem = $putRequest->getItem();
+        $this->versionMarshaller->transformFromString($requestItem->getMetadata()->getVersion());
 
         return Item::create(
             $requestItem->getKey(),

@@ -20,7 +20,7 @@ class Forwarder
         private readonly NodeFinder $nodeFinder,
         private readonly ForwardStrategyInterface $forwardStrategy,
         private readonly EventBusInterface $eventBus,
-        private readonly LocalCoordinator $localCoordinator
+        private readonly LocalCoordinator $localCoordinator,
     ) {
     }
 

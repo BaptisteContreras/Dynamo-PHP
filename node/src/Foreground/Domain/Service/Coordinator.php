@@ -15,7 +15,7 @@ readonly class Coordinator implements PutCoordinatorInterface
         private PreferenceListFinder $preferenceListFinder,
         private NodeFinder $nodeFinder,
         private LocalCoordinator $localCoordinator,
-        private Forwarder $forwarder
+        private Forwarder $forwarder,
     ) {
     }
 
