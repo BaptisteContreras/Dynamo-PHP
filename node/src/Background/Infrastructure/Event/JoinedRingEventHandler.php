@@ -9,7 +9,7 @@ use App\Shared\Domain\Event\Sync\JoinedRingEvent;
 class JoinedRingEventHandler implements EventHandlerInterface
 {
     public function __construct(
-        private readonly LocalNodeJoinCommandHandler $localNodeJoinCommandHandler
+        private readonly LocalNodeJoinCommandHandler $localNodeJoinCommandHandler,
     ) {
     }
 

@@ -18,7 +18,7 @@ final readonly class Node
         private bool $selfEntry,
         private string $label,
         private NodeState $localNodeState,
-        private VirtualNodeCollection $virtualNodes
+        private VirtualNodeCollection $virtualNodes,
     ) {
     }
 

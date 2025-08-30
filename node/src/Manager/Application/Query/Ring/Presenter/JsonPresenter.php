@@ -12,7 +12,7 @@ class JsonPresenter extends RingPresenter
     {
         match (get_class($ringResponse)) {
             SuccessResponse::class => $this->viewModel = JsonRingViewModel::success($ringResponse->getRing()),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }

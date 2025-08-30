@@ -14,7 +14,7 @@ final readonly class Event
         private \DateTimeImmutable $eventTime,
         private string $data,
         private ?UuidV7 $sourceNode,
-        private ?\DateTimeImmutable $receivedAt
+        private ?\DateTimeImmutable $receivedAt,
     ) {
     }
 

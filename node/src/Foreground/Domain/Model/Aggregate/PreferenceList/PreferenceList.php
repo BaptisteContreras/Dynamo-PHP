@@ -13,7 +13,7 @@ final readonly class PreferenceList
      * @param array<PreferenceEntry> $entries
      */
     public function __construct(
-        array $entries
+        array $entries,
     ) {
         uasort($entries, function (PreferenceEntry $a, PreferenceEntry $b) {
             return $a->getSlot() > $b->getSlot() ? 1 : -1;

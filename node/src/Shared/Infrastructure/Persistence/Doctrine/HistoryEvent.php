@@ -20,7 +20,7 @@ class HistoryEvent
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $eventTime,
         #[Column(type: Types::TEXT)] private string $data,
         #[Column(type: UuidType::NAME, nullable: true)] private ?UuidV7 $sourceNode,
-        #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)] private ?\DateTimeImmutable $receivedAt
+        #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)] private ?\DateTimeImmutable $receivedAt,
     ) {
     }
 

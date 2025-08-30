@@ -14,7 +14,7 @@ class History
     private HistoryEventCollection $newEventsCollection;
 
     public function __construct(
-        private readonly HistoryEventCollection $events = new HistoryEventCollection()
+        private readonly HistoryEventCollection $events = new HistoryEventCollection(),
     ) {
         $this->newEventsCollection = HistoryEventCollection::createEmpty();
     }

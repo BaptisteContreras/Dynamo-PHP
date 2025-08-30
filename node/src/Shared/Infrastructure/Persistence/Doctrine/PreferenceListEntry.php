@@ -22,7 +22,7 @@ class PreferenceListEntry
         #[Column(type: UuidType::NAME)] private UuidV7 $ownerId,
         #[Column(type: OrderedUuidV7JsonArray::TYPE)] private array $coordinatorsIds,
         #[Column(type: OrderedUuidV7JsonArray::TYPE)] private array $othersNodesIds,
-        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
+        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7(),
     ) {
     }
 

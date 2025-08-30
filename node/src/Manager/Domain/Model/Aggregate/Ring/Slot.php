@@ -8,7 +8,7 @@ final readonly class Slot
 {
     public function __construct(
         private int $slot,
-        private VirtualNode $virtualNode
+        private VirtualNode $virtualNode,
     ) {
     }
 

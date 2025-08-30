@@ -11,7 +11,7 @@ final readonly class JsonVirtualNode
 {
     public function __construct(
         private string $id,
-        private string $nodeId
+        private string $nodeId,
     ) {
     }
 

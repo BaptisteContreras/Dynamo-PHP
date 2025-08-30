@@ -12,7 +12,7 @@ class JsonPutDataPresenter extends PutDataPresenter
     {
         match (get_class($syncMembershipV1Response)) {
             SuccessResponse::class => $this->viewModel = JsonPutDataViewModel::success(),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }

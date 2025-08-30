@@ -12,7 +12,7 @@ class JsonPresenter extends PreferenceListPresenter
     {
         match (get_class($ringResponse)) {
             SuccessResponse::class => $this->viewModel = JsonPreferenceListViewModel::success($ringResponse->getPreferenceList()),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }

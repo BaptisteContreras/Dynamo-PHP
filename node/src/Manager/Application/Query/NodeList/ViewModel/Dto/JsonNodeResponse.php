@@ -21,7 +21,7 @@ final readonly class JsonNodeResponse
         private bool $seed,
         private string $label,
         private NodeState $localNodeState,
-        private array $virtualNodes
+        private array $virtualNodes,
     ) {
     }
 

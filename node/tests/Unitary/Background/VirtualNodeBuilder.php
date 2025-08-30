@@ -10,7 +10,7 @@ final class VirtualNodeBuilder
 {
     public function __construct(
         private readonly int $slot,
-        private readonly bool $isActive
+        private readonly bool $isActive,
     ) {
     }
 

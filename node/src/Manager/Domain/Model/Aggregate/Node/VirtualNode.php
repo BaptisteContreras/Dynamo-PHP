@@ -12,7 +12,7 @@ final class VirtualNode
         private readonly Node $node,
         private bool $active = true,
         private readonly \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
-        private readonly UuidV7 $id = new UuidV7()
+        private readonly UuidV7 $id = new UuidV7(),
     ) {
     }
 

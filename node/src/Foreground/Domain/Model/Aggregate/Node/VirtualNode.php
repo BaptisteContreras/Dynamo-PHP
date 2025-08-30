@@ -11,7 +11,7 @@ final readonly class VirtualNode
         private int $slot,
         private Node $node,
         private bool $active,
-        private UuidV7 $id
+        private UuidV7 $id,
     ) {
     }
 

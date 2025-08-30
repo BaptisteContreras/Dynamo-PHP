@@ -60,7 +60,7 @@ class SyncMembershipController extends AbstractApiController
     #[Route(path: 'v1', name: 'v1', methods: ['POST'])]
     public function v1(
         #[MapRequestPayload] SyncRequest $syncRequest,
-        SyncMembershipV1CommandHandler $syncMembershipV1CommandHandler
+        SyncMembershipV1CommandHandler $syncMembershipV1CommandHandler,
     ): Response {
         $presenter = SyncMembershipPresenter::json();
 

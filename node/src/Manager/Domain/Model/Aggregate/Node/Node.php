@@ -24,7 +24,7 @@ final class Node
         private readonly bool $seed,
         private readonly string $label,
         private NodeState $localNodeState,
-        private VirtualNodeCollection $virtualNodes
+        private VirtualNodeCollection $virtualNodes,
     ) {
     }
 

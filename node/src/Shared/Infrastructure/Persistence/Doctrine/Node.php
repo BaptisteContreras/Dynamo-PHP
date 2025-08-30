@@ -32,7 +32,7 @@ class Node
         #[Column(type: Types::SMALLINT, enumType: NodeState::class)] private NodeState $localNodeState,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $updatedAt,
         #[OneToMany(targetEntity: VirtualNode::class, mappedBy: 'node')] private Collection $virtualNodes = new ArrayCollection(),
-        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
+        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7(),
     ) {
     }
 

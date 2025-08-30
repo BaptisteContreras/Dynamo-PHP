@@ -12,7 +12,7 @@ class JsonSyncMembershipPresenter extends SyncMembershipPresenter
     {
         match (get_class($syncMembershipV1Response)) {
             SuccessResponse::class => $this->viewModel = JsonSyncMembershipV1ViewModel::success(),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }

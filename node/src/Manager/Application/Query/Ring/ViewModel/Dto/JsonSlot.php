@@ -11,7 +11,7 @@ final readonly class JsonSlot
 {
     public function __construct(
         private int $slot,
-        private string $virtualNodeId
+        private string $virtualNodeId,
     ) {
     }
 

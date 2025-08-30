@@ -20,7 +20,7 @@ class VirtualNode
         #[ManyToOne(targetEntity: Node::class, inversedBy: 'virtualNodes')] #[JoinColumn(nullable: false)] private Node $node,
         #[Column(type: Types::DATETIME_IMMUTABLE)] private \DateTimeImmutable $createdAt,
         #[Column(type: Types::BOOLEAN)] private bool $active,
-        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7()
+        #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id = new UuidV7(),
     ) {
     }
 

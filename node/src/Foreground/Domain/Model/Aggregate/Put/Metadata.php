@@ -9,7 +9,7 @@ final class Metadata
      */
     public function __construct(
         private string $version,
-        private readonly int $ringKey
+        private readonly int $ringKey,
     ) {
     }
 

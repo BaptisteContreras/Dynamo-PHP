@@ -12,7 +12,7 @@ class JsonPresenter extends JoinPresenter
     {
         match (get_class($joinResponse)) {
             SuccessResponse::class => $this->viewModel = JsonJoinViewModel::success($joinResponse->getNode()),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }

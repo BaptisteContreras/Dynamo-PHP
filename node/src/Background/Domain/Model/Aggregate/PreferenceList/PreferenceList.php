@@ -5,7 +5,7 @@ namespace App\Background\Domain\Model\Aggregate\PreferenceList;
 class PreferenceList
 {
     public function __construct(
-        private readonly PreferenceEntryCollection $internalList
+        private readonly PreferenceEntryCollection $internalList,
     ) {
         $this->internalList->sortBySlot();
     }

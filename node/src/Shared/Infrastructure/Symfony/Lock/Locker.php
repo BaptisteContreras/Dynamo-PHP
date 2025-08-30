@@ -15,7 +15,7 @@ abstract class Locker
     public function __construct(
         private readonly LockFactory $lockFactory,
         private readonly string $lockNamespace,
-        private array $lockMap = []
+        private array $lockMap = [],
     ) {
     }
 
@@ -27,7 +27,7 @@ abstract class Locker
         string $action,
         string $resourceKey,
         bool $throwExceptionIfAlreadyLocked,
-        bool $throwExceptionIfAcquireFails
+        bool $throwExceptionIfAcquireFails,
     ): bool {
         $realLockKey = $this->getRealLockKey($action, $resourceKey);
 

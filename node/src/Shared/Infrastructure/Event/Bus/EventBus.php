@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class EventBus implements EventBusInterface
 {
     public function __construct(
-        private readonly MessageBusInterface $messageBus
+        private readonly MessageBusInterface $messageBus,
     ) {
     }
 

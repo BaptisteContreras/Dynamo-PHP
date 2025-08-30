@@ -9,7 +9,7 @@ final class JoinedRingEvent extends SyncDomainEvent
      */
     public function __construct(
         private readonly string $selfNodeId,
-        private readonly array $initalSeeds
+        private readonly array $initalSeeds,
     ) {
     }
 

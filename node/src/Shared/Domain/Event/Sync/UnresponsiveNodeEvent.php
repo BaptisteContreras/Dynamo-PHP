@@ -10,7 +10,7 @@ final class UnresponsiveNodeEvent extends SyncDomainEvent
     private function __construct(
         private string $nodeId,
         private string $operationType,
-        private \DateTimeInterface $when
+        private \DateTimeInterface $when,
     ) {
     }
 

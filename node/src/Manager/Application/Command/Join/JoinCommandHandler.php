@@ -21,7 +21,7 @@ final readonly class JoinCommandHandler
         private FinderInterface $nodeFinder,
         private EventBusInterface $eventBus,
         private VirtualNodeAttributor $virtualNodeAttributor,
-        private LockManagerInterface $nodeLockManager
+        private LockManagerInterface $nodeLockManager,
     ) {
     }
 

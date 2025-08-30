@@ -381,7 +381,7 @@ class RingMergePhase1Test extends RingMergeTestCase
         array $localRingNodes,
         array $remoteRingNodes,
         array $internalRing,
-        array $disabledVirtualNodes
+        array $disabledVirtualNodes,
     ): void {
         $localRing = $this->createRingFromDataProvider($localRingNodes);
         $remoteRing = $this->createRingFromDataProvider($remoteRingNodes);

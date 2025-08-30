@@ -14,7 +14,7 @@ class JsonPresenter extends NodeListPresenter
         match (get_class($ringResponse)) {
             SuccessResponse::class => $this->viewModel = JsonNodeListViewModel::success($ringResponse->getNodes()),
             BadFiltersResponse::class => $this->viewModel = JsonNodeListViewModel::badFilter(),
-            default => throw new \LogicException('Unexpected value')
+            default => throw new \LogicException('Unexpected value'),
         };
     }
 }
