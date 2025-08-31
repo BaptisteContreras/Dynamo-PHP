@@ -28,6 +28,8 @@ class PreferenceListEntryRepository extends ServiceEntityRepository implements U
             $em->createQuery(sprintf('DELETE %s', PreferenceListEntry::class))
                 ->execute();
 
+            // TODO need to manually verify that DELETE is done in the transaction
+
             foreach ($preferenceList->getEntries() as $dtoEntry) {
                 $entityEntry = PreferenceListEntryMapper::dtoToEntity($dtoEntry);
                 $em->persist($entityEntry);

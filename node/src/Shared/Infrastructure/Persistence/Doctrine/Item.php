@@ -25,6 +25,9 @@ use Symfony\Component\Uid\UuidV7;
 #[UniqueConstraint(fields: ['key', 'version'], options: ['where' => 'active IS true'])]
 class Item
 {
+    /**
+     * @param int<0, 360> $ringKey
+     */
     public function __construct(
         #[Id] #[Column(type: UuidType::NAME, unique: true)] private UuidV7 $id,
         #[Column(type: Types::TEXT)] private string $key,
@@ -47,6 +50,9 @@ class Item
         return $this->key;
     }
 
+    /**
+     * @return int<0, 360>
+     */
     public function getRingKey(): int
     {
         return $this->ringKey;
@@ -75,5 +81,12 @@ class Item
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function disable(): self
+    {
+        $this->active = false;
+
+        return $this;
     }
 }

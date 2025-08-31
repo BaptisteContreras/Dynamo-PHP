@@ -36,6 +36,11 @@ parameters:
 			path: src/Shared/Domain/Model/Collection/ReadOnlyCollection.php
 
 		-
+			message: "#^Property App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Item\\:\\:\\$ringKey type mapping mismatch\\: database can contain int but property expects int\\<0, 360\\>\\.$#"
+			count: 1
+			path: src/Shared/Infrastructure/Persistence/Doctrine/Item.php
+
+		-
 			message: "#^Method App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\:\\:getNetworkPort\\(\\) should return int\\<1, max\\> but returns int\\.$#"
 			count: 1
 			path: src/Shared/Infrastructure/Persistence/Doctrine/Node.php
