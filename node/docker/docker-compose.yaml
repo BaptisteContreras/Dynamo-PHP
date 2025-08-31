@@ -1,5 +1,3 @@
-version: '2'
-
 services:
   phpfpm-node:
     build: './php'

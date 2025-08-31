@@ -72,7 +72,7 @@ final class Ring
      *
      * There is one exception for node marked as "local". (note that only node in local ring can be marked as local)
      * $node->isLocal() === true means that this is the information of the node executing this algorithm.
-     * We consider that nodes always have the more exact values about themselves and never update their values.
+     * We consider that nodes always have the most exact values about themselves and never update their values.
      * -> local node are never updated nor their virtual nodes
      */
     public function merge(Ring $otherRing, History $historyTimeline): self

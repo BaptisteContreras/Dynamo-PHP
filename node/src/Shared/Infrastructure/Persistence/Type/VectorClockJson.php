@@ -5,13 +5,20 @@ namespace App\Shared\Infrastructure\Persistence\Type;
 use App\Shared\Domain\Model\Versioning\VectorClock;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Symfony\Component\Uid\UuidV7;
 
 /**
- * for the preference list, we need to store two array of UuidV7. These arrays are ordered, and we absolutely preserve that
- * order because this feature is built on it.
- * as mentioned here (https://www.doctrine-project.org/projects/doctrine-dbal/en/4.0/reference/types.html#json), json
- * type do not ensure that the order is kept.
+ * Here we only use TEXT column to store the vector clock because we'll never query inside it.
+ * Also there is a limitation with UNIQUE CONSTRAINT on json column -> it can be used with B-TREE INDEX and I don't
+ * see how to solve this issue due to Doctrine limitation.
+ *
+ * Second point but very important : we need to be able to search by vector clock. As we use TEXT column this means
+ * that two identical vector cloack MUST have the same string representation once stored in the DB.
+ *
+ * This is natively not the case because ['node1' => 1, 'node2' => 2] is identical to ['node2' => 2, 'node1' => 1]
+ *
+ * So here we have to ensure an order in the raw vector. We'll sort this array by key, i.e., by node
+ *
+ * TODO add test for the sort
  */
 class VectorClockJson extends Type
 {
@@ -19,7 +26,7 @@ class VectorClockJson extends Type
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getJsonTypeDeclarationSQL($column);
+        return $platform->getClobTypeDeclarationSQL($column);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
@@ -34,7 +41,10 @@ class VectorClockJson extends Type
             throw new \LogicException(sprintf('doctrine "%s" type except an array of %s as value', self::TYPE, VectorClock::class));
         }
 
-        return json_encode($vectorClock->getVector(), JSON_THROW_ON_ERROR);
+        $sortedByNodeVector = $vectorClock->getVector();
+        ksort($sortedByNodeVector);
+
+        return json_encode($sortedByNodeVector, JSON_THROW_ON_ERROR);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): mixed
