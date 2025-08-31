@@ -69,7 +69,7 @@ class OrderedUuidV7JsonArray extends Type
         }
 
         /** @var array<int, array{"index": "string", "uuidv7": "string"}> $arrayOfUuidDecoded */
-        $arrayOfUuidDecoded = json_decode($rawStringValue, true);
+        $arrayOfUuidDecoded = json_decode($rawStringValue, true, 512, JSON_THROW_ON_ERROR);
 
         $arrayDecoded = [];
 

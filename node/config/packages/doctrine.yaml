@@ -5,6 +5,7 @@ doctrine:
         use_savepoints: true
         types:
             ordered_uuidv7_json_array: App\Shared\Infrastructure\Persistence\Type\OrderedUuidV7JsonArray
+            vector_clock_json: App\Shared\Infrastructure\Persistence\Type\VectorClockJson
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

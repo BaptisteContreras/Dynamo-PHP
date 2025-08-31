@@ -3,12 +3,12 @@
 namespace App\Tests\Unitary\Foreground\Domain\Service;
 
 use App\Foreground\Domain\Exception\CannotForwardWriteException;
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
+use App\Foreground\Domain\Model\Aggregate\Item\Metadata;
 use App\Foreground\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceEntry;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceList;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
-use App\Foreground\Domain\Model\Aggregate\Put\Metadata;
 use App\Foreground\Domain\Model\Const\ForwardResult;
 use App\Foreground\Domain\Out\Node\FinderInterface as NodeFinder;
 use App\Foreground\Domain\Out\PreferenceList\FinderInterface as PreferenceListFinder;
@@ -18,6 +18,7 @@ use App\Foreground\Domain\Service\Local\LocalCoordinator;
 use App\Shared\Domain\Const\MembershipState;
 use App\Shared\Domain\Const\NodeState;
 use App\Shared\Domain\Event\EventBusInterface;
+use App\Shared\Domain\Model\Versioning\VectorClock;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\UuidV7;
 
@@ -29,6 +30,7 @@ class ForwarderTest extends TestCase
     private const NODE_2 = '01901352-03dc-7cdf-8bae-46478df51aec';
     private const NODE_3 = '01909912-05b9-76c9-953a-0b0bbb5d858d';
     private const NODE_4 = '01909912-e139-72da-98d5-c39667a6f652';
+    private const NODE_5 = '01990046-12ea-7a8d-9212-e4d82534f3a6';
     private Forwarder $forwarder;
 
     private PreferenceListFinder $preferenceListFinder;
@@ -61,7 +63,7 @@ class ForwarderTest extends TestCase
     public function getSuccessCases(): \Generator
     {
         yield 'Success but skip first 3 nodes because of edge cases' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             [
                 // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
@@ -74,7 +76,7 @@ class ForwarderTest extends TestCase
             false,
         ];
         yield 'Success but skip first 2 nodes because of forward failure' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
             [
                 self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT
@@ -90,7 +92,7 @@ class ForwarderTest extends TestCase
             false,
         ];
         yield 'Success but skip first 3 nodes because of edge (variant with self entry)' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             [
                 // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
@@ -103,7 +105,7 @@ class ForwarderTest extends TestCase
             false,
         ];
         yield 'Success but skip first 3 nodes because of edge cases and write is handled by "self node"' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             [
                 // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
@@ -116,7 +118,7 @@ class ForwarderTest extends TestCase
             true,
         ];
         yield 'Success but skip first 2 nodes because of forward failure and write is handled by "self node"' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
             [
                 self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT
@@ -135,7 +137,7 @@ class ForwarderTest extends TestCase
     public function getFailureCases(): \Generator
     {
         yield 'Failure and skip first 3 nodes because of edge cases' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             [
                 // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
@@ -145,7 +147,7 @@ class ForwarderTest extends TestCase
             [],
         ];
         yield 'Failure and skip first 3 nodes because of edge cases (variant with "self node")' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             [
                 // first edge case : NODE_1 is unknown (i.e is not in the node table of current node)
@@ -155,7 +157,7 @@ class ForwarderTest extends TestCase
             [],
         ];
         yield 'Failure and skip first 3 nodes because of forward failure' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2), UuidV7::fromString(self::NODE_3)], [], new UuidV7()),
             [
                 self::NODE_1 => $this->createNode(self::NODE_1), // will trigger ForwardResult::TIMEOUT

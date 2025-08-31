@@ -3,8 +3,8 @@
 namespace App\Foreground\Domain\Service;
 
 use App\Foreground\Domain\Exception\CannotHandleWriteException;
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
 
 interface PutCoordinatorInterface
 {

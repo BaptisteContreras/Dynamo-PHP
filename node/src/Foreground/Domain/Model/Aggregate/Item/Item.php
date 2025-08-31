@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Foreground\Domain\Model\Aggregate\Put;
+namespace App\Foreground\Domain\Model\Aggregate\Item;
+
+use App\Shared\Domain\Model\Versioning\VectorClock;
+use Symfony\Component\Uid\UuidV7;
 
 final readonly class Item
 {
@@ -14,11 +17,17 @@ final readonly class Item
     /**
      * @param int<0, 360> $ringKey
      */
-    public static function create(string $key, string $version, int $ringKey, string $data): self
-    {
+    public static function create(
+        string $key,
+        VectorClock $version,
+        int $ringKey,
+        string $data,
+        UuidV7 $ownerId,
+        \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
+    ): self {
         return new self(
             $key,
-            new Metadata($version, $ringKey),
+            new Metadata($version, $ringKey, $createdAt, $ownerId),
             $data
         );
     }
@@ -38,7 +47,7 @@ final readonly class Item
         return $this->data;
     }
 
-    public function getVersion(): string
+    public function getVersion(): VectorClock
     {
         return $this->metadata->getVersion();
     }

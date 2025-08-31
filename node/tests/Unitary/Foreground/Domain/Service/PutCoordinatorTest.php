@@ -2,12 +2,12 @@
 
 namespace App\Tests\Unitary\Foreground\Domain\Service;
 
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
+use App\Foreground\Domain\Model\Aggregate\Item\Metadata;
 use App\Foreground\Domain\Model\Aggregate\Node\Collection\VirtualNodeCollection;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceEntry;
 use App\Foreground\Domain\Model\Aggregate\PreferenceList\PreferenceList;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
-use App\Foreground\Domain\Model\Aggregate\Put\Metadata;
 use App\Foreground\Domain\Out\Node\FinderInterface as NodeFinder;
 use App\Foreground\Domain\Out\PreferenceList\FinderInterface as PreferenceListFinder;
 use App\Foreground\Domain\Service\Coordinator;
@@ -15,6 +15,7 @@ use App\Foreground\Domain\Service\Forward\Forwarder;
 use App\Foreground\Domain\Service\Local\LocalCoordinator;
 use App\Shared\Domain\Const\MembershipState;
 use App\Shared\Domain\Const\NodeState;
+use App\Shared\Domain\Model\Versioning\VectorClock;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\UuidV7;
 
@@ -58,19 +59,19 @@ class PutCoordinatorTest extends TestCase
     public function getForwardCases(): \Generator
     {
         yield 'Forward success and local node has left the ring' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_2, MembershipState::LEFT, selfEntry: true),
             self::NODE_4,
         ];
         yield 'Forward success and local node is OK' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_2, selfEntry: true),
             self::NODE_4,
         ];
         yield 'Forward success and local node is in error state' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_2, nodeState: NodeState::ERROR, selfEntry: true),
             self::NODE_4,
@@ -80,19 +81,19 @@ class PutCoordinatorTest extends TestCase
     public function getLocalCases(): \Generator
     {
         yield 'Forward success and local node has left the ring' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_1, MembershipState::LEFT, selfEntry: true),
             self::NODE_1,
         ];
         yield 'Forward success and local node is OK' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_1, selfEntry: true),
             self::NODE_1,
         ];
         yield 'Forward success and local node is in error state' => [
-            new Item('key1', new Metadata('v1', self::ITEM_RING_KEY), 'data'),
+            new Item('key1', new Metadata(VectorClock::empty(), self::ITEM_RING_KEY, new \DateTimeImmutable(), UuidV7::fromString(self::NODE_5)), 'data'),
             new PreferenceEntry(self::ITEM_RING_KEY, UuidV7::fromString(self::NODE_1), [UuidV7::fromString(self::NODE_2)], [UuidV7::fromString(self::NODE_3), UuidV7::fromString(self::NODE_4)], new UuidV7()),
             $this->createNode(self::NODE_1, nodeState: NodeState::ERROR, selfEntry: true),
             self::NODE_1,

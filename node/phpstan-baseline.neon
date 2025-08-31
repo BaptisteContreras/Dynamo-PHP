@@ -31,6 +31,11 @@ parameters:
 			path: src/Manager/Application/Query/Ring/ViewModel/JsonSuccessViewModel.php
 
 		-
+			message: "#^Method App\\\\Shared\\\\Domain\\\\Model\\\\Collection\\\\ReadOnlyCollection\\:\\:filter\\(\\) should return static\\(App\\\\Shared\\\\Domain\\\\Model\\\\Collection\\\\ReadOnlyCollection\\<T\\>\\) but returns static\\(App\\\\Shared\\\\Domain\\\\Model\\\\Collection\\\\ReadOnlyCollection\\<T\\>\\)\\.$#"
+			count: 1
+			path: src/Shared/Domain/Model/Collection/ReadOnlyCollection.php
+
+		-
 			message: "#^Method App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\:\\:getNetworkPort\\(\\) should return int\\<1, max\\> but returns int\\.$#"
 			count: 1
 			path: src/Shared/Infrastructure/Persistence/Doctrine/Node.php
@@ -39,3 +44,8 @@ parameters:
 			message: "#^Method App\\\\Shared\\\\Infrastructure\\\\Persistence\\\\Doctrine\\\\Node\\:\\:getWeight\\(\\) should return int\\<1, max\\> but returns int\\.$#"
 			count: 1
 			path: src/Shared/Infrastructure/Persistence/Doctrine/Node.php
+
+		-
+			message: "#^Method App\\\\Shared\\\\Infrastructure\\\\Symfony\\\\Service\\\\CustomRingKeyHasher\\:\\:hash\\(\\) should return int\\<0, 360\\> but returns int\\.$#"
+			count: 1
+			path: src/Shared/Infrastructure/Symfony/Service/CustomRingKeyHasher.php

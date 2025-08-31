@@ -4,7 +4,8 @@ namespace App\Foreground\Application\Command\Public\Put;
 
 use App\Foreground\Application\Command\Public\Put\Presenter\PutDataPresenter;
 use App\Foreground\Application\Command\Public\Put\Request\PutRequest;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
+use App\Foreground\Domain\Out\Node\FinderInterface as NodeFinderInterface;
 use App\Foreground\Domain\Service\PutCoordinatorInterface;
 use App\Foreground\Domain\Service\Version\VersionMarshaller;
 use App\Shared\Domain\Out\RingKeyHasherInterface;
@@ -15,6 +16,7 @@ final readonly class PutDataCommandHandler
         private RingKeyHasherInterface $ringKeyHasher,
         private PutCoordinatorInterface $putCoordinator,
         private VersionMarshaller $versionMarshaller,
+        private NodeFinderInterface $nodeFiner,
     ) {
     }
 
@@ -29,13 +31,13 @@ final readonly class PutDataCommandHandler
     private function convertRequestToDto(PutRequest $putRequest): Item
     {
         $requestItem = $putRequest->getItem();
-        $this->versionMarshaller->transformFromString($requestItem->getMetadata()->getVersion());
 
         return Item::create(
             $requestItem->getKey(),
-            $requestItem->getMetadata()->getVersion(),
+            $this->versionMarshaller->transformFromString($requestItem->getMetadata()->getVersion()),
             $this->ringKeyHasher->hash($requestItem->getKey()),
-            $requestItem->getData()
+            $requestItem->getData(),
+            $this->nodeFiner->getLocalEntry()->getId()
         );
     }
 }

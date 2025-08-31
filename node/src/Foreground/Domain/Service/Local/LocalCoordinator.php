@@ -2,8 +2,8 @@
 
 namespace App\Foreground\Domain\Service\Local;
 
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
 
 class LocalCoordinator
 {
@@ -17,8 +17,8 @@ class LocalCoordinator
         // - handle local write
         // - propagate write to W replicas
 
-        // UUID | KEY | VERSION | ACTIVE | TIMESTAMP | DATA
+        // UUID | KEY | RING KEY | VERSION | ACTIVE | TIMESTAMP | OWNER | DATA
 
-        dd('todo');
+        dd($item);
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Foreground\Domain\Service\Forward;
 
 use App\Foreground\Domain\Exception\CannotForwardWriteException;
+use App\Foreground\Domain\Model\Aggregate\Item\Item;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
-use App\Foreground\Domain\Model\Aggregate\Put\Item;
 use App\Foreground\Domain\Model\Const\ForwardResult;
 use App\Foreground\Domain\Out\Node\FinderInterface as NodeFinder;
 use App\Foreground\Domain\Out\PreferenceList\FinderInterface as PreferenceListFinder;
