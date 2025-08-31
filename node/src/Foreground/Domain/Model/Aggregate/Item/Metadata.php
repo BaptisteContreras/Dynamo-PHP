@@ -20,7 +20,7 @@ final class Metadata
 
     public function getVersion(): VectorClock
     {
-        return $this->version;
+        return clone $this->version; // Ensure no update outside
     }
 
     /**
@@ -39,5 +39,12 @@ final class Metadata
     public function getOwnerId(): UuidV7
     {
         return $this->ownerId;
+    }
+
+    public function tickVectorClock(): self
+    {
+        $this->version->tick($this->ownerId->toRfc4122());
+
+        return $this;
     }
 }

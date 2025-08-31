@@ -4,21 +4,22 @@ namespace App\Foreground\Domain\Service\Local;
 
 use App\Foreground\Domain\Model\Aggregate\Item\Item;
 use App\Foreground\Domain\Model\Aggregate\Node\Node;
+use App\Foreground\Domain\Out\Item\ItemUpdaterInterface;
 
 class LocalCoordinator
 {
+    public function __construct(private readonly ItemUpdaterInterface $itemUpdater)
+    {
+    }
+
     public function handleWriteLocally(Item $item): Node
     {
-        // check if current node support the keys
-        // if not, forward it to preference list, until a node handle it
+        $item->incrementVersion();
 
-        // If current node can handle it :
-        // - check the version
-        // - handle local write
-        // - propagate write to W replicas
+        $this->itemUpdater->saveItem($item);
 
-        // UUID | KEY | RING KEY | VERSION | ACTIVE | TIMESTAMP | OWNER | DATA
 
+        // TODO propagate write to W replicas
         dd($item);
     }
 }

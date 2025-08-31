@@ -27,7 +27,7 @@ final class ItemMapper
             $item->getKey(),
             $item->getRingKey(),
             $item->getData(),
-            clone $item->getVersion(),
+            $item->getVersion(), // No need to clone here, this method already returns a cloned object
             $item->getMetadata()->getCreatedAt(),
             $item->getMetadata()->getOwnerId(),
             true

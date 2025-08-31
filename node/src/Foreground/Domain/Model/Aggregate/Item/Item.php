@@ -59,4 +59,11 @@ final readonly class Item
     {
         return $this->metadata->getRingKey();
     }
+
+    public function incrementVersion(): self
+    {
+        $this->metadata->tickVectorClock();
+
+        return $this;
+    }
 }
