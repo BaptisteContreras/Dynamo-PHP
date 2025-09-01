@@ -32,14 +32,16 @@ class ItemRepository extends ServiceEntityRepository implements ItemUpdaterInter
         try {
             $em->beginTransaction();
 
-            $qb = $this->createQueryBuilder('i')
-                ->update()
-                ->set('i.active', ':activeFalse')
-                ->where('i.id = :id')
-                ->setParameter('id', $currentActiveItem->getId())
-                ->setParameter('activeFalse', false);
+            if ($currentActiveItem) {
+                $qb = $this->createQueryBuilder('i')
+                    ->update()
+                    ->set('i.active', ':activeFalse')
+                    ->where('i.id = :id')
+                    ->setParameter('id', $currentActiveItem->getId())
+                    ->setParameter('activeFalse', false);
 
-            $qb->getQuery()->execute();
+                $qb->getQuery()->execute();
+            }
 
             $newItem = ItemMapper::dtoToEntity($item);
 
