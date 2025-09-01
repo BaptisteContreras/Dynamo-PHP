@@ -32,4 +32,5 @@ return function (ContainerConfigurator $container): void {
     $container->import('../src/Foreground/Infrastructure/Symfony/config/foreground-services.php');
     $container->import('../src/Manager/Infrastructure/Symfony/config/manager-services.php');
     $container->import('../src/Background/Infrastructure/Symfony/config/background-services.php');
+    $container->import('../src/Admin/Infrastructure/Symfony/config/admin-services.php');
 };

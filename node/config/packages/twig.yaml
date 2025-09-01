@@ -1,6 +1,9 @@
 twig:
     file_name_pattern: '*.twig'
+    paths:
+        'src/Admin/Infrastructure/Symfony/templates': 'admin'
 
 when@test:
     twig:
         strict_variables: true
+

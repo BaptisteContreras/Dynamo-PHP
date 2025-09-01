@@ -1,0 +1,4 @@
+admin_controllers:
+  resource: ../../src/Admin/Infrastructure/Symfony/Controller/
+  prefix: /admin
+  type: attribute

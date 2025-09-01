@@ -65,6 +65,14 @@ composer-install:
 	$(COMPOSER_EXEC) install --prefer-dist -o
 
 # ------------------------------------------------------------
+# 🎨 Assets
+# ------------------------------------------------------------
+asset-compile:
+	$(call PRINT_SECTION,"🎨 Compiling Symfony Asset Map")
+	$(PHPFPM_EXEC) -d memory_limit=1G bin/console asset-map:compile
+
+
+# ------------------------------------------------------------
 # 🛠️ Meta
 # ------------------------------------------------------------
 help:
@@ -81,6 +89,9 @@ help:
 	@echo "   • make db-migrate-test    - Run migrations in test env"
 	@echo "   • make db-make-migration  - Create a new migration"
 	@echo "   • make db-create-test  - Create test database"
+	@echo ""
+	@echo " 🎨 Assets"
+	@echo "   • make asset-compile   - Compile asset map"
 	@echo ""
 	@echo " 📦 Dependencies"
 	@echo "   • make install         - Composer install"
