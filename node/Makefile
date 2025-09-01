@@ -69,6 +69,7 @@ composer-install:
 # ------------------------------------------------------------
 asset-compile:
 	$(call PRINT_SECTION,"🎨 Compiling Symfony Asset Map")
+	rm -rf public/assets
 	$(PHPFPM_EXEC) -d memory_limit=1G bin/console asset-map:compile
 
 

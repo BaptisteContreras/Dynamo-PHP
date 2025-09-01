@@ -1,0 +1,8 @@
+<nav class="sidebar">
+    {% for item in items %}
+        <div class="nav-item">
+            <div class="nav-icon"></div>
+            <a href="{{ path(item.route) }}">{{ item.label }}</a>
+        </div>
+    {% endfor %}
+</nav>

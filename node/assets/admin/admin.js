@@ -1,4 +1,6 @@
 import './css/admin.css'
+import './css/menu.css'
+import '../bootstrap.js'
 
 // Add some interactive effects
 document.querySelectorAll('.nav-item').forEach(item => {

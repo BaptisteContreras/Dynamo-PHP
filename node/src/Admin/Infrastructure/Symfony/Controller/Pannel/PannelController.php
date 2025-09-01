@@ -16,4 +16,10 @@ class PannelController extends AbstractController
     {
        return $this->render('@admin/index.html.twig', []);
     }
+
+    #[Route(path: '/topology', name: 'topology')]
+    public function topology(): Response
+    {
+       return $this->render('@admin/topology.html.twig', []);
+    }
 }

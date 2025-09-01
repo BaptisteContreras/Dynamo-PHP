@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DynamoPHP node pannel{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% block body %}
+        <div class="container">
+            {% block container %}
+            <header class="header">
+                <div class="logo">DynamoPHP node pannel</div>
+                {% block sidebar_status %}{% endblock %}
+            </header>
+            {% block menu %}
+                <twig:Menu />
+            {% endblock %}
+            <main class="main-content">
+                {% block main_content %}{% endblock %}
+            </main>
+            {% endblock %}
+        </div>
+    {% endblock %}
+    {% block importmap %}{{ importmap('admin') }}{% endblock %}
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
+
+

@@ -1,0 +1,6 @@
+twig_component:
+    anonymous_template_directory: 'components/'
+    defaults:
+        # Namespace & directory for components
+        App\Admin\Infrastructure\Symfony\Components\:
+            template_directory: '@admin/components/'

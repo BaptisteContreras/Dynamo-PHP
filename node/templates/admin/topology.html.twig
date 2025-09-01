@@ -1,0 +1,47 @@
+{% extends '@admin/base.html.twig' %}
+
+{% block sidebar_status %}
+    <div class="status-bar">
+        <div class="status-count">
+            <div class="status-dot up"></div>
+            <span id="upCount">0</span> UP
+        </div>
+        <div class="status-count">
+            <div class="status-dot pending"></div>
+            <span id="pendingCount">0</span> PENDING
+        </div>
+        <div class="status-count">
+            <div class="status-dot error"></div>
+            <span id="errorCount">0</span> ERROR
+        </div>
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    <div class="controls">
+        <button class="cyber-button" onclick="refreshTopology()">REFRESH</button>
+    </div>
+
+    <div class="topology-container" id="topology">
+        <div class="central-hub">CORE</div>
+    </div>
+
+    <!-- Node Info Tooltip -->
+    <div class="node-info" id="nodeInfo">
+        <h4 id="nodeTitle">Node Information</h4>
+        <div class="info-metric">
+            <span>Status:</span>
+            <span id="nodeStatus">Online</span>
+        </div>
+        <div class="info-metric">
+            <span>Load:</span>
+            <span id="nodeLoad">45%</span>
+        </div>
+        <div class="info-metric">
+            <span>Ping:</span>
+            <span id="nodePing">2ms</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block importmap %}{{ importmap('topology') }}{% endblock %}
