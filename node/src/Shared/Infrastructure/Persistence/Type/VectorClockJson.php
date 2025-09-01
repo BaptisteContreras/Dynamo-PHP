@@ -38,7 +38,7 @@ class VectorClockJson extends Type
         }
 
         if (!$vectorClock instanceof VectorClock) {
-            throw new \LogicException(sprintf('doctrine "%s" type except an array of %s as value', self::TYPE, VectorClock::class));
+            throw new \LogicException(sprintf('doctrine "%s" type except an instance %s as value', self::TYPE, VectorClock::class));
         }
 
         $sortedByNodeVector = $vectorClock->getVector();

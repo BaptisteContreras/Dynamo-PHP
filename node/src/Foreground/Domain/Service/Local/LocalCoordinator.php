@@ -18,7 +18,6 @@ class LocalCoordinator
 
         $this->itemUpdater->saveItem($item);
 
-
         // TODO propagate write to W replicas
         dd($item);
     }
