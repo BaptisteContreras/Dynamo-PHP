@@ -14,16 +14,17 @@
 
 
 {% block main_content %}
-    <div class="dashboard-grid">
-        <div class="panel">
-            <h3 class="panel-title">System Metrics</h3>
-            <div class="metric">
-                <span>CPU Usage</span>
-                <span class="metric-value">73.2%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: 73.2%"></div>
-            </div>
+    <div data-controller="admin">
+        <div class="dashboard-grid">
+            <div class="panel">
+                <h3 class="panel-title">System Metrics</h3>
+                <div class="metric">
+                    <span>CPU Usage</span>
+                    <span class="metric-value" data-admin-target="metricValue">73.2%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-admin-target="progressFill" style="width: 73.2%"></div>
+                </div>
             <div class="metric">
                 <span>Memory</span>
                 <span class="metric-value">8.4 GB / 16 GB</span>
@@ -111,7 +112,7 @@
             </tbody>
         </table>
 
-        <div class="terminal">
+        <div class="terminal" data-admin-target="terminal">
             <div class="terminal-line"><span class="terminal-prompt">root@neural-core:~$</span> systemctl status neural-matrix</div>
             <div class="terminal-line">● neural-matrix.service - Neural Matrix Control System</div>
             <div class="terminal-line">   Loaded: loaded (/etc/systemd/system/neural-matrix.service; enabled)</div>
@@ -119,5 +120,6 @@
             <div class="terminal-line">   Memory: 2.1G</div>
             <div class="terminal-line"><span class="terminal-prompt">root@neural-core:~$</span> <span class="glitch">_</span></div>
         </div>
+    </div>
     </div>
 {% endblock %}

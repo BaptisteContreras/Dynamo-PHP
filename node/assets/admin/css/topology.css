@@ -37,19 +37,24 @@ body::before {
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+                "header header"
+                "sidebar main";
     height: 100vh;
 }
 
 /* Header */
 .header {
+    grid-area: header;
     background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
     border-bottom: 2px solid #00ffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 30px;
+    padding: 0 30px;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
 }
 
@@ -100,7 +105,7 @@ body::before {
 
 /* Main Content */
 .main-content {
-    flex: 1;
+    grid-area: main;
     position: relative;
     display: flex;
     align-items: center;
