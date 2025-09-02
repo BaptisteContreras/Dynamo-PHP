@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}DynamoPHP node pannel{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}{% endblock %}+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('admin') }}{% endblock %}
+    {% endblock %}
+
 </head>
 <body>
     {% block body %}
@@ -23,8 +27,7 @@
             {% endblock %}
         </div>
     {% endblock %}
-    {% block importmap %}{{ importmap('admin') }}{% endblock %}
-    {% block javascripts %}{% endblock %}
+
 </body>
 </html>
 

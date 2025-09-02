@@ -1,40 +1,66 @@
+import '../bootstrap.js'
 import './css/admin.css'
 import './css/menu.css'
-import '../bootstrap.js'
 
-// Add some interactive effects
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', function() {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-    });
+console.log("ADMIN")
+
+document.addEventListener('turbo:before-visit', (event) => {
+    // Find the nav item that contains the clicked link
+    const clickedLink = document.querySelector(`a[href="${event.detail.url}"]`);
+    if (clickedLink) {
+        const navItem = clickedLink.closest('.nav-item');
+        if (navItem) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            navItem.classList.add('active');
+        }
+    }
 });
 
-// Simulate real-time data updates
-setInterval(() => {
-    const cpuValue = Math.random() * 100;
-    const memValue = Math.random() * 16;
-    document.querySelector('.metric-value').textContent = cpuValue.toFixed(1) + '%';
-    document.querySelector('.progress-fill').style.width = cpuValue + '%';
-}, 3000);
+// Store interval IDs for cleanup
+let metricsInterval;
+let terminalInterval;
 
-// Add terminal typing effect
-const terminal = document.querySelector('.terminal');
-const commands = [
-    'Scanning neural pathways...',
-    'Analyzing data streams...',
-    'Quantum encryption verified.',
-    'System integrity: OPTIMAL'
-];
+function initializeMetrics() {
+    // Clear existing intervals
+    if (metricsInterval) clearInterval(metricsInterval);
+    if (terminalInterval) clearInterval(terminalInterval);
 
-let commandIndex = 0;
-setInterval(() => {
-    if (commandIndex < commands.length) {
-        const newLine = document.createElement('div');
-        newLine.className = 'terminal-line';
-        newLine.innerHTML = `<span class="terminal-prompt">sys@matrix:~$</span> ${commands[commandIndex]}`;
-        terminal.insertBefore(newLine, terminal.lastElementChild);
-        terminal.scrollTop = terminal.scrollHeight;
-        commandIndex++;
+    // Simulate real-time data updates
+    const metricValue = document.querySelector('.metric-value');
+    const progressFill = document.querySelector('.progress-fill');
+
+    if (metricValue && progressFill) {
+        metricsInterval = setInterval(() => {
+            const cpuValue = Math.random() * 100;
+            metricValue.textContent = cpuValue.toFixed(1) + '%';
+            progressFill.style.width = cpuValue + '%';
+        }, 3000);
     }
-}, 4000);
+
+    // Add terminal typing effect
+    const terminal = document.querySelector('.terminal');
+    if (terminal) {
+        const commands = [
+            'Scanning neural pathways...',
+            'Analyzing data streams...',
+            'Quantum encryption verified.',
+            'System integrity: OPTIMAL'
+        ];
+
+        let commandIndex = 0;
+        terminalInterval = setInterval(() => {
+            if (commandIndex < commands.length && terminal) {
+                const newLine = document.createElement('div');
+                newLine.className = 'terminal-line';
+                newLine.innerHTML = `<span class="terminal-prompt">sys@matrix:~$</span> ${commands[commandIndex]}`;
+                terminal.insertBefore(newLine, terminal.lastElementChild);
+                terminal.scrollTop = terminal.scrollHeight;
+                commandIndex++;
+            }
+        }, 4000);
+    }
+}
+
+// Initialize on page load and after Turbo navigation
+document.addEventListener('turbo:load', initializeMetrics);
+document.addEventListener('DOMContentLoaded', initializeMetrics);

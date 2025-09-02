@@ -1,6 +1,8 @@
+import '../../bootstrap.js'
 import '../css/menu.css'
 import '../css/topology.css'
 
+console.log("TOPOLOGY")
 class SimpleTopology {
     constructor() {
         this.nodes = [];
