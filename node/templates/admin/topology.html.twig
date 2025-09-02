@@ -24,9 +24,8 @@
         <button class="cyber-button" data-action="click->topology#refresh">REFRESH</button>
     </div>
 
-    <div class="topology-container" id="topology" data-topology-target="container">
-        <div class="central-hub">CORE</div>
-    </div>
+    <twig:Topology:TopologyGraph />
+
 
     <!-- Node Info Tooltip -->
     <div class="node-info" id="nodeInfo" data-topology-target="nodeInfo">

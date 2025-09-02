@@ -1,0 +1,10 @@
+<div {{ attributes.defaults(stimulus_controller('topology-graph', {
+        'nodes': nodes
+    })) }}
+     class="topology-container" 
+     id="topology" 
+     data-topology-target="container">
+    <button class="cyber-button" data-action="live#$render" style="position: absolute; top: 10px; right: 10px; z-index: 10;">REFRESH</button>
+    <div class="central-hub">CORE</div>
+
+</div>
