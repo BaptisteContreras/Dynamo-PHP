@@ -1,5 +1,7 @@
 {% extends '@admin/base.html.twig' %}
 
+{% block container_attributes %} data-controller="topology"{% endblock %}
+
 {% block sidebar_status %}
     <div class="status-bar">
         <div class="status-count">
@@ -18,30 +20,28 @@
 {% endblock %}
 
 {% block main_content %}
-    <div data-controller="topology">
-        <div class="controls">
-            <button class="cyber-button" data-action="click->topology#refresh">REFRESH</button>
-        </div>
+    <div class="controls">
+        <button class="cyber-button" data-action="click->topology#refresh">REFRESH</button>
+    </div>
 
-        <div class="topology-container" id="topology" data-topology-target="container">
-            <div class="central-hub">CORE</div>
-        </div>
+    <div class="topology-container" id="topology" data-topology-target="container">
+        <div class="central-hub">CORE</div>
+    </div>
 
-        <!-- Node Info Tooltip -->
-        <div class="node-info" id="nodeInfo" data-topology-target="nodeInfo">
-            <h4 id="nodeTitle" data-topology-target="nodeTitle">Node Information</h4>
-            <div class="info-metric">
-                <span>Status:</span>
-                <span id="nodeStatus" data-topology-target="nodeStatus">Online</span>
-            </div>
-            <div class="info-metric">
-                <span>Load:</span>
-                <span id="nodeLoad" data-topology-target="nodeLoad">45%</span>
-            </div>
-            <div class="info-metric">
-                <span>Ping:</span>
-                <span id="nodePing" data-topology-target="nodePing">2ms</span>
-            </div>
+    <!-- Node Info Tooltip -->
+    <div class="node-info" id="nodeInfo" data-topology-target="nodeInfo">
+        <h4 id="nodeTitle" data-topology-target="nodeTitle">Node Information</h4>
+        <div class="info-metric">
+            <span>Status:</span>
+            <span id="nodeStatus" data-topology-target="nodeStatus">Online</span>
+        </div>
+        <div class="info-metric">
+            <span>Load:</span>
+            <span id="nodeLoad" data-topology-target="nodeLoad">45%</span>
+        </div>
+        <div class="info-metric">
+            <span>Ping:</span>
+            <span id="nodePing" data-topology-target="nodePing">2ms</span>
         </div>
     </div>
 {% endblock %}

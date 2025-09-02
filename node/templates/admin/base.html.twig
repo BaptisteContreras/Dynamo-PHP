@@ -12,7 +12,7 @@
 </head>
 <body>
     {% block body %}
-        <div class="container">
+        <div class="container"{% block container_attributes %}{% endblock %}>
             {% block container %}
             <header class="header">
                 <div class="logo">DynamoPHP node pannel</div>
